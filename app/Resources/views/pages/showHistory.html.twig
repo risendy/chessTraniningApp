@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	
+ <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Kursy NBP</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Strona główna</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <div class="starter-template">
+        {% if error == false %}
+
+        <h1>Historia <a class="btn btn-danger" href="{{ path('homepage') }}"> <i class="fa fa-arrow-left"> </i> Powrót </a></h1>
+        <p class="lead">
+          <table class="table">
+            <thead>
+              <tr>
+                <th> Nazwa </th>
+                <th> Data </th>
+                <th> Wartość </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for curr in currency.rates %}
+                <tr> 
+                  <td>{{curr.no}}</td>
+                  <td>{{curr.effectiveDate}}</td>
+                  <td>{{curr.mid}}</td>
+                </tr>
+              {% endfor %} 
+            </tbody>
+          <table>
+        </p>
+
+        {% else %}
+          <h1>{{message}}</h1>
+
+      {% endif %}
+
+      </div>
+
+
+    </div><!-- /.container -->
+
+{% endblock %}
+
+{% block footer %}
+									
+									
+{% endblock %}	
+
+		{% block stylesheets %}
+			
+		{% endblock %}
+
+
+		{% block javascripts %}
+			
+		{% endblock %} 

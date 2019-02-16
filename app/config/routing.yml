@@ -1,0 +1,4 @@
+# app/config/routing.yml
+homepage:
+    path:     /
+    defaults: { _controller: AppBundle:Default:index }

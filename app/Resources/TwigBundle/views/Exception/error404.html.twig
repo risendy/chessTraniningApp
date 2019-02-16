@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="header">
+		<!--menu-->
+		<nav id="main_menu" class="navbar" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<!--toggle-->
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
+						<i class="fa fa-bars"></i>
+					</button>
+					<!--logo-->
+					<div class="logo">
+						<a href="index.html"><img src="{{asset('img/illustrations/colors.png')}}" alt="" class="animated bounceInDown" style="width: 45px; height: 45px"/></a>
+					</div>
+				</div>
+
+				{% include '/includes/upperMenu.html' with {'page': 1} %}
+
+				</div>
+			</nav>
+		</div>
+		<!--//header-->
+
+		<!--page-->
+		<div id="banner">
+			<div class="container intro_wrapper">
+				<div class="inner_content">
+					<h1>Whoops!</h1>
+					<h1 class="title">Błąd 404</h1>
+					<h1 class="intro">
+						Strona której szukasz nie istnieje, 
+						<a href="{{path("homepage")}}"><span>kontunuuj przeglądanie</span></a>
+					</h1>
+				</div>
+			</div>
+		</div>
+
+		<div class="container wrapper">
+			<div class="inner_content">
+				<div class="row pad30">
+
+					<div class="col-md-12 screen-bg">
+						<div class="row">
+							<div class="col-xs-8 col-xs-offset-2 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2">
+								<img src="{{asset("img/imac.png")}}" class=" animated shake" alt="">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--//page-->
+
+
+		<script src="{{asset('js/jquery.js')}}"></script>
+		<script src="{{asset('js/bootstrap.min.js')}}"></script>
+		<script src="{{asset('js/retina.js')}}"></script>
+		<script src="{{asset('js/jquery.prettyPhoto.js')}}"></script>
+		<script src="{{asset('js/scripts.js')}}"></script>
+	{% endblock %}
+
