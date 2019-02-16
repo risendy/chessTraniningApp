@@ -1,0 +1,71 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<main class="login-form">
+    <div class="cotainer">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Register</div>
+                    <div class="card-body">
+                        {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+                        	<div class="form-group row">
+                                <label for="email_address" class="col-md-4 col-form-label text-md-right">Username</label>
+                                <div class="col-md-6">
+                                   {{ form_widget(form.username, { 'attr': {'class': 'form-control' } }) }}
+                                    {{ form_errors(form.username) }}
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="email_address" class="col-md-4 col-form-label text-md-right">Email</label>
+                                <div class="col-md-6">
+                                    {{ form_widget(form.email, { 'attr': {'class': 'form-control' } }) }}
+                                    {{ form_errors(form.email) }}
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
+                                <div class="col-md-6">
+                                    {{ form_widget(form.plainPassword.first, { 'attr': {'class': 'form-control' } }) }}
+                                           {{ form_errors(form.plainPassword.first) }}
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="password" class="col-md-4 col-form-label text-md-right">Password again</label>
+                                <div class="col-md-6">
+                                    {{ form_widget(form.plainPassword.second, { 'attr': {'class': 'form-control'} }) }}
+                                            {{ form_errors(form.plainPassword.second) }}
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-6 offset-md-4">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="remember"> Remember Me
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-8 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    Register
+                                </button>
+
+                                <a href="{{path('fos_user_security_login')}}" class="btn btn-link">
+                                    Already have account? Click here
+                                </a>
+                            </div>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+</main>
+
