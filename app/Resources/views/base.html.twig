@@ -14,6 +14,7 @@
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{asset('css/custom.css')}}">
     <link rel="stylesheet" href="{{asset('css/custom_login.css')}}">
     <!-- Latest compiled and minified JavaScript -->
 
@@ -26,18 +27,33 @@
 
 <body>
 
-<div class="container">
-    <div>
-        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-            Logged as: {{ app.user.username|default('Not Logged') }}
-            <a href="{{ path('fos_user_security_logout') }}">
-                Logout
-            </a>
-        {% else %}
-            <a href="{{ path('fos_user_security_login') }}">Click here to login</a>
-        {% endif %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" role="navigation">
+    <div class="container">
+        <a class="navbar-brand" href="#">Chess training application</a>
+        <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar">
+            &#9776;
+        </button>
+        <div class="collapse navbar-collapse" id="exCollapsingNavbar">
+            <ul class="nav navbar-nav">
+                <li class="nav-item"><a href="#" class="nav-link">Main page</a></li>
+            </ul>
+            <ul class="nav navbar-nav flex-row justify-content-between ml-auto">
+                <li class="nav-item order-2 order-md-1"><a href="#" class="nav-link" title="settings"><i class="fa fa-cog fa-fw fa-lg"></i></a></li>
+                <li class="px-3 py-2 menu_right">
+                                           {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                                               <span> Logged as: {{ app.user.username|default('Not Logged') }} </span>
+                                                   <a href="{{ path('fos_user_security_logout') }}" class="btn btn-outline-secondary">Logout <span class="caret"></span></a>
+                                               </a>
+                                           {% else %}
+                                               <a href="{{ path('fos_user_security_login') }}">You are not logged. Click here to login</a>
+                                           {% endif %}
+             </li>
+            </ul>
+        </div>
     </div>
+</nav>
 
+<div class="container">
     {% block content %}{% endblock %}
 </div>
 

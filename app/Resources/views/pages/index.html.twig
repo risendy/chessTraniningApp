@@ -1,26 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-	
- <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Chess training app</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Strona główna</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-
     <div class="container">
 
       <div class="starter-template">
@@ -28,11 +8,18 @@
         <center>
           <div id="board" style="width: 600px"></div>
         </center>
+     
+        <div class="card card_info">
+          <div class="card-header">
+            Informacje
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Your ranking: </h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn btn-primary">Your profile</a>
+          </div>
+        </div>
 
-        <span id="status">
-
-        </span>
-      
       </div>
 
 
@@ -46,7 +33,8 @@
 {% endblock %}	
 
 		{% block stylesheets %}
-			<link rel="stylesheet" type="text/css" href="{{ asset('css/chessboard-0.3.0.css') }}" />
+      <link rel="stylesheet" type="text/css" href="{{ asset('css/chessboard-0.3.0.css') }}" />
+			<link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}" />
 		{% endblock %}
 
 
