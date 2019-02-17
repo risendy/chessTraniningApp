@@ -5,16 +5,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Service\NbpService;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Response as GruzzleResponse;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class DefaultController extends Controller
 {
-    public function indexAction()
+    public function indexAction(UserInterface $user)
     {
-       
+       	$userRanking= $this->getUser()->getRanking();
 
-        return $this->render('pages/index.html.twig');
+        return $this->render('pages/index.html.twig', array (
+        	"userRanking"=> $userRanking
+        ));
     }
 
 }
