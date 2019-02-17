@@ -77,6 +77,8 @@ updateStatus();
 $('#next_position').click(function(event) {
   event.preventDefault();
 
+  $.LoadingOverlay("show");  
+
   $.ajax({
     url: Routing.generate('ajax_get_position_for_template'),
     type: 'POST',
@@ -95,7 +97,7 @@ $('#next_position').click(function(event) {
     console.log("error");
   })
   .always(function() {
-    console.log("complete");
+    $.LoadingOverlay("hide");
   });
   
 });
