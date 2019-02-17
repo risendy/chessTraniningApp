@@ -21,3 +21,9 @@ services:
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
         exclude: '../../src/AppBundle/{Entity,Repository,Tests}'
+
+    app.position.service:
+        class: AppBundle\Service\PositionService
+        arguments:
+            ["@doctrine.orm.entity_manager"]
+        public: true

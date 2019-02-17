@@ -15,6 +15,7 @@
           </div>
           <div class="card-body">
             <h5 class="card-title">Your ranking: {{userRanking}}</h5>
+            <span id="status">Status</span>
             <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
             <a id="next_position" href="#" class="btn btn-primary">Next position </a>
           </div>
@@ -42,5 +43,7 @@
       <script src="{{asset('js/jquery.js')}}"></script>
 			<script src="{{asset('js/chess.js')}}"></script>
       <script src="{{asset('js/chessboard-0.3.0.js')}}"></script>
+      <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+      <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
       <script src="{{asset('js/chessboard_script.js')}}"></script>
 		{% endblock %} 

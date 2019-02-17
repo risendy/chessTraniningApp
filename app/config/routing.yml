@@ -6,7 +6,17 @@ easy_admin_bundle:
     type:     annotation
     prefix:   /admin
     
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
 # app/config/routing.yml
 homepage:
     path:     /
     defaults: { _controller: AppBundle:Default:index }
+
+ajax_get_position_for_template:
+    path: /ajax/get/position
+    defaults:
+        _controller: AppBundle:Position:ajaxGetPosition
+    options:
+        expose: true

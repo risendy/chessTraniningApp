@@ -1,9 +1,3 @@
-var board,
-  game = new Chess(),
-  statusEl = $('#status'),
-  fenEl = $('#fen'),
-  pgnEl = $('#pgn');
-
 // do not pick up pieces if the game is over
 // only pick up pieces for the side to move
 var onDragStart = function(source, piece, position, orientation) {
@@ -63,9 +57,10 @@ var updateStatus = function() {
   }
 
   statusEl.html(status);
-  fenEl.html(game.fen());
-  pgnEl.html(game.pgn());
 };
+
+var game = new Chess();
+statusEl = $('#status');
 
 var cfg = {
   draggable: true,
@@ -74,6 +69,33 @@ var cfg = {
   onDrop: onDrop,
   onSnapEnd: onSnapEnd
 };
+
 board = ChessBoard('board', cfg);
 
-updateStatus();
+updateStatus(); 
+
+$('#next_position').click(function(event) {
+  event.preventDefault();
+
+  $.ajax({
+    url: Routing.generate('ajax_get_position_for_template'),
+    type: 'POST',
+    dataType: 'json'
+  })
+  .done(function(response) {
+    console.log("success");
+
+    game.load(response.fen);
+    cfg.position = response.fen;
+    board = ChessBoard('board', cfg);
+
+    updateStatus(); 
+  })
+  .fail(function() {
+    console.log("error");
+  })
+  .always(function() {
+    console.log("complete");
+  });
+  
+});
