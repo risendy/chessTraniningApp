@@ -15,9 +15,9 @@ class PositionService
 
     public function getRandomPosition()
     {
-        $position = $this->em->getRepository(Position::class)->find(4);
+        $randomPosition = $this->em->getRepository(Position::class)->findRandomPositionNativeQuery();
 
-        return $position->getFen();
+        return $randomPosition;
     }
 
 }
