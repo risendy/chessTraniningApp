@@ -21,6 +21,11 @@ class Position
      */
     private $fen;
 
+    /**
+     * @ORM\Column(type="string", length=200)
+     */
+    private $solution = null;
+
     public function getIdPosition()
     {
         return $this->idPosition;
@@ -39,5 +44,15 @@ class Position
     public function setFen($fen)
     {
         $this->fen = $fen;
+    }
+
+    public function getSolution()
+    {
+        return $this->solution;
+    }
+
+    public function setSolution($solution)
+    {
+        $this->solution = $solution;
     }
 }

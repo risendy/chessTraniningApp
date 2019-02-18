@@ -20,15 +20,16 @@ class PositionController extends Controller
     {
     	$randPosition = $this->positionService->getRandomPosition(); 
 
-    	/*if (!$request->isXmlHttpRequest()) {
+    	if (!$request->isXmlHttpRequest()) {
     	        return new JsonResponse(array(
     	            'status' => 'Error',
-    	            'message' => 'Error'),
+    	            'message' => 'Not an ajax request'),
     	        400);
-    	    }*/
+    	    }
 
     	 return new JsonResponse(array(
                 'fen' => $randPosition->getFen(),
+                'solution' => $randPosition->getSolution(),
                 'status' => 'Ok',
                 'message' => 'Success'),
             200);

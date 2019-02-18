@@ -9,15 +9,16 @@ var onDragStart = function(source, piece, position, orientation) {
 };
 
 var onDrop = function(source, target) {
-  // see if the move is legal
-  var move = game.move({
-    from: source,
-    to: target,
-    promotion: 'q' // NOTE: always promote to a queen for example simplicity
-  });
+  var playerMove = makeMove(source, target);
+
+  if (playerMove)
+  {
+     var solutionMove = getNextMoveFromSolution();
+     checkPlayerSolution(playerMove, solutionMove);
+  }
 
   // illegal move
-  if (move === null) return 'snapback';
+  if (playerMove === null) return 'snapback';
 
   updateStatus();
 };
@@ -59,8 +60,95 @@ var updateStatus = function() {
   statusEl.html(status);
 };
 
+var initNewPosition = function(fen) {
+    game.load(fen);
+    cfg.position = fen;
+    board = ChessBoard('board', cfg);
+}
+
+var setSolutionArray = function(solution) {
+    solutionTmp = JSON.parse(solution);
+    solutionTmp.array.reverse();
+
+    return solutionTmp.array;
+}
+
+var getNextMoveFromSolution = function() {
+    var nextMove = solution.pop();
+    return nextMove;
+}
+
+var makeMove = function(from, to) {
+    var move = game.move({
+      from: from,
+      to: to,
+      promotion: 'q' // NOTE: always promote to a queen for example simplicity
+    });
+
+    return move;
+}
+
+var checkPlayerSolution = function(playerMove, solutionMove) {
+     var movesSolution = solutionMove.split("-");
+
+     if (movesSolution[0] == playerMove.from && movesSolution[1] == playerMove.to) 
+     {
+        setProgressInfo(true);
+        nextMove = getNextMoveFromSolution();
+
+        if (nextMove)
+        {
+          var movesNextMove = nextMove.split("-");
+          var move = makeMove(movesNextMove[0], movesNextMove[1]);
+        }
+        //no more moves - ending
+        else
+        {
+            setPuzzleCompleted();
+        }
+     }
+     else 
+     {
+        setProgressInfo(false);
+        resetGame();
+     }
+}
+
+var setProgressInfo = function(type) {
+    if (type) 
+    {
+        progressInformation.html('Good move, keep on :)');
+    }
+    else 
+    {
+        progressInformation.html('Bad move :(');
+    }
+}
+
+var setPuzzleCompleted = function() {
+  progressInformation.html('Puzzle completed :)');
+}
+
+
+var resetGame = function(type) {
+  var game = new Chess();
+
+  var cfg = {
+    draggable: true,
+    position: 'start',
+    onDragStart: onDragStart,
+    onDrop: onDrop,
+    onSnapEnd: onSnapEnd
+  };
+
+  var board = ChessBoard('board', 'start');
+}
+
+
 var game = new Chess();
+var solution = null;
 statusEl = $('#status');
+progressInformation = $('#progressInformation');
 
 var cfg = {
   draggable: true,
@@ -87,9 +175,8 @@ $('#next_position').click(function(event) {
   .done(function(response) {
     console.log("success");
 
-    game.load(response.fen);
-    cfg.position = response.fen;
-    board = ChessBoard('board', cfg);
+    initNewPosition(response.fen);
+    solution = setSolutionArray(response.solution);
 
     updateStatus(); 
   })
