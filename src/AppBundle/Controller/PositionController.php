@@ -30,6 +30,7 @@ class PositionController extends Controller
     	 return new JsonResponse(array(
                 'fen' => $randPosition->getFen(),
                 'solution' => $randPosition->getSolution(),
+                'puzzleRanking' => $randPosition->getPuzzleRanking(),
                 'status' => 'Ok',
                 'message' => 'Success'),
             200);

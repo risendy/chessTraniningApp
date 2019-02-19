@@ -30,12 +30,22 @@ var onSnapEnd = function() {
 };
 
 var updateStatus = function() {
-  var status = '';
 
+  if (!puzzleActive)
+  {
+    statusEl.html('');
+    return;
+  }
+
+  var status = '';
+  var moveIcon = '<i class="fas fa-chess-king" style="color:#ced4da; padding-right:5px;"></i>';
   var moveColor = 'White';
+
   if (game.turn() === 'b') {
     moveColor = 'Black';
+    var moveIcon = '<i class="fas fa-chess-king" style="padding-right:5px;"></i>';
   }
+
 
   // checkmate?
   if (game.in_checkmate() === true) {
@@ -57,7 +67,7 @@ var updateStatus = function() {
     }
   }
 
-  statusEl.html(status);
+  statusEl.html('<h4>'+moveIcon+status+'</h4>');
 };
 
 var initNewPosition = function(fen) {
@@ -105,11 +115,18 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
         else
         {
             setPuzzleCompleted();
+            var ratings = calculateNewRankings(true);
+            changePlayerRatingInTemplate(ratings.newPlayerRanking);
+            changePuzzleRankingInTemplate(ratings.newPuzzleRanking);
         }
      }
      else 
      {
         setProgressInfo(false);
+        var ratings = calculateNewRankings(false);
+        changePlayerRatingInTemplate(ratings.newPlayerRanking);
+        changePuzzleRankingInTemplate(ratings.newPuzzleRanking);
+
         resetGame();
      }
 }
@@ -117,16 +134,56 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
 var setProgressInfo = function(type) {
     if (type) 
     {
-        progressInformation.html('Good move, keep on :)');
+        progressInformation.html('<h4> <i class="fas fa-check" style="color:green"></i> Good move, keep on :) </h4>');
     }
     else 
     {
-        progressInformation.html('Bad move :(');
+        progressInformation.html('<h4> <i class="fas fa-times" style="color:red"></i> Bad move :( </h4>');
     }
 }
 
 var setPuzzleCompleted = function() {
-  progressInformation.html('Puzzle completed :)');
+  progressInformation.html('<h4> <i class="fas fa-check" style="color:green"></i> Puzzle completed :) </h4>');
+  puzzleActive = false;
+}
+
+var calculateNewRankings = function(result) {
+ var k = 32;
+ var s1,s2;
+ var resultArray = {};
+
+ if (playerRankingValue && puzzleRankingValue)
+ {
+   if (result)
+   {
+     s1 = 1;
+     s2 = 0;
+   }
+   else
+   {
+     s1 = 0;
+     s2 = 1;
+   }
+
+   var r1 = parseFloat(Math.pow(10, playerRankingValue/400));
+   var r2 = parseFloat(Math.pow(10, puzzleRankingValue/400));
+
+   var e1 = parseFloat(r1/(r1+r2));
+   var e2 = parseFloat(r2/(r1+r2));
+
+   var param1Part2 = s1-e1;
+   var newPlayerRanking = playerRankingValue+(k*param1Part2);
+   newPuzzleRanking = newPlayerRanking.toFixed(2);
+
+   var param2Part2 = s2-e2;
+   var newPuzzleRanking = playerRankingValue+(k*param2Part2);
+   newPuzzleRanking = newPuzzleRanking.toFixed(2);
+
+   resultArray = {newPlayerRanking: newPlayerRanking, newPuzzleRanking: newPuzzleRanking}
+ }
+
+ return resultArray;
+
 }
 
 
@@ -141,12 +198,56 @@ var resetGame = function(type) {
     onSnapEnd: onSnapEnd
   };
 
-  var board = ChessBoard('board', 'start');
+  board = ChessBoard('board', 'start');
+  puzzleActive = false;
 }
 
+var changePlayerRatingInTemplate = function(newRating) {
+  var difference = Math.abs(playerRankingValue - newRating);
+
+  if (newRating > playerRankingValue)
+  {
+      var icon = '<i class="fas fa-plus" style="color:green;"></i>';
+      var span = '<span style="color:green;">'+difference+'</span>';
+  }
+  else 
+  {
+      var icon = '<i class="fas fa-minus" style="color:red;"></i>';
+      var span = '<span style="color:red;">'+difference+'</span>';
+  }
+
+  playerRankingBox.html(newRating + '('+icon+span+')');
+}
+
+var changePuzzleRankingInTemplate = function(newPuzzleRanking) {
+  var difference = Math.abs(puzzleRankingValue - newPuzzleRanking);
+
+  if (newPuzzleRanking > puzzleRankingValue)
+  {
+      var icon = '<i class="fas fa-plus" style="color:green;"></i>';
+      var span = '<span style="color:green;">'+difference+'</span>';
+  }
+  else 
+  {
+      var icon = '<i class="fas fa-minus" style="color:red;"></i>';
+      var span = '<span style="color:red;">'+difference+'</span>';
+  }
+
+  puzzleRankingBox.html(newPuzzleRanking + '('+icon+span+')');
+}
+
+var saveNewRatings = function(type) {
+  
+}
 
 var game = new Chess();
 var solution = null;
+var playerRankingValue = parseFloat($('#userRanking').html());
+var playerRankingBox = $('#userRanking');
+var puzzleRankingValue = null;
+var puzzleRankingBox = $('#puzzleRanking');
+var puzzleActive = false;
+
 statusEl = $('#status');
 progressInformation = $('#progressInformation');
 
@@ -177,6 +278,8 @@ $('#next_position').click(function(event) {
 
     initNewPosition(response.fen);
     solution = setSolutionArray(response.solution);
+    puzzleRankingValue = parseFloat(response.puzzleRanking);
+    puzzleActive = true;
 
     updateStatus(); 
   })

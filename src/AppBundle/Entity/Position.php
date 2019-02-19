@@ -26,6 +26,12 @@ class Position
      */
     private $solution = null;
 
+    /**
+     * @ORM\Column(type="decimal", scale=2)
+     */
+    private $puzzleRanking = 1200;
+
+
     public function getIdPosition()
     {
         return $this->idPosition;
@@ -54,5 +60,15 @@ class Position
     public function setSolution($solution)
     {
         $this->solution = $solution;
+    }
+
+    public function getPuzzleRanking()
+    {
+        return $this->puzzleRanking;
+    }
+
+    public function setPuzzleRanking($puzzleRanking)
+    {
+        $this->puzzleRanking = $puzzleRanking;
     }
 }

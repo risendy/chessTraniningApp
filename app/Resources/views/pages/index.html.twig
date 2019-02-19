@@ -6,18 +6,22 @@
       <div class="starter-template">
 
         <center>
+            <h4> <div class="puzzleRankingBox"> Puzzle ranking: <span id="puzzleRanking"> ? </span> </div> <h4>
+        </center>
+
+        <center>
           <div id="board" style="width: 600px"></div>
         </center>
      
         <div class="card card_info">
           <div class="card-header">
             Informacje
-          </div>
+          </div>  
           <div class="card-body">
-            <h5 class="card-title">Your ranking: {{userRanking}}</h5>
+            <h4>Your ranking: <span id="userRanking">{{userRanking}}</span></h4>
             <span id="status">Status</span>
             <p id="progressInformation" class="card-text"></p>
-            <a id="next_position" href="#" class="btn btn-primary">Next position </a>
+            <a id="next_position" href="#" class="btn btn-primary">Next position <i class="fas fa-arrow-right"></i></a>
           </div>
         </div>
 
@@ -34,6 +38,7 @@
 {% endblock %}	
 
 		{% block stylesheets %}
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
       <link rel="stylesheet" type="text/css" href="{{ asset('css/chessboard-0.3.0.css') }}" />
 			<link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}" />
 		{% endblock %}
