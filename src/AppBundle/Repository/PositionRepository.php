@@ -36,4 +36,14 @@ class PositionRepository extends EntityRepository
 
     	return null;
     }
+
+    public function updatePuzzleRanking(Position $position, $newPuzzleRanking)
+    {
+        $em = $this->getEntityManager();
+
+        $position->setPuzzleRanking($newPuzzleRanking);
+
+        $em->persist($position);
+        $em->flush();
+    }
 }

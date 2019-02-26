@@ -20,3 +20,10 @@ ajax_get_position_for_template:
         _controller: AppBundle:Position:ajaxGetPosition
     options:
         expose: true
+
+ajax_set_rating:
+    path: /ajax/set/rating
+    defaults:
+        _controller: AppBundle:Position:ajaxSaveNewRating
+    options:
+        expose: true

@@ -103,8 +103,9 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
 
      if (movesSolution[0] == playerMove.from && movesSolution[1] == playerMove.to) 
      {
+        var nextMove = getNextMoveFromSolution();
+
         setProgressInfo(true);
-        nextMove = getNextMoveFromSolution();
 
         if (nextMove)
         {
@@ -114,21 +115,32 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
         //no more moves - ending
         else
         {
-            setPuzzleCompleted();
             var ratings = calculateNewRankings(true);
+
+            puzzleActive = false;
+            setPuzzleCompleted();
             changePlayerRatingInTemplate(ratings.newPlayerRanking);
             changePuzzleRankingInTemplate(ratings.newPuzzleRanking);
         }
      }
+     //user error
      else 
      {
-        setProgressInfo(false);
         var ratings = calculateNewRankings(false);
+
+        puzzleActive = false;
+        setProgressInfo(false);
         changePlayerRatingInTemplate(ratings.newPlayerRanking);
         changePuzzleRankingInTemplate(ratings.newPuzzleRanking);
 
         resetGame();
      }
+
+    if (!puzzleActive && (puzzleRankingValue != ratings.newPuzzleRanking || playerRankingValue != ratings.newPlayerRanking))
+    {
+        saveRatingToDatabase(userId, ratings.newPlayerRanking, puzzleId, ratings.newPuzzleRanking);
+    }
+
 }
 
 var setProgressInfo = function(type) {
@@ -173,7 +185,7 @@ var calculateNewRankings = function(result) {
 
    var param1Part2 = s1-e1;
    var newPlayerRanking = playerRankingValue+(k*param1Part2);
-   newPuzzleRanking = newPlayerRanking.toFixed(2);
+   newPlayerRanking = newPlayerRanking.toFixed(2);
 
    var param2Part2 = s2-e2;
    var newPuzzleRanking = playerRankingValue+(k*param2Part2);
@@ -202,30 +214,36 @@ var resetGame = function(type) {
   puzzleActive = false;
 }
 
+var calculateRankingDifference = function (ranking1, ranking2) {
+    return Math.abs(ranking1 - ranking2).toFixed(2);
+}
+
 var changePlayerRatingInTemplate = function(newRating) {
-  var difference = Math.abs(playerRankingValue - newRating);
+  var difference = calculateRankingDifference(playerRankingValue, newRating);
 
   if (newRating > playerRankingValue)
   {
       var icon = '<i class="fas fa-plus" style="color:green;"></i>';
-      var span = '<span style="color:green;">'+difference+'</span>';
+      var span = '<span class="playerRatingDifference" style="color:green;">'+difference+'</span>';
   }
   else 
   {
       var icon = '<i class="fas fa-minus" style="color:red;"></i>';
-      var span = '<span style="color:red;">'+difference+'</span>';
+      var span = '<span class="playerRatingDifference" style="color:red;">'+difference+'</span>';
   }
 
-  playerRankingBox.html(newRating + '('+icon+span+')');
+    var spanOuter = '<span class="playerRatingDifference">('+icon+span+')</span>';
+
+  playerRankingBox.html(newRating + spanOuter);
 }
 
 var changePuzzleRankingInTemplate = function(newPuzzleRanking) {
-  var difference = Math.abs(puzzleRankingValue - newPuzzleRanking);
+  var difference = calculateRankingDifference(puzzleRankingValue, newPuzzleRanking);
 
   if (newPuzzleRanking > puzzleRankingValue)
   {
       var icon = '<i class="fas fa-plus" style="color:green;"></i>';
-      var span = '<span style="color:green;">'+difference+'</span>';
+      var span = '<span class="puzzleRatingDifference" style="color:green;">'+difference+'</span>';
   }
   else 
   {
@@ -233,11 +251,35 @@ var changePuzzleRankingInTemplate = function(newPuzzleRanking) {
       var span = '<span style="color:red;">'+difference+'</span>';
   }
 
-  puzzleRankingBox.html(newPuzzleRanking + '('+icon+span+')');
+  var spanOuter = '<span class="puzzleRatingDifference">('+icon+span+')</span>';
+
+  puzzleRankingBox.html(newPuzzleRanking + spanOuter);
 }
 
-var saveNewRatings = function(type) {
-  
+var resetValuesInTemplateAfterChangingPosition = function () {
+    $('.playerRatingDifference').remove();
+    $('.puzzleRatingDifference').remove();
+    $('#puzzleRanking').text('?');
+}
+
+var saveRatingToDatabase = function (userId, newPlayerRating, puzzleId, newPuzzleRating) {
+    $.LoadingOverlay("show");
+
+    $.ajax({
+        url: Routing.generate('ajax_set_rating'),
+        type: 'POST',
+        dataType: 'json',
+        data: {userId:userId, newPlayerRating: newPlayerRating, puzzleId:puzzleId, newPuzzleRating:newPuzzleRating}
+    })
+        .done(function(response) {
+            console.log("success");
+        })
+        .fail(function() {
+            console.log("error");
+        })
+        .always(function() {
+            $.LoadingOverlay("hide");
+        });
 }
 
 var game = new Chess();
@@ -247,6 +289,8 @@ var playerRankingBox = $('#userRanking');
 var puzzleRankingValue = null;
 var puzzleRankingBox = $('#puzzleRanking');
 var puzzleActive = false;
+var userId = $("#userId").val();
+var puzzleId;
 
 statusEl = $('#status');
 progressInformation = $('#progressInformation');
@@ -278,9 +322,11 @@ $('#next_position').click(function(event) {
 
     initNewPosition(response.fen);
     solution = setSolutionArray(response.solution);
-    puzzleRankingValue = parseFloat(response.puzzleRanking);
+    puzzleRankingValue = parseFloat(response.puzzleRanking).toFixed(2);
     puzzleActive = true;
+    puzzleId = response.puzzleId;
 
+    resetValuesInTemplateAfterChangingPosition();
     updateStatus(); 
   })
   .fail(function() {

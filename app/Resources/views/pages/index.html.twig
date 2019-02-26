@@ -1,12 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
+    <input type="hidden" id="userId" value="{{ userId }}">
+    <input type="hidden" id="puzzleId" value="">
+
     <div class="container">
 
       <div class="starter-template">
 
         <center>
-            <h4> <div class="puzzleRankingBox"> Puzzle ranking: <span id="puzzleRanking"> ? </span> </div> <h4>
+            <h4> <div class="puzzleRankingBox"> Puzzle ranking: <span id="puzzleRanking"> ? </span> </div> </h4>
         </center>
 
         <center>
