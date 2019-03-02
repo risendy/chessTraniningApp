@@ -2,10 +2,11 @@
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Features](#features)
+* [Installation](#installation)
 * [Screenshots](#screenshots)
 
 ## General info
-Symfony/js app to solve chess puzzles using chess.js and chessboard.js libraries. The puzzles are loaded from the database in the FEN format. 
+Symfony/js app to solve chess puzzles using chess.js and chessboard.js libraries. The puzzles are loaded from the database in the FEN format using AJAX. 
 	
 ## Technologies
 Project is created with:
@@ -18,9 +19,24 @@ Project is created with:
 
 ## Features
 * Solving chess puzzles
-* Computing rating difference for puzzle and user after solve attempt and saving it to the database
-* Comes with the admin panel for easily adding new puzzles
+* Computing rating difference for puzzle and user using ELO ranking system.
+* Comes with the admin panel to add new puzzles
 * Comes with the data fixtures to load new user and 10 puzzles.
+
+## Installation
+#### Clone the repository
+#### Run composer
+```
+composer install
+```
+#### Run migrations
+```
+php bin/console doctrine:migrations:migrate
+```
+#### Load fixtures
+```
+php bin/console doctrine:fixtures:load
+```
 
 ## Screenshots
 
