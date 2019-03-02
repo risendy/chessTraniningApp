@@ -265,6 +265,11 @@ var resetValuesInTemplateAfterChangingPosition = function () {
     $('#puzzleRanking').text('?');
 }
 
+var hideProgressInfo = function () {
+    progressInformation.html('');
+}
+
+
 var saveRatingToDatabase = function (userId, newPlayerRating, puzzleId, newPuzzleRating) {
     $.LoadingOverlay("show");
 
@@ -315,6 +320,8 @@ $('#next_position').click(function(event) {
   event.preventDefault();
 
   $.LoadingOverlay("show");  
+
+  hideProgressInfo();
 
   $.ajax({
     url: Routing.generate('ajax_get_position_for_template'),
