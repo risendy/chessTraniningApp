@@ -56,7 +56,7 @@ class PositionController extends Controller
             return new JsonResponse(array(
                 'status' => 'Error',
                 'message' => 'Wrong parameters'),
-                500);
+                400);
         }
 
         try
@@ -69,10 +69,9 @@ class PositionController extends Controller
         }
         catch (\Exception $e)
         {
-            dump($e->getMessage());
             return new JsonResponse(array(
                 'status' => 'Error',
-                'message' => 'Error while connecting to the database'),
+                'message' => 'Error while connecting to the database. Error message: '.$e->getMessage()),
                 500);
         }
 

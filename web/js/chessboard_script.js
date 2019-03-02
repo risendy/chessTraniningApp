@@ -40,12 +40,16 @@ var updateStatus = function() {
   var status = '';
   var moveIcon = '<i class="fas fa-chess-king" style="color:#ced4da; padding-right:5px;"></i>';
   var moveColor = 'White';
+  cfg.orientation='white';
 
   if (game.turn() === 'b') {
     moveColor = 'Black';
     var moveIcon = '<i class="fas fa-chess-king" style="padding-right:5px;"></i>';
+    cfg.orientation='black';
   }
 
+  //update orientation
+  board = ChessBoard('board', cfg);
 
   // checkmate?
   if (game.in_checkmate() === true) {
@@ -198,7 +202,6 @@ var calculateNewRankings = function(result) {
 
 }
 
-
 var resetGame = function(type) {
   var game = new Chess();
 
@@ -297,6 +300,7 @@ progressInformation = $('#progressInformation');
 
 var cfg = {
   draggable: true,
+  orientation: 'white',
   position: 'start',
   onDragStart: onDragStart,
   onDrop: onDrop,
