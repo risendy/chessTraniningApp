@@ -104,6 +104,7 @@ var makeMove = function(from, to) {
 
 var checkPlayerSolution = function(playerMove, solutionMove) {
      var movesSolution = solutionMove.split("-");
+     var puzzleResult;
 
      if (movesSolution[0] == playerMove.from && movesSolution[1] == playerMove.to) 
      {
@@ -121,6 +122,7 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
         {
             var ratings = calculateNewRankings(true);
 
+            puzzleResult = true;
             puzzleActive = false;
             setPuzzleCompleted();
             changePlayerRatingInTemplate(ratings.newPlayerRanking);
@@ -132,17 +134,18 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
      {
         var ratings = calculateNewRankings(false);
 
+        puzzleResult = false;
         puzzleActive = false;
         setProgressInfo(false);
         changePlayerRatingInTemplate(ratings.newPlayerRanking);
         changePuzzleRankingInTemplate(ratings.newPuzzleRanking);
 
-        resetGame();
+        //resetGame();
      }
 
     if (!puzzleActive && (puzzleRankingValue != ratings.newPuzzleRanking || playerRankingValue != ratings.newPlayerRanking))
     {
-        saveRatingToDatabase(userId, ratings.newPlayerRanking, puzzleId, ratings.newPuzzleRanking);
+        saveRatingToDatabase(userId, ratings.newPlayerRanking, puzzleId, ratings.newPuzzleRanking, puzzleResult);
     }
 
 }
@@ -270,14 +273,14 @@ var hideProgressInfo = function () {
 }
 
 
-var saveRatingToDatabase = function (userId, newPlayerRating, puzzleId, newPuzzleRating) {
+var saveRatingToDatabase = function (userId, newPlayerRating, puzzleId, newPuzzleRating, puzzleResult) {
     $.LoadingOverlay("show");
 
     $.ajax({
         url: Routing.generate('ajax_set_rating'),
         type: 'POST',
         dataType: 'json',
-        data: {userId:userId, newPlayerRating: newPlayerRating, puzzleId:puzzleId, newPuzzleRating:newPuzzleRating}
+        data: {userId:userId, newPlayerRating: newPlayerRating, puzzleId:puzzleId, newPuzzleRating:newPuzzleRating, puzzleResult:puzzleResult}
     })
         .done(function(response) {
             console.log("success");

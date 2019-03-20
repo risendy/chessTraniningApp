@@ -15,9 +15,11 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/doctrine-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/doctrine-cache-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/doctrine-fixtures-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/doctrine-migrations-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/inflector" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/instantiator" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/lexer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/migrations" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/orm" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/easycorp/easyadmin-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/fig/link-util" />
@@ -38,6 +40,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/jms/serializer-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/monolog/monolog" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/nelmio/alice" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/ocramius/package-versions" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/ocramius/proxy-manager" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/pagerfanta/pagerfanta" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/paragonie/random_compat" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpcollection/phpcollection" />
@@ -71,6 +75,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/twig/twig" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/willdurand/jsonp-callback-validator" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/willdurand/negotiation" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/zendframework/zend-code" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/zendframework/zend-eventmanager" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

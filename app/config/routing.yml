@@ -14,6 +14,10 @@ homepage:
     path:     /
     defaults: { _controller: AppBundle:Default:index }
 
+profile:
+    path:     /profile
+    defaults: { _controller: AppBundle:Profile:show }
+
 ajax_get_position_for_template:
     path: /ajax/get/position
     defaults:

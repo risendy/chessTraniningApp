@@ -74,6 +74,12 @@
       <path value="$PROJECT_DIR$/vendor/jdorn/sql-formatter" />
       <path value="$PROJECT_DIR$/vendor/twig/extensions" />
       <path value="$PROJECT_DIR$/vendor/twig/twig" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/migrations" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-migrations-bundle" />
+      <path value="$PROJECT_DIR$/vendor/zendframework/zend-eventmanager" />
+      <path value="$PROJECT_DIR$/vendor/zendframework/zend-code" />
+      <path value="$PROJECT_DIR$/vendor/ocramius/proxy-manager" />
+      <path value="$PROJECT_DIR$/vendor/ocramius/package-versions" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="5.5.0" />

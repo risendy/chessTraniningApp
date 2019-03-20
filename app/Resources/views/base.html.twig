@@ -42,6 +42,8 @@
                 <li class="px-3 py-2 menu_right">
                                            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                                                <span> Logged as: {{ app.user.username|default('Not Logged') }} </span>
+
+                                                   <a href="{{ path('profile') }}" class="btn btn-outline-secondary">Profile <span class="caret"></span></a>
                                                    <a href="{{ path('fos_user_security_logout') }}" class="btn btn-outline-secondary">Logout <span class="caret"></span></a>
                                                </a>
                                            {% else %}

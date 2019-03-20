@@ -24,6 +24,16 @@ class User extends BaseUser
      */
     protected $ranking = 1200;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $puzzlesSolved = 0;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $puzzlesFailed = 0;
+
     public function __construct()
     {
         parent::__construct();
@@ -48,5 +58,37 @@ class User extends BaseUser
     public function setRanking($ranking) 
     {
         $this->ranking = $ranking;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPuzzlesSolved()
+    {
+        return $this->puzzlesSolved;
+    }
+
+    /**
+     * @param mixed $puzzlesSolved
+     */
+    public function setPuzzlesSolved($puzzlesSolved)
+    {
+        $this->puzzlesSolved = $puzzlesSolved;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPuzzlesFailed()
+    {
+        return $this->puzzlesFailed;
+    }
+
+    /**
+     * @param mixed $puzzlesFailed
+     */
+    public function setPuzzlesFailed($puzzlesFailed)
+    {
+        $this->puzzlesFailed = $puzzlesFailed;
     }
 }
