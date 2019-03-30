@@ -21,6 +21,11 @@ class StatsService
         $this->em = $em;
     }
 
+    public function getSolvedPuzzlesCombined(User $user)
+    {
+        return $user->getPuzzlesSolved() + $user->getPuzzlesFailed();
+    }
+
     public function incrementPuzzleFailedCounter(User $user)
     {
         $user = $this->em->getRepository(User::class)->updateUserFailedPuzzleCount($user);
