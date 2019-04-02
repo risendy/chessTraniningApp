@@ -1,3 +1,23 @@
+$(document).on( "click", "#show_solution_button", function(event) {
+    event.preventDefault();
+
+    game.load(currentPosition);
+
+    var nextMove = getNextMoveFromSolution(solutionCopy);
+
+    if (nextMove)
+    {
+        var movesNextMove = nextMove.split("-");
+        var playerMove = makeMove(movesNextMove[0], movesNextMove[1]);
+
+        var newFen = game.fen();
+
+        cfg.position = newFen;
+        cfg.draggable = false;
+        board = ChessBoard('board', cfg);
+        showSolutionButton.hide();
+    }
+});
 // do not pick up pieces if the game is over
 // only pick up pieces for the side to move
 var onDragStart = function(source, piece, position, orientation) {
@@ -13,7 +33,7 @@ var onDrop = function(source, target) {
 
   if (playerMove)
   {
-     var solutionMove = getNextMoveFromSolution();
+     var solutionMove = getNextMoveFromSolution(solution);
      checkPlayerSolution(playerMove, solutionMove);
   }
 
@@ -76,7 +96,10 @@ var updateStatus = function() {
 
 var initNewPosition = function(fen) {
     game.load(fen);
+
     cfg.position = fen;
+    cfg.draggable = true;
+
     board = ChessBoard('board', cfg);
 }
 
@@ -87,7 +110,7 @@ var setSolutionArray = function(solution) {
     return solutionTmp.array;
 }
 
-var getNextMoveFromSolution = function() {
+var getNextMoveFromSolution = function(solution) {
     var nextMove = solution.pop();
     return nextMove;
 }
@@ -108,7 +131,7 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
 
      if (movesSolution[0] == playerMove.from && movesSolution[1] == playerMove.to) 
      {
-        var nextMove = getNextMoveFromSolution();
+        var nextMove = getNextMoveFromSolution(solution);
 
         setProgressInfo(true);
 
@@ -136,6 +159,7 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
 
         puzzleResult = false;
         puzzleActive = false;
+        showSolutionButton.show();
         setProgressInfo(false);
         changePlayerRatingInTemplate(ratings.newPlayerRanking);
         changePuzzleRankingInTemplate(ratings.newPuzzleRanking);
@@ -272,6 +296,9 @@ var hideProgressInfo = function () {
     progressInformation.html('');
 }
 
+var disableShowSolutionButton = function () {
+    showSolutionButton.attr('disabled', true);
+}
 
 var saveRatingToDatabase = function (userId, newPlayerRating, puzzleId, newPuzzleRating, puzzleResult) {
     $.LoadingOverlay("show");
@@ -295,16 +322,20 @@ var saveRatingToDatabase = function (userId, newPlayerRating, puzzleId, newPuzzl
 
 var game = new Chess();
 var solution = null;
+var solutionCopy = null;
+var currentPosition = null;
 var playerRankingValue = parseFloat($('#userRanking').html());
 var playerRankingBox = $('#userRanking');
 var puzzleRankingValue = null;
 var puzzleRankingBox = $('#puzzleRanking');
+var showSolutionButton = $('#show_solution_button');
 var puzzleActive = false;
 var userId = $("#userId").val();
 var puzzleId;
 
 statusEl = $('#status');
 progressInformation = $('#progressInformation');
+showSolutionButton.hide();
 
 var cfg = {
   draggable: true,
@@ -333,9 +364,11 @@ $('#next_position').click(function(event) {
   })
   .done(function(response) {
     console.log("success");
+    currentPosition = response.fen;
 
     initNewPosition(response.fen);
     solution = setSolutionArray(response.solution);
+    solutionCopy = setSolutionArray(response.solution);
     puzzleRankingValue = parseFloat(response.puzzleRanking).toFixed(2);
     puzzleActive = true;
     puzzleId = response.puzzleId;

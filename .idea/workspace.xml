@@ -2,16 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="634e3fff-bcb2-4dbc-8303-e20aa8b2dd9b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Resources/views/pages/profile.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/css/custom-profile.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Resources/views/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/app/Resources/views/base.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Resources/views/pages/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/app/Resources/views/pages/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/config/routing.yml" beforeDir="false" afterPath="$PROJECT_DIR$/app/config/routing.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Controller/ProfileController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/ProfileController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Service/StatsService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Service/StatsService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/css/bootstrap.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/css/bootstrap.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/js/bootstrap.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/js/bootstrap.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/css/custom.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/css/custom.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/js/chessboard_script.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/js/chessboard_script.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,48 +18,43 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Resources/views/pages/index.html.twig">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="312">
+              <caret line="26" column="32" selection-start-line="26" selection-start-column="19" selection-end-line="26" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/css/custom.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="528">
+              <caret line="24" column="17" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/Resources/views/pages/profile.html.twig">
+        <entry file="file://$PROJECT_DIR$/web/js/chessboard_script.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="21" column="26" lean-forward="true" selection-start-line="21" selection-start-column="26" selection-end-line="21" selection-end-column="26" />
+            <state relative-caret-position="402">
+              <caret line="101" column="4" selection-start-line="101" selection-start-column="4" selection-end-line="101" selection-end-column="4" />
               <folding>
-                <element signature="e#437#472#0#HTML" expanded="true" />
-                <element signature="e#969#1013#0#HTML" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/StatsService.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="174">
-              <caret line="25" column="59" selection-start-line="25" selection-start-column="59" selection-end-line="25" selection-end-column="59" />
-              <folding>
-                <element signature="e#119#145#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Resources/views/base.html.twig">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="38" column="63" selection-start-line="38" selection-start-column="63" selection-end-line="38" selection-end-column="63" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/ProfileController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="29" column="28" selection-start-line="29" selection-start-column="28" selection-end-line="29" selection-end-column="28" />
-              <folding>
-                <element signature="e#122#157#0#PHP" expanded="true" />
-                <element signature="e#577#602#0#PHP" expanded="true" />
+                <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#i#0;n#h4#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#i#0;n#h4#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#i#0;n#h4#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -90,6 +79,25 @@
       <find>profile</find>
       <find>cog</find>
       <find>bootstrap</find>
+      <find>next posi</find>
+      <find>user erro</find>
+      <find>showsolu</find>
+      <find>show_solution_button</find>
+      <find>show_sol</find>
+      <find>response.</find>
+      <find>makeMove</find>
+      <find>solution</find>
+      <find>initNewPosition</find>
+      <find>makemove</find>
+      <find>updates</find>
+      <find>currentpo</find>
+      <find>chessboard</find>
+      <find>ChessBoard</find>
+      <find>cfg</find>
+      <find>cfg`</find>
+      <find>fen</find>
+      <find>get</find>
+      <find>next_position</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -106,17 +114,18 @@
         <option value="$PROJECT_DIR$/app/config/services.yml" />
         <option value="$PROJECT_DIR$/src/AppBundle/Repository/UserRepository.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/PositionController.php" />
-        <option value="$PROJECT_DIR$/web/js/chessboard_script.js" />
         <option value="$PROJECT_DIR$/app/config/routing.yml" />
         <option value="$PROJECT_DIR$/app/Resources/FOSUserBundle/views/Profile/show.html.twig" />
         <option value="$PROJECT_DIR$/web/css/custom-profile.css" />
         <option value="$PROJECT_DIR$/web/css/bootstrap.css" />
         <option value="$PROJECT_DIR$/web/js/bootstrap.min.js" />
-        <option value="$PROJECT_DIR$/app/Resources/views/pages/index.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Service/StatsService.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/ProfileController.php" />
         <option value="$PROJECT_DIR$/app/Resources/views/base.html.twig" />
         <option value="$PROJECT_DIR$/app/Resources/views/pages/profile.html.twig" />
+        <option value="$PROJECT_DIR$/web/css/custom.css" />
+        <option value="$PROJECT_DIR$/app/Resources/views/pages/index.html.twig" />
+        <option value="$PROJECT_DIR$/web/js/chessboard_script.js" />
       </list>
     </option>
   </component>
@@ -216,6 +225,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -346,6 +356,17 @@
             <path>
               <item name="chessTrainingApp" type="b2602c69:ProjectViewProjectNode" />
               <item name="chessTrainingApp" type="462c0819:PsiDirectoryNode" />
+              <item name="var" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="chessTrainingApp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="chessTrainingApp" type="462c0819:PsiDirectoryNode" />
+              <item name="var" type="462c0819:PsiDirectoryNode" />
+              <item name="cache" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="chessTrainingApp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="chessTrainingApp" type="462c0819:PsiDirectoryNode" />
               <item name="web" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -364,7 +385,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -416,12 +436,13 @@
       <workItem from="1553111538017" duration="4576000" />
       <workItem from="1553117533670" duration="9000" />
       <workItem from="1553943410927" duration="149000" />
-      <workItem from="1553955419499" duration="4623000" />
+      <workItem from="1553955419499" duration="4758000" />
+      <workItem from="1554225248927" duration="6367000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="18788000" />
+    <option name="totallyTimeSpent" value="25290000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -436,13 +457,13 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20042644" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20255864" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.3116883" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3116883" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32900432" />
@@ -551,29 +572,6 @@
           <caret line="6" column="25" selection-start-line="6" selection-start-column="25" selection-end-line="6" selection-end-column="49" />
           <folding>
             <element signature="e#39#73#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/chessboard_script.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="251">
-          <caret line="145" column="49" lean-forward="true" selection-start-line="145" selection-start-column="48" selection-end-line="145" selection-end-column="55" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#h4#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#h4#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#h4#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -740,13 +738,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Resources/views/pages/index.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="522">
-          <caret line="52" column="71" selection-start-line="52" selection-start-column="71" selection-end-line="52" selection-end-column="71" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Resources/views/base.html.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
@@ -772,6 +763,59 @@
           <folding>
             <element signature="e#437#472#0#HTML" expanded="true" />
             <element signature="e#969#1013#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/css/custom.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="24" column="17" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/chessboard-0.3.0.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="299">
+          <caret line="187" selection-start-line="187" selection-end-line="187" selection-end-column="6" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/chess.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="281">
+          <caret line="1694" column="7" selection-start-line="1694" selection-start-column="4" selection-end-line="1694" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/pages/index.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="26" column="32" selection-start-line="26" selection-start-column="19" selection-end-line="26" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/chessboard_script.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="402">
+          <caret line="101" column="4" selection-start-line="101" selection-start-column="4" selection-end-line="101" selection-end-column="4" />
+          <folding>
+            <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#i#0;n#h4#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#i#0;n#h4#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#i#0;n#h4#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -25,6 +25,7 @@
             <span id="status">Status</span>
             <p id="progressInformation" class="card-text"></p>
             <a id="next_position" href="#" class="btn btn-primary">Next position <i class="fas fa-arrow-right"></i></a>
+            <a id="show_solution_button" href="#" class="btn btn-primary">Show solution <i class="fas fa-info-circle"></i></a>
           </div>
         </div>
 
@@ -52,7 +53,7 @@
             <script src="{{asset('js/chess.js')}}"></script>
             <script src="{{asset('js/chessboard-0.3.0.js')}}"></script>
             <script src="{{asset('js/loading_overlay.js')}}"></script>
-            <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
-            <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+            <script src="{{asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+            <script src="{{path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
             <script src="{{asset('js/chessboard_script.js')}}"></script>
 		{% endblock %} 
