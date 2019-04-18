@@ -31,6 +31,16 @@ class Position
      */
     private $puzzleRanking = 1200;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $timesSolved = 0;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $timesFailed= 0;
+
 
     public function getIdPosition()
     {
@@ -70,5 +80,25 @@ class Position
     public function setPuzzleRanking($puzzleRanking)
     {
         $this->puzzleRanking = $puzzleRanking;
+    }
+
+    public function getTimesSolved()
+    {
+        return $this->timesSolved;
+    }
+
+    public function setTimesSolved($timesSolved)
+    {
+        $this->timesSolved = $timesSolved;
+    }
+
+    public function getTimesFailed()
+    {
+        return $this->timesFailed;
+    }
+
+    public function setTimesFailed($timesFailed)
+    {
+        $this->timesFailed = $timesFailed;
     }
 }

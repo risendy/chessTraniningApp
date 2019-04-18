@@ -46,4 +46,24 @@ class PositionRepository extends EntityRepository
         $em->persist($position);
         $em->flush();
     }
+
+    public function updatePositionSolvedPuzzleCount(Position $position)
+    {
+        $em = $this->getEntityManager();
+
+        $position->setTimesSolved($position->getTimesSolved()+1);
+
+        $em->persist($position);
+        $em->flush();
+    }
+
+    public function updatePositionFailedPuzzleCount(Position $position)
+    {
+        $em = $this->getEntityManager();
+
+        $position->setTimesFailed($position->getTimesFailed()+1);
+
+        $em->persist($position);
+        $em->flush();
+    }
 }

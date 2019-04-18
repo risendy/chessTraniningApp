@@ -28,10 +28,16 @@ services:
             ["@doctrine.orm.entity_manager"]
         public: true
 
-    app.stats.service:
-        class: AppBundle\Service\StatsService
-        arguments:
-          ["@doctrine.orm.entity_manager"]
+    AppBundle\Stats\AbstractStatsService:
+        abstract:  true
+        arguments: ['@doctrine.orm.entity_manager']
+
+    app.puzzle.stats.service:
+        class: AppBundle\Stats\UserStatsService
+        public: true
+
+    app.position.stats.service:
+        class: AppBundle\Stats\PositionStatsService
         public: true
 
     # makes classes in src/AppBundle/DataFixtures available to be used as services

@@ -6,21 +6,13 @@
  * Time: 21:02
  */
 
-namespace AppBundle\Service;
+namespace AppBundle\Stats;
 
 
 use AppBundle\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
 
-class StatsService
+class UserStatsService extends AbstractStatsService
 {
-    private $em;
-
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
-    }
-
     public function getSolvedPuzzlesCombined(User $user)
     {
         return $user->getPuzzlesSolved() + $user->getPuzzlesFailed();
@@ -35,7 +27,7 @@ class StatsService
 
     public function incrementPuzzleSolvedCounter(User $user)
     {
-        $user = $this->em->getRepository(User::class)->updateUserPuzzleCount($user);
+        $user = $this->em->getRepository(User::class)->updateUserSolvedPuzzleCount($user);
 
         return $user;
     }

@@ -9,7 +9,7 @@
 namespace AppBundle\Controller;
 
 
-use AppBundle\Service\StatsService;
+use AppBundle\Stats\UserStatsService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -19,7 +19,7 @@ class ProfileController extends Controller
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(StatsService $statsService)
+    public function showAction(UserStatsService $userStatsService)
     {
         $user = $this->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
@@ -28,7 +28,7 @@ class ProfileController extends Controller
 
         return $this->render('pages/profile.html.twig', array(
             'user' => $user,
-            'puzzlesSolved' => $statsService->getSolvedPuzzlesCombined($user),
+            'puzzlesSolved' => $userStatsService->getSolvedPuzzlesCombined($user),
         ));
      }
 }
