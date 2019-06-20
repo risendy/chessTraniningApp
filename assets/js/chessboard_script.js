@@ -1,3 +1,5 @@
+import Chess from './chess.js';
+
 $(document).on( "click", "#show_solution_button", function(event) {
     event.preventDefault();
 
@@ -43,7 +45,7 @@ var onDrop = function(source, target) {
   updateStatus();
 };
 
-// update the board position after the piece snap 
+// update the board position after the piece snap
 // for castling, en passant, pawn promotion
 var onSnapEnd = function() {
   board.position(game.fen());
@@ -104,7 +106,7 @@ var initNewPosition = function(fen) {
 }
 
 var setSolutionArray = function(solution) {
-    solutionTmp = JSON.parse(solution);
+    var solutionTmp = JSON.parse(solution);
     solutionTmp.array.reverse();
 
     return solutionTmp.array;
@@ -129,7 +131,7 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
      var movesSolution = solutionMove.split("-");
      var puzzleResult;
 
-     if (movesSolution[0] == playerMove.from && movesSolution[1] == playerMove.to) 
+     if (movesSolution[0] == playerMove.from && movesSolution[1] == playerMove.to)
      {
         var nextMove = getNextMoveFromSolution(solution);
 
@@ -153,7 +155,7 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
         }
      }
      //user error
-     else 
+     else
      {
         var ratings = calculateNewRankings(false);
 
@@ -175,11 +177,11 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
 }
 
 var setProgressInfo = function(type) {
-    if (type) 
+    if (type)
     {
         progressInformation.html('<h4> <i class="fas fa-check" style="color:green"></i> Good move, keep on :) </h4>');
     }
-    else 
+    else
     {
         progressInformation.html('<h4> <i class="fas fa-times" style="color:red"></i> Bad move :( </h4>');
     }
@@ -256,7 +258,7 @@ var changePlayerRatingInTemplate = function(newRating) {
       var icon = '<i class="fas fa-plus" style="color:green;"></i>';
       var span = '<span class="playerRatingDifference" style="color:green;">'+difference+'</span>';
   }
-  else 
+  else
   {
       var icon = '<i class="fas fa-minus" style="color:red;"></i>';
       var span = '<span class="playerRatingDifference" style="color:red;">'+difference+'</span>';
@@ -275,7 +277,7 @@ var changePuzzleRankingInTemplate = function(newPuzzleRanking) {
       var icon = '<i class="fas fa-plus" style="color:green;"></i>';
       var span = '<span class="puzzleRatingDifference" style="color:green;">'+difference+'</span>';
   }
-  else 
+  else
   {
       var icon = '<i class="fas fa-minus" style="color:red;"></i>';
       var span = '<span style="color:red;">'+difference+'</span>';
@@ -333,8 +335,8 @@ var puzzleActive = false;
 var userId = $("#userId").val();
 var puzzleId;
 
-statusEl = $('#status');
-progressInformation = $('#progressInformation');
+var statusEl = $('#status');
+var progressInformation = $('#progressInformation');
 showSolutionButton.hide();
 
 var cfg = {
@@ -346,7 +348,7 @@ var cfg = {
   onSnapEnd: onSnapEnd
 };
 
-board = ChessBoard('board', cfg);
+var board = ChessBoard('board', cfg);
 
 updateStatus(); 
 

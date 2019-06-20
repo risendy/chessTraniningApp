@@ -1,0 +1,37 @@
+{
+  "entrypoints": {
+    "app": {
+      "js": [
+        "/build/runtime.js",
+        "/build/app.js"
+      ],
+      "css": [
+        "/build/app.css"
+      ]
+    },
+    "jq": {
+      "js": [
+        "/build/runtime.js",
+        "/build/jq.js"
+      ]
+    },
+    "chessLibraries": {
+      "js": [
+        "/build/runtime.js",
+        "/build/chessLibraries.js"
+      ]
+    },
+    "chessCustomLogic": {
+      "js": [
+        "/build/runtime.js",
+        "/build/chessCustomLogic.js"
+      ]
+    },
+    "helpers": {
+      "js": [
+        "/build/runtime.js",
+        "/build/helpers.js"
+      ]
+    }
+  }
+}

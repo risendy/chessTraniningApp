@@ -22,7 +22,8 @@ class AppKernel extends Kernel
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new OldSound\RabbitMqBundle\OldSoundRabbitMqBundle(),
-            new AppBundle\AppBundle()
+            new AppBundle\AppBundle(),
+            new \Symfony\WebpackEncoreBundle\WebpackEncoreBundle()
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

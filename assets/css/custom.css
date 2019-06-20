@@ -1,0 +1,26 @@
+.card_info {
+    margin-top: 15px;
+}
+.menu_right>a {
+    color:white;
+}
+.menu_right>span {
+    color:white;
+    padding-right: 5px;
+}
+.login-form {
+    padding-top: 100px !important;
+}
+.starter-template {
+    padding-top: 100px;
+}
+.progressInformation{
+    margin-top:5px;
+}
+.puzzleRankingBox{
+    margin-bottom: 15px;
+}
+
+#show_solution_button {
+    display: none;
+}

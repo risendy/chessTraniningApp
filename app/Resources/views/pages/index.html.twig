@@ -42,18 +42,17 @@
 {% endblock %}	
 
 		{% block stylesheets %}
-      <link rel="stylesheet" type="text/css" href="{{ asset('css/chessboard-0.3.0.css') }}" />
-			<link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}" />
+            {{ parent() }}
 		{% endblock %}
 
 
 		{% block javascripts %}
             {{ parent() }}
 
-            <script src="{{asset('js/chess.js')}}"></script>
-            <script src="{{asset('js/chessboard-0.3.0.js')}}"></script>
-            <script src="{{asset('js/loading_overlay.js')}}"></script>
             <script src="{{asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
             <script src="{{path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-            <script src="{{asset('js/chessboard_script.js')}}"></script>
-		{% endblock %} 
+
+            {{ encore_entry_script_tags('chessLibraries') }}
+            {{ encore_entry_script_tags('chessCustomLogic') }}
+            {{ encore_entry_script_tags('helpers') }}
+		{% endblock %}

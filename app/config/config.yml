@@ -128,3 +128,5 @@ monolog:
             path: "%kernel.logs_dir%/rabbitMQStats.log"
             level: debug
             channels: ['rabbitMQStats']
+webpack_encore:
+    output_path: "%kernel.root_dir%/../web/build/"
