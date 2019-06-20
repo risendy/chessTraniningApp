@@ -12,6 +12,7 @@ Symfony/js app to solve chess puzzles using chess.js and chessboard.js libraries
 Project is created with:
 * Symfony 3.4
 * FOSUserBundle for user login/registration
+* RabbitMQ for some asynchronous work
 * MySQL database
 * Chess.js
 * Chessboard.js
@@ -36,6 +37,10 @@ php bin/console doctrine:migrations:migrate
 #### Load fixtures
 ```
 php bin/console doctrine:fixtures:load
+```
+#### Setup rabbitMQ
+```
+php bin/console rabbitmq:setup-fabric
 ```
 
 ## Screenshots

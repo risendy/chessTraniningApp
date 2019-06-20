@@ -2,6 +2,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Position;
+use AppBundle\Service\MessageService;
 use AppBundle\Service\StatisticalService;
 use AppBundle\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -14,12 +15,14 @@ class PositionController extends Controller
 	private $positionService;
 	private $userService;
     private $statisticalService;
+    private $messageService;
 
-    public function __construct(PositionService $positionService, UserService $userService, StatisticalService $statisticalService)
+    public function __construct(PositionService $positionService, UserService $userService, StatisticalService $statisticalService, MessageService $messageService)
     {
         $this->positionService = $positionService;
         $this->userService = $userService;
         $this->statisticalService = $statisticalService;
+        $this->messageService = $messageService;
     }
 
     public function ajaxGetPositionAction(Request $request)
@@ -71,7 +74,13 @@ class PositionController extends Controller
             $user = $this->userService->getUserById($userId);
             $this->userService->updateUserRanking($user, $newPlayerRating);
 
-            $this->statisticalService->saveStatistics($user, $position, $puzzleResult);
+            /**
+             * Sending statistical data to rabbitMQ queue
+             */
+            $message = $this->messageService->prepareStatsMessage($userId, $positionId, $puzzleResult);
+            $this->messageService->sendMessageToQueue($message);
+
+            //$this->statisticalService->saveStatistics($user, $position, $puzzleResult);
         }
         catch (\Exception $e)
         {

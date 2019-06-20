@@ -81,3 +81,50 @@ easy_admin:
         # change the following to the namespaces of your own entities
         - AppBundle\Entity\Position
         - AppBundle\Entity\User
+
+old_sound_rabbit_mq:
+    connections:
+        default:
+            host:     'localhost'
+            port:     5672
+            user:     'guest'
+            password: 'guest'
+            vhost:    '/'
+            lazy:     false
+            connection_timeout: 3
+            read_write_timeout: 3
+
+            # requires php-amqplib v2.4.1+ and PHP5.4+
+            keepalive: false
+
+            # requires php-amqplib v2.4.1+
+            heartbeat: 0
+
+            #requires php_sockets.dll
+            use_socket: true # default false
+        another:
+            # A different (unused) connection defined by an URL. One can omit all parts,
+            # except the scheme (amqp:). If both segment in the URL and a key value (see above)
+            # are given the value from the URL takes precedence.
+            # See https://www.rabbitmq.com/uri-spec.html on how to encode values.
+            url: 'amqp://guest:password@localhost:5672/vhost?lazy=1&connection_timeout=6'
+    producers:
+        app_stat:
+            class: AppBundle\Producer\StatProducer
+            connection:       default
+            exchange_options: {name: 'stat_exchange', type: direct}
+    consumers:
+        process_statistic:
+            connection:       default
+            exchange_options: {name: 'stat_exchange', type: direct}
+            queue_options:    {name: 'stat_queue'}
+            callback:         app.statistical.consumer
+
+monolog:
+    channels: ['rabbitMQStats']
+    handlers:
+        rabbitMQStats:
+            type: stream
+            path: "%kernel.logs_dir%/rabbitMQStats.log"
+            level: debug
+            channels: ['rabbitMQStats']

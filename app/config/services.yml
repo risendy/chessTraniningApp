@@ -22,6 +22,9 @@ services:
         # but if a service is unused, it's removed anyway
         exclude: '../../src/AppBundle/{Entity,Repository,Tests}'
 
+    app.user.service:
+        class: AppBundle\Service\UserService
+
     app.position.service:
         class: AppBundle\Service\PositionService
         arguments:
@@ -36,9 +39,18 @@ services:
         class: AppBundle\Stats\UserStatsService
         public: true
 
-    app.position.stats.service:
-        class: AppBundle\Stats\PositionStatsService
+    app.statistical.service:
+        class: AppBundle\Service\StatisticalService
+
+    app.statistical.consumer:
+        class: AppBundle\Consumer\StatisticalConsumer
+        arguments: ['@monolog.logger.rabbitMQStats', '@doctrine.orm.entity_manager', '@app.statistical.service', '@app.message.service', '@app.user.service', '@app.position.service']
         public: true
+
+    app.message.service:
+        class: AppBundle\Service\MessageService
+
+    AppBundle\Producer\StatProducer: '@old_sound_rabbit_mq.app_stat_producer'
 
     # makes classes in src/AppBundle/DataFixtures available to be used as services
     # and have a tag that allows actions to type-hint services
