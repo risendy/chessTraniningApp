@@ -2,6 +2,8 @@
 
 namespace AppBundle\Consumer;
 
+use AppBundle\Entity\Position;
+use AppBundle\Entity\User;
 use AppBundle\Service\MessageService;
 use AppBundle\Service\PositionService;
 use AppBundle\Service\StatisticalService;
@@ -58,7 +60,13 @@ class StatisticalConsumer implements ConsumerInterface
             $user = $this->userService->getUserById($data->userId);
             $position = $this->positionService->getPositionById($data->positionId);
 
-            $this->statisticalService->saveStatistics($user, $position, $data->puzzleResult);
+            if ($user instanceof User && $position instanceof Position) {
+                $this->statisticalService->saveStatistics($user, $position, $data->puzzleResult);
+            }
+            else
+            {
+                throw new \Exception('There was an error during fetching data from database');
+            }
         }
         catch (\Exception $exception) {
 

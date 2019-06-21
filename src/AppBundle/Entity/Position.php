@@ -22,6 +22,11 @@ class Position
     private $fen;
 
     /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $startingColor;
+
+    /**
      * @ORM\Column(type="string", length=200)
      */
     private $solution = null;
@@ -100,5 +105,21 @@ class Position
     public function setTimesFailed($timesFailed)
     {
         $this->timesFailed = $timesFailed;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStartingColor()
+    {
+        return $this->startingColor;
+    }
+
+    /**
+     * @param mixed $startingColor
+     */
+    public function setStartingColor($startingColor): void
+    {
+        $this->startingColor = $startingColor;
     }
 }
