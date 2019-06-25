@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
+
+    <div>
     <input type="hidden" id="userId" value="{{ userId }}">
     <input type="hidden" id="puzzleId" value="">
 
@@ -9,7 +11,14 @@
       <div class="starter-template">
 
         <center>
-            <h4> <div class="puzzleRankingBox"> Puzzle ranking: <span id="puzzleRanking"> ? </span> </div> </h4>
+            <h4> <div class="puzzleRankingBox"> Puzzle ranking:
+                    <span id="puzzleRanking" v-html="puzzleRanking"> ?
+                    </span>
+                    <span id="puzzleRatingDifference" v-html="puzzleRatingDifference">
+
+                    </span>
+                </div>
+            </h4>
         </center>
 
         <center>
@@ -21,11 +30,18 @@
             Informacje
           </div>  
           <div class="card-body">
-            <h4>Your ranking: <span id="userRanking">{{userRanking}}</span></h4>
-            <span id="status">Status</span>
-            <p id="progressInformation" class="card-text"></p>
+            <h4>Your ranking:
+                <span id="userRankingValue" v-html="userRankingValue" data-user-ranking="{{ userRanking }}">
+
+                </span>
+                <span id="playerRatingDifference" v-html="playerRatingDifference">
+
+                </span>
+            </h4>
+            <span id="status" v-html="status">Status</span>
+            <p id="progressInformation" v-html="progressInformation" class="card-text"></p>
             <a id="next_position" href="#" class="btn btn-primary">Next position <i class="fas fa-arrow-right"></i></a>
-            <a id="show_solution_button" href="#" class="btn btn-primary">Show solution <i class="fas fa-info-circle"></i></a>
+            <a id="show_solution_button" href="#" class="btn btn-primary" v-if="showSolution">Show solution <i class="fas fa-info-circle"></i></a>
           </div>
         </div>
 
@@ -33,7 +49,7 @@
 
 
     </div><!-- /.container -->
-
+    </div>
 {% endblock %}
 
 {% block footer %}

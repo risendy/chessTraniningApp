@@ -1,6 +1,62 @@
 import Chess from './chess.js';
 import globalObject from './globals.js';
 
+import Vue from 'vue';
+
+var progressInformationComponent = new Vue({
+    el: '#progressInformation',
+    data: {
+        progressInformation: ''
+    }
+});
+
+var statusComponent = new Vue({
+    el: '#status',
+    data: {
+        status: ''
+    }
+});
+
+var puzzleRatingComponent = new Vue({
+    el: '#puzzleRanking',
+    data: {
+        puzzleRanking: ''
+    }
+});
+
+var playerRatingDifferenceComponent = new Vue({
+    el: '#playerRatingDifference',
+    data: {
+        playerRatingDifference: ''
+    }
+});
+
+var puzzleRatingDifferenceComponent = new Vue({
+    el: '#puzzleRatingDifference',
+    data: {
+        puzzleRatingDifference: ''
+    }
+});
+
+var showSolutionComponent = new Vue({
+    el: '#show_solution_button',
+    data: {
+        showSolution: false
+    }
+});
+
+var userRatingComponent = new Vue({
+    el: '#userRankingValue',
+    data: {
+        userRankingValue: ''
+    },
+    beforeMount: function() {
+        this.userRankingValue = this.$el.attributes['data-user-ranking'].value;
+        globalObject.playerRankingValue = this.userRankingValue;
+    }
+});
+
+
 // do not pick up pieces if the game is over
 // only pick up pieces for the side to move
 var onDragStart = function(source, piece, position, orientation) {
@@ -33,10 +89,9 @@ var onSnapEnd = function() {
 };
 
 var updateStatus = function() {
-
   if (!globalObject.puzzleActive)
   {
-      globalObject.statusEl.html('');
+      statusComponent.status = '';
       return;
   }
 
@@ -47,7 +102,7 @@ var updateStatus = function() {
 
   if (globalObject.game.turn() === 'b') {
     moveColor = 'Black';
-    var moveIcon = '<i class="fas fa-chess-king" style="padding-right:5px;"></i>';
+    moveIcon = '<i class="fas fa-chess-king" style="padding-right:5px;"></i>';
     cfg.orientation='black';
   }
 
@@ -74,7 +129,7 @@ var updateStatus = function() {
     }
   }
 
-  globalObject.statusEl.html('<h4>'+moveIcon+status+'</h4>');
+  statusComponent.status = '<h4>'+moveIcon+status+'</h4>';
 };
 
 var initNewPosition = function(fen) {
@@ -110,7 +165,6 @@ var makeMove = function(from, to) {
 
 var checkPlayerSolution = function(playerMove, solutionMove) {
      var movesSolution = solutionMove.split("-");
-     var puzzleResult;
 
      if (movesSolution[0] == playerMove.from && movesSolution[1] == playerMove.to)
      {
@@ -142,12 +196,10 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
 
         globalObject.puzzleResult = false;
         globalObject.puzzleActive = false;
-        globalObject.showSolutionButton.show();
+        showSolutionComponent.showSolution = true;
         setProgressInfo(false);
         changePlayerRatingInTemplate(ratings.newPlayerRanking);
         changePuzzleRankingInTemplate(ratings.newPuzzleRanking);
-
-        //resetGame();
      }
 
     if (!globalObject.puzzleActive && (globalObject.puzzleRankingValue != ratings.newPuzzleRanking || globalObject.playerRankingValue != ratings.newPlayerRanking))
@@ -158,18 +210,24 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
 }
 
 var setProgressInfo = function(type) {
+    var html;
+
     if (type)
     {
-        globalObject.progressInformation.html('<h4> <i class="fas fa-check" style="color:green"></i> Good move, keep on :) </h4>');
+        html = '<i class="fas fa-check" style="color:green"></i> Good move, keep on :)';
     }
     else
     {
-        globalObject.progressInformation.html('<h4> <i class="fas fa-times" style="color:red"></i> Bad move :( </h4>');
+        html = '<i class="fas fa-times" style="color:red"></i> Bad move :(';
     }
+
+    progressInformationComponent.progressInformation = html;
 }
 
 var setPuzzleCompleted = function() {
-    globalObject.progressInformation.html('<h4> <i class="fas fa-check" style="color:green"></i> Puzzle completed :) </h4>');
+    var html = '<i class="fas fa-check" style="color:green"></i> Puzzle completed :)';
+    progressInformationComponent.progressInformation = html;
+
     globalObject.puzzleActive = false;
 }
 
@@ -177,8 +235,10 @@ var calculateNewRankings = function(result) {
  var k = 32;
  var s1,s2;
  var resultArray = {};
+ var floatUserRating = parseFloat(globalObject.playerRankingValue);
+ var floatPuzzleRating = parseFloat(globalObject.puzzleRankingValue);
 
- if (globalObject.playerRankingValue && globalObject.puzzleRankingValue)
+ if (floatUserRating && floatPuzzleRating)
  {
    if (result)
    {
@@ -191,116 +251,83 @@ var calculateNewRankings = function(result) {
      s2 = 1;
    }
 
-   var r1 = parseFloat(Math.pow(10, globalObject.playerRankingValue/400));
-   var r2 = parseFloat(Math.pow(10, globalObject.puzzleRankingValue/400));
+   var r1 = parseFloat(Math.pow(10, floatUserRating/400));
+   var r2 = parseFloat(Math.pow(10, floatPuzzleRating/400));
 
    var e1 = parseFloat(r1/(r1+r2));
    var e2 = parseFloat(r2/(r1+r2));
 
    var param1Part2 = s1-e1;
-   var newPlayerRanking = globalObject.playerRankingValue+(k*param1Part2);
-   newPlayerRanking = newPlayerRanking.toFixed(2);
+   var newPlayerRanking = floatUserRating+(k*param1Part2);
+
+   newPlayerRanking = parseFloat(newPlayerRanking).toFixed(2);
 
    var param2Part2 = s2-e2;
-   var newPuzzleRanking = globalObject.playerRankingValue+(k*param2Part2);
-   newPuzzleRanking = newPuzzleRanking.toFixed(2);
+   var newPuzzleRanking = floatPuzzleRating+(k*param2Part2);
+   newPuzzleRanking = parseFloat(newPuzzleRanking).toFixed(2);
 
-   resultArray = {newPlayerRanking: newPlayerRanking, newPuzzleRanking: newPuzzleRanking}
+   resultArray = {newPlayerRanking: newPlayerRanking, newPuzzleRanking: newPuzzleRanking};
  }
 
  return resultArray;
 
 }
 
-var resetGame = function(type) {
-  var game = new Chess();
-
-  var cfg = {
-    draggable: true,
-    position: 'start',
-    onDragStart: onDragStart,
-    onDrop: onDrop,
-    onSnapEnd: onSnapEnd
-  };
-
-  board = ChessBoard('board', 'start');
-  globalObject.puzzleActive = false;
-}
-
 var calculateRankingDifference = function (ranking1, ranking2) {
-    return Math.abs(ranking1 - ranking2).toFixed(2);
+    return Math.abs(parseFloat(ranking1) - parseFloat(ranking2)).toFixed(2);
 }
 
 var changePlayerRatingInTemplate = function(newRating) {
-  var difference = calculateRankingDifference(globalObject.playerRankingValue, newRating);
+  var playerRating = globalObject.playerRankingValue;
+  var difference = calculateRankingDifference(playerRating, newRating);
 
-  if (newRating > globalObject.playerRankingValue)
+  if (newRating > playerRating)
   {
       var icon = '<i class="fas fa-plus" style="color:green;"></i>';
-      var span = '<span class="playerRatingDifference" style="color:green;">'+difference+'</span>';
   }
   else
   {
       var icon = '<i class="fas fa-minus" style="color:red;"></i>';
-      var span = '<span class="playerRatingDifference" style="color:red;">'+difference+'</span>';
   }
 
-    var spanOuter = '<span class="playerRatingDifference">('+icon+span+')</span>';
+    playerRatingDifferenceComponent.playerRatingDifference = '('+ icon + difference + ')';
+    userRatingComponent.userRankingValue = newRating;
+    setNewPlayerRating(newRating);
+}
 
-    globalObject.playerRankingBox.html(newRating + spanOuter);
+var setNewPlayerRating = function(newRating) {
+    globalObject.playerRankingValue = newRating;
 }
 
 var changePuzzleRankingInTemplate = function(newPuzzleRanking) {
   var difference = calculateRankingDifference(globalObject.puzzleRankingValue, newPuzzleRanking);
+  var icon;
 
   if (newPuzzleRanking > globalObject.puzzleRankingValue)
   {
-      var icon = '<i class="fas fa-plus" style="color:green;"></i>';
-      var span = '<span class="puzzleRatingDifference" style="color:green;">'+difference+'</span>';
+      icon = '<i class="fas fa-plus" style="color:green;"></i>';
   }
   else
   {
-      var icon = '<i class="fas fa-minus" style="color:red;"></i>';
-      var span = '<span style="color:red;">'+difference+'</span>';
+      icon = '<i class="fas fa-minus" style="color:red;"></i>';
   }
 
-  var spanOuter = '<span class="puzzleRatingDifference">('+icon+span+')</span>';
-
-    globalObject.puzzleRankingBox.html(newPuzzleRanking + spanOuter);
+  puzzleRatingComponent.puzzleRanking = globalObject.puzzleRankingValue;
+  puzzleRatingDifferenceComponent.puzzleRatingDifference = '('+icon+difference+')';
 }
 
 var resetValuesInTemplateAfterChangingPosition = function () {
-    $('.playerRatingDifference').remove();
-    $('.puzzleRatingDifference').remove();
-    $('#puzzleRanking').text('?');
+    playerRatingDifferenceComponent.playerRatingDifference = null;
+    puzzleRatingDifferenceComponent.puzzleRatingDifference= null;
+    puzzleRatingComponent.puzzleRanking = '?';
 }
 
 var hideProgressInfo = function () {
-    globalObject.progressInformation.html('');
+    //globalObject.progressInformation.html('');
 }
 
 var disableShowSolutionButton = function () {
-    globalObject.showSolutionButton.attr('disabled', true);
-}
-
-var saveRatingToDatabase = function (userId, newPlayerRating, puzzleId, newPuzzleRating, puzzleResult) {
-    $.LoadingOverlay("show");
-
-    $.ajax({
-        url: Routing.generate('ajax_set_rating'),
-        type: 'POST',
-        dataType: 'json',
-        data: {userId:userId, newPlayerRating: newPlayerRating, puzzleId:puzzleId, newPuzzleRating:newPuzzleRating, puzzleResult:puzzleResult}
-    })
-        .done(function(response) {
-            console.log("success");
-        })
-        .fail(function() {
-            console.log("error");
-        })
-        .always(function() {
-            $.LoadingOverlay("hide");
-        });
+    showSolutionComponent.showSolution = false;
 }
 
 updateStatus();
@@ -316,6 +343,28 @@ var cfg = {
 
 var board = ChessBoard('board', cfg);
 
+//TODO convert to axios
+var saveRatingToDatabase = function (userId, newPlayerRating, puzzleId, newPuzzleRating, puzzleResult) {
+    $.LoadingOverlay("show");
+
+    $.ajax({
+        url: Routing.generate('ajax_set_rating'),
+        type: 'POST',
+        dataType: 'json',
+        data: {userId:userId, newPlayerRating: newPlayerRating, puzzleId:puzzleId, newPuzzleRating:newPuzzleRating, puzzleResult:puzzleResult}
+    })
+        .done(function(response) {
+            //console.log("success");
+        })
+        .fail(function() {
+            //console.log("error");
+        })
+        .always(function() {
+            $.LoadingOverlay("hide");
+        });
+}
+
+//TODO convert to axios
 $(document).on( "click", "#show_solution_button", function(event) {
     event.preventDefault();
 
@@ -333,12 +382,14 @@ $(document).on( "click", "#show_solution_button", function(event) {
         cfg.position = newFen;
         cfg.draggable = false;
         board = ChessBoard('board', cfg);
-        globalObject.showSolutionButton.hide();
+        showSolutionComponent.showSolution = false;
     }
 });
 
+//TODO convert to axios
 $('#next_position').click(function(event) {
   event.preventDefault();
+  progressInformationComponent.progressInformation='';
 
   $.LoadingOverlay("show");  
 
@@ -350,7 +401,6 @@ $('#next_position').click(function(event) {
     dataType: 'json'
   })
   .done(function(response) {
-    console.log("success");
     globalObject.currentPosition = response.fen;
 
     initNewPosition(response.fen);
@@ -364,7 +414,7 @@ $('#next_position').click(function(event) {
     updateStatus();
   })
   .fail(function() {
-    console.log("error");
+
   })
   .always(function() {
     $.LoadingOverlay("hide");
