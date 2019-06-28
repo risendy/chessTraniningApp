@@ -1,9 +1,0 @@
-{
-  "build/app.css": "/build/app.css",
-  "build/app.js": "/build/app.js",
-  "build/chessCustomLogic.js": "/build/chessCustomLogic.js",
-  "build/chessLibraries.js": "/build/chessLibraries.js",
-  "build/helpers.js": "/build/helpers.js",
-  "build/jq.js": "/build/jq.js",
-  "build/runtime.js": "/build/runtime.js"
-}

@@ -31,6 +31,14 @@ Project is created with:
 ```
 composer install
 ```
+#### Install front-end dependencies
+```
+yarn install
+```
+#### Compile assets
+```
+yarn encore dev
+```
 #### Run migrations
 ```
 php bin/console doctrine:migrations:migrate

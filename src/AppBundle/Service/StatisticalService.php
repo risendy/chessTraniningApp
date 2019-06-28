@@ -13,6 +13,7 @@ use AppBundle\Entity\Position;
 use AppBundle\Entity\User;
 use AppBundle\Stats\PositionStatsService;
 use AppBundle\Stats\UserStatsService;
+use AppBundle\Stats\UserHistoryRankingService;
 
 class StatisticalService
 {
@@ -24,17 +25,20 @@ class StatisticalService
      * @var PositionStatsService
      */
     private $positionStatsService;
+    private $userHistoryRankingService;
 
-    public function __construct(UserStatsService $userStatsService, PositionStatsService $positionStatsService)
+    public function __construct(UserStatsService $userStatsService, PositionStatsService $positionStatsService, UserHistoryRankingService $userHistoryRankingService )
     {
         $this->userStatsService = $userStatsService;
         $this->positionStatsService = $positionStatsService;
+        $this->userHistoryRankingService = $userHistoryRankingService;
     }
 
     public function saveStatistics(User $user, Position $position, $puzzleResult)
     {
         $this->saveUserStatisticalData($user, $puzzleResult);
         $this->savePositionStatisticalData($position, $puzzleResult);
+        $this->userHistoryRankingService->addNewHistoryRecord($position, $user, $puzzleResult);
     }
 
     public function saveUserStatisticalData(User $user, $puzzleResult)
