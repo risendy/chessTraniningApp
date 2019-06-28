@@ -13,9 +13,10 @@ Project is created with:
 * Symfony 3.4
 * FOSUserBundle for user login/registration
 * RabbitMQ for some asynchronous work
-* MySQL database
+* Vue.js
 * Chess.js
 * Chessboard.js
+* MySQL database
 * EasyAdmin-bundle
 
 ## Features
