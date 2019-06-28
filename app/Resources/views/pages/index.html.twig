@@ -2,21 +2,17 @@
 
 {% block content %}
 
-    <div>
+    <div id="app">
     <input type="hidden" id="userId" value="{{ userId }}">
     <input type="hidden" id="puzzleId" value="">
 
     <div class="container">
 
       <div class="starter-template">
-
         <center>
             <h4> <div class="puzzleRankingBox"> Puzzle ranking:
-                    <span id="puzzleRanking" v-html="puzzleRanking"> ?
-                    </span>
-                    <span id="puzzleRatingDifference" v-html="puzzleRatingDifference">
-
-                    </span>
+                   <puzzle-ranking-component></puzzle-ranking-component>
+                   <puzzle-ranking-difference-component></puzzle-ranking-difference-component>
                 </div>
             </h4>
         </center>
@@ -31,17 +27,13 @@
           </div>  
           <div class="card-body">
             <h4>Your ranking:
-                <span id="userRankingValue" v-html="userRankingValue" data-user-ranking="{{ userRanking }}">
-
-                </span>
-                <span id="playerRatingDifference" v-html="playerRatingDifference">
-
-                </span>
+                <player-ranking-component data-user-ranking="{{ userRanking }}"></player-ranking-component>
+                <player-ranking-difference-component></player-ranking-difference-component>
             </h4>
-            <span id="status" v-html="status">Status</span>
-            <p id="progressInformation" v-html="progressInformation" class="card-text"></p>
+              <status-component>${statusValue}</status-component>
+              <progress-information-component></progress-information-component>
             <a id="next_position" href="#" class="btn btn-primary">Next position <i class="fas fa-arrow-right"></i></a>
-            <a id="show_solution_button" href="#" class="btn btn-primary" v-if="showSolution">Show solution <i class="fas fa-info-circle"></i></a>
+            <show-solution-component></show-solution-component>
           </div>
         </div>
 

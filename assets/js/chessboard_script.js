@@ -2,63 +2,34 @@ import Chess from './chess.js';
 import globalObject from './globals.js';
 
 import Vue from 'vue';
+import progressInformationComponent from './components/progressInformationComponent.js';
+import puzzleRankingComponent from './components/puzzleRankingComponent.js';
+import playerRankingDifference from './components/playerRankingDifferenceComponent.js';
+import puzzleRankingDifferenceComponent from './components/puzzleRankingDifferenceComponent.js';
+import showSolutionComponent from './components/showSolutionComponent.js';
+import playerRankingComponent from './components/playerRankingComponent.js';
+import statusComponent from './components/statusComponent.js';
 
-var progressInformationComponent = new Vue({
-    el: '#progressInformation',
+var appMainComponent = new Vue({
+    delimiters: ['${', '}'],
+    el: '#app',
     data: {
-        progressInformation: ''
-    }
-});
-
-var statusComponent = new Vue({
-    el: '#status',
-    data: {
-        status: ''
-    }
-});
-
-var puzzleRatingComponent = new Vue({
-    el: '#puzzleRanking',
-    data: {
-        puzzleRanking: ''
-    }
-});
-
-var playerRatingDifferenceComponent = new Vue({
-    el: '#playerRatingDifference',
-    data: {
-        playerRatingDifference: ''
-    }
-});
-
-var puzzleRatingDifferenceComponent = new Vue({
-    el: '#puzzleRatingDifference',
-    data: {
-        puzzleRatingDifference: ''
-    }
-});
-
-var showSolutionComponent = new Vue({
-    el: '#show_solution_button',
-    data: {
-        showSolution: false
-    }
-});
-
-var userRatingComponent = new Vue({
-    el: '#userRankingValue',
-    data: {
-        userRankingValue: ''
+        statusValue: 0
     },
-    beforeMount: function() {
-        this.userRankingValue = this.$el.attributes['data-user-ranking'].value;
-        globalObject.playerRankingValue = this.userRankingValue;
+    components: {
+        'progress-information-component': progressInformationComponent,
+        'puzzle-ranking-component': puzzleRankingComponent,
+        'player-ranking-difference-component': playerRankingDifference,
+        'puzzle-ranking-difference-component': puzzleRankingDifferenceComponent,
+        'show-solution-component': showSolutionComponent,
+        'player-ranking-component': playerRankingComponent,
+        'status-component': statusComponent
     }
 });
-
 
 // do not pick up pieces if the game is over
 // only pick up pieces for the side to move
+
 var onDragStart = function(source, piece, position, orientation) {
   if (globalObject.game.game_over() === true ||
       (globalObject.game.turn() === 'w' && piece.search(/^b/) !== -1) ||
@@ -91,7 +62,6 @@ var onSnapEnd = function() {
 var updateStatus = function() {
   if (!globalObject.puzzleActive)
   {
-      statusComponent.status = '';
       return;
   }
 
@@ -129,7 +99,7 @@ var updateStatus = function() {
     }
   }
 
-  statusComponent.status = '<h4>'+moveIcon+status+'</h4>';
+  globalObject.statusValue = status;
 };
 
 var initNewPosition = function(fen) {
@@ -196,16 +166,21 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
 
         globalObject.puzzleResult = false;
         globalObject.puzzleActive = false;
-        showSolutionComponent.showSolution = true;
+        globalObject.showSolutionFlag = true;
         setProgressInfo(false);
         changePlayerRatingInTemplate(ratings.newPlayerRanking);
         changePuzzleRankingInTemplate(ratings.newPuzzleRanking);
      }
 
-    if (!globalObject.puzzleActive && (globalObject.puzzleRankingValue != ratings.newPuzzleRanking || globalObject.playerRankingValue != ratings.newPlayerRanking))
+     if (!globalObject.puzzleActive)
+     {
+         saveRatingToDatabase(globalObject.userId, ratings.newPlayerRanking, globalObject.puzzleId, ratings.newPuzzleRanking, globalObject.puzzleResult);
+     }
+
+    /*if (!globalObject.puzzleActive && (globalObject.puzzleRankingValue != ratings.newPuzzleRanking || globalObject.playerRankingValue != ratings.newPlayerRanking))
     {
         saveRatingToDatabase(globalObject.userId, ratings.newPlayerRanking, globalObject.puzzleId, ratings.newPuzzleRanking, globalObject.puzzleResult);
-    }
+    }*/
 
 }
 
@@ -221,12 +196,12 @@ var setProgressInfo = function(type) {
         html = '<i class="fas fa-times" style="color:red"></i> Bad move :(';
     }
 
-    progressInformationComponent.progressInformation = html;
+    globalObject.progressInformationValue=html;
 }
 
 var setPuzzleCompleted = function() {
     var html = '<i class="fas fa-check" style="color:green"></i> Puzzle completed :)';
-    progressInformationComponent.progressInformation = html;
+    globalObject.progressInformationValue=html;
 
     globalObject.puzzleActive = false;
 }
@@ -235,10 +210,10 @@ var calculateNewRankings = function(result) {
  var k = 32;
  var s1,s2;
  var resultArray = {};
- var floatUserRating = parseFloat(globalObject.playerRankingValue);
- var floatPuzzleRating = parseFloat(globalObject.puzzleRankingValue);
+ var floatUserRanking = parseFloat(globalObject.playerRankingValue);
+ var floatPuzzleRanking = parseFloat(globalObject.puzzleRankingValue);
 
- if (floatUserRating && floatPuzzleRating)
+ if (floatUserRanking && floatPuzzleRanking)
  {
    if (result)
    {
@@ -251,20 +226,20 @@ var calculateNewRankings = function(result) {
      s2 = 1;
    }
 
-   var r1 = parseFloat(Math.pow(10, floatUserRating/400));
-   var r2 = parseFloat(Math.pow(10, floatPuzzleRating/400));
+   var r1 = parseFloat(Math.pow(10, floatUserRanking/400));
+   var r2 = parseFloat(Math.pow(10, floatPuzzleRanking/400));
 
    var e1 = parseFloat(r1/(r1+r2));
    var e2 = parseFloat(r2/(r1+r2));
 
    var param1Part2 = s1-e1;
-   var newPlayerRanking = floatUserRating+(k*param1Part2);
+   var newPlayerRanking = floatUserRanking+(k*param1Part2);
 
-   newPlayerRanking = parseFloat(newPlayerRanking).toFixed(2);
+   newPlayerRanking = newPlayerRanking.toFixed(2);
 
    var param2Part2 = s2-e2;
-   var newPuzzleRanking = floatPuzzleRating+(k*param2Part2);
-   newPuzzleRanking = parseFloat(newPuzzleRanking).toFixed(2);
+   var newPuzzleRanking = floatPuzzleRanking+(k*param2Part2);
+   newPuzzleRanking = newPuzzleRanking.toFixed(2);
 
    resultArray = {newPlayerRanking: newPlayerRanking, newPuzzleRanking: newPuzzleRanking};
  }
@@ -290,8 +265,8 @@ var changePlayerRatingInTemplate = function(newRating) {
       var icon = '<i class="fas fa-minus" style="color:red;"></i>';
   }
 
-    playerRatingDifferenceComponent.playerRatingDifference = '('+ icon + difference + ')';
-    userRatingComponent.userRankingValue = newRating;
+    globalObject.playerRankingDifferenceValue = '('+ icon + difference + ')';
+    globalObject.playerRankingValue = newRating;
     setNewPlayerRating(newRating);
 }
 
@@ -312,14 +287,14 @@ var changePuzzleRankingInTemplate = function(newPuzzleRanking) {
       icon = '<i class="fas fa-minus" style="color:red;"></i>';
   }
 
-  puzzleRatingComponent.puzzleRanking = globalObject.puzzleRankingValue;
-  puzzleRatingDifferenceComponent.puzzleRatingDifference = '('+icon+difference+')';
+  globalObject.puzzleRankingValue = newPuzzleRanking;
+  globalObject.puzzleRankingDifferenceValue = '('+icon+difference+')';
 }
 
 var resetValuesInTemplateAfterChangingPosition = function () {
-    playerRatingDifferenceComponent.playerRatingDifference = null;
-    puzzleRatingDifferenceComponent.puzzleRatingDifference= null;
-    puzzleRatingComponent.puzzleRanking = '?';
+    globalObject.playerRankingDifferenceValue = null;
+    globalObject.puzzleRankingDifferenceValue= null;
+    //globalObject.puzzleRankingValue = '?';
 }
 
 var hideProgressInfo = function () {
@@ -327,7 +302,7 @@ var hideProgressInfo = function () {
 }
 
 var disableShowSolutionButton = function () {
-    showSolutionComponent.showSolution = false;
+    globalObject.showSolutionFlag = false;
 }
 
 updateStatus();
@@ -382,14 +357,14 @@ $(document).on( "click", "#show_solution_button", function(event) {
         cfg.position = newFen;
         cfg.draggable = false;
         board = ChessBoard('board', cfg);
-        showSolutionComponent.showSolution = false;
+        globalObject.showSolutionFlag = false;
     }
 });
 
 //TODO convert to axios
 $('#next_position').click(function(event) {
   event.preventDefault();
-  progressInformationComponent.progressInformation='';
+  globalObject.progressInformationValue='';
 
   $.LoadingOverlay("show");  
 
