@@ -8,9 +8,9 @@ use AppBundle\Entity\User;
 
 class UserHistoryRankingService extends AbstractStatsService
 {
-    public function addNewHistoryRecord(Position $position, User $user, $puzzleResult)
+    public function addNewHistoryRecord($data, User $user, Position $position)
     {
-        $user = $this->em->getRepository(UserRankingHistory::class)->addNewHistoryRecord($position, $user, $puzzleResult);
+        $user = $this->em->getRepository(UserRankingHistory::class)->addNewHistoryRecord($data, $user, $position);
 
         return $user;
     }

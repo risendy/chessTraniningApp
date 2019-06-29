@@ -14,6 +14,7 @@ use AppBundle\Entity\User;
 use AppBundle\Stats\PositionStatsService;
 use AppBundle\Stats\UserStatsService;
 use AppBundle\Stats\UserHistoryRankingService;
+use AppBundle\Stats\PositionHistoryRankingService;
 
 class StatisticalService
 {
@@ -26,19 +27,22 @@ class StatisticalService
      */
     private $positionStatsService;
     private $userHistoryRankingService;
+    private $positionHistoryRankingService;
 
-    public function __construct(UserStatsService $userStatsService, PositionStatsService $positionStatsService, UserHistoryRankingService $userHistoryRankingService )
+    public function __construct(UserStatsService $userStatsService, PositionStatsService $positionStatsService, UserHistoryRankingService $userHistoryRankingService,  PositionHistoryRankingService $positionHistoryRankingService)
     {
         $this->userStatsService = $userStatsService;
         $this->positionStatsService = $positionStatsService;
         $this->userHistoryRankingService = $userHistoryRankingService;
+        $this->positionHistoryRankingService = $positionHistoryRankingService;
     }
 
-    public function saveStatistics(User $user, Position $position, $puzzleResult)
+    public function saveStatistics($data, $user, $position)
     {
-        $this->saveUserStatisticalData($user, $puzzleResult);
-        $this->savePositionStatisticalData($position, $puzzleResult);
-        $this->userHistoryRankingService->addNewHistoryRecord($position, $user, $puzzleResult);
+        $this->saveUserStatisticalData($user, $data->puzzleResult);
+        $this->savePositionStatisticalData($position, $data->puzzleResult);
+        $this->userHistoryRankingService->addNewHistoryRecord($data, $user, $position);
+        $this->positionHistoryRankingService->addNewHistoryRecord($data, $user, $position);
     }
 
     public function saveUserStatisticalData(User $user, $puzzleResult)

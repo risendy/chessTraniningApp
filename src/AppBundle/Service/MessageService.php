@@ -5,14 +5,18 @@ namespace AppBundle\Service;
 
 
 use AppBundle\Producer\StatProducer;
+use AppBundle\DTO\StatisticalDTO;
+use AppBundle\Serializer\SerializerHelper;
 
 class MessageService
 {
     private $producer;
+    private $serializer;
 
-    public function __construct(StatProducer $producer)
+    public function __construct(StatProducer $producer, SerializerHelper $serializer)
     {
         $this->producer = $producer;
+        $this->serializer = $serializer->getSerializer();
     }
 
     public function prepareStatsMessage($userId, $positionId, $puzzleResult)
@@ -24,6 +28,15 @@ class MessageService
         ];
 
         return json_encode($message);
+    }
+
+    public function prepareStatsDtoMessage($array)
+    {
+        $message = new StatisticalDTO(
+            $array
+        );
+
+        return $this->serializer->serialize($message, 'json');
     }
 
     public function sendMessageToQueue($message)

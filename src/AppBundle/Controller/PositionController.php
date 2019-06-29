@@ -77,7 +77,16 @@ class PositionController extends Controller
             /**
              * Sending statistical data to rabbitMQ queue
              */
-            $message = $this->messageService->prepareStatsMessage($userId, $positionId, $puzzleResult);
+            $array = [
+                "userId" => $userId,
+                "userRanking" => $user->getRanking(),
+                "positionId" => $userId,
+                "positionRanking" => $position->getPuzzleRanking(),
+                "puzzleResult" => $puzzleResult
+            ];
+
+            $message = $this->messageService->prepareStatsDtoMessage($array);
+
             $this->messageService->sendMessageToQueue($message);
 
             //$this->statisticalService->saveStatistics($user, $position, $puzzleResult);

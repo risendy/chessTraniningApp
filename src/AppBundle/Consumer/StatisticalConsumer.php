@@ -8,6 +8,7 @@ use AppBundle\Service\MessageService;
 use AppBundle\Service\PositionService;
 use AppBundle\Service\StatisticalService;
 use AppBundle\Service\UserService;
+use AppBundle\DTO\StatisticalDTO;
 use Doctrine\ORM\EntityManagerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -61,7 +62,7 @@ class StatisticalConsumer implements ConsumerInterface
             $position = $this->positionService->getPositionById($data->positionId);
 
             if ($user instanceof User && $position instanceof Position) {
-                $this->statisticalService->saveStatistics($user, $position, $data->puzzleResult);
+                $this->statisticalService->saveStatistics($data, $user, $position);
             }
             else
             {
