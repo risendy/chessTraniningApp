@@ -80,7 +80,7 @@ class PositionController extends Controller
             $array = [
                 "userId" => $userId,
                 "userRanking" => $user->getRanking(),
-                "positionId" => $userId,
+                "positionId" => $positionId,
                 "positionRanking" => $position->getPuzzleRanking(),
                 "puzzleResult" => $puzzleResult
             ];
