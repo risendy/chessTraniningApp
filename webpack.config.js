@@ -22,6 +22,7 @@ Encore
     .addEntry('chessLibraries', './assets/js/chessLibraries.js')
     .addEntry('chessCustomLogic', './assets/js/chessCustomLogic.js')
     .addEntry('helpers', './assets/js/helpers.js')
+    .addEntry('profile', './assets/js/profile.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 
@@ -35,7 +36,6 @@ Encore
     .enableVersioning(Encore.isProduction())
     .autoProvidejQuery()
     .enableVueLoader()
-
 // uncomment if you use TypeScript
 //.enableTypeScriptLoader()
 

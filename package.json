@@ -5,5 +5,15 @@
     "vue": "^2.6.10",
     "vue-loader": "15.7.0",
     "vue-template-compiler": "^2.6.10"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "babel-core": "^6.0.20",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "babel-polyfill": "^6.26.0",
+    "chart.js": "^2.8.0",
+    "vue-chartjs": "^3.4.2"
   }
 }
