@@ -11,12 +11,13 @@ export default {
     },
     options: {
       type: Object,
-      maintainAspectRatio: false,
+      maintainAspectRatio: true,
+      responsive: false,
       default: null
     }
   },
   mounted () {
-    this.renderChart(this.chartdata, this.options)
+    this.renderChart(this.chartdata, this.options);
   }
 }
 </script>

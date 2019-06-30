@@ -1,5 +1,5 @@
 <template>
-  <div class="container" :width="300" :height="300">
+  <div class="container">
     <line-chart
       v-if="loaded"
       :chartdata="chartdata"
@@ -25,7 +25,8 @@ export default {
     },
     options: {
       type: Object,
-      maintainAspectRatio: false,
+      maintainAspectRatio: true,
+      responsive: false,
       default: null
     }
   }),

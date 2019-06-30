@@ -1,5 +1,8 @@
 import Vue from 'vue';
 import LineChartContainer from './components/ChartContainer.vue'
+import BootstrapVue from 'bootstrap-vue'
+
+Vue.use(BootstrapVue);
 
 var appMainComponent = new Vue({
     delimiters: ['${', '}'],
