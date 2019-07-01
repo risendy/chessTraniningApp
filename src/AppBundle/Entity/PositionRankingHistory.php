@@ -49,6 +49,27 @@ class PositionRankingHistory
      */
     private $position;
 
+    /**
+     * @var Datetime
+     *
+     * @ORM\Column(name="modified_at", type="datetime", nullable=true)
+     */
+    private $modified = null;
+
+    /**
+     * @var Datetime
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=true)
+     */
+    private $created = null;
+
+    public function __construct()
+    {
+        $this->setCreated(new \DateTime());
+        if ($this->getModified() == null) {
+            $this->setModified(new \DateTime());
+        }
+    }
 
     /**
      * Get id.
@@ -121,4 +142,20 @@ class PositionRankingHistory
 
         return $this;
     }
+
+    private function setCreated(\DateTime $param)
+    {
+        $this->created = $param;
+    }
+
+    private function setModified(\DateTime $param)
+    {
+        $this->modified = $param;
+    }
+
+    private function getModified()
+    {
+        return $this->modified;
+    }
+
 }
