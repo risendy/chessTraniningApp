@@ -1,5 +1,5 @@
 <?php
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\Position;
 use AppBundle\Service\MessageService;
@@ -25,7 +25,7 @@ class PositionController extends Controller
         $this->messageService = $messageService;
     }
 
-    public function ajaxGetPositionAction(Request $request)
+    public function getRandomPositionAction(Request $request)
     {
         /**
          * @var Position
@@ -49,7 +49,7 @@ class PositionController extends Controller
             200);
     }
 
-    public function ajaxSaveNewRatingAction(Request $request)
+    public function setPositionAction(Request $request)
     {
         $positionId = $request->get('puzzleId');
         $userId = $request->get('userId');

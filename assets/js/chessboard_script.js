@@ -323,7 +323,7 @@ var saveRatingToDatabase = function (userId, newPlayerRating, puzzleId, newPuzzl
     $.LoadingOverlay("show");
 
     $.ajax({
-        url: Routing.generate('ajax_set_rating'),
+        url: Routing.generate('api_set_position'),
         type: 'POST',
         dataType: 'json',
         data: {userId:userId, newPlayerRating: newPlayerRating, puzzleId:puzzleId, newPuzzleRating:newPuzzleRating, puzzleResult:puzzleResult}
@@ -371,7 +371,7 @@ $('#next_position').click(function(event) {
   hideProgressInfo();
 
   $.ajax({
-    url: Routing.generate('ajax_get_position_for_template'),
+    url: Routing.generate('api_get_random_position'),
     type: 'POST',
     dataType: 'json'
   })

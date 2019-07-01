@@ -22,16 +22,16 @@ profile:
     path:     /profile
     defaults: { _controller: AppBundle:Profile:show }
 
-ajax_get_position_for_template:
-    path: /ajax/get/position
+api_get_random_position:
+    path: api/get/position
     defaults:
-        _controller: AppBundle:Position:ajaxGetPosition
+        _controller: AppBundle:Api\Position:getRandomPosition
     options:
         expose: true
 
-ajax_set_rating:
-    path: /ajax/set/rating
+api_set_position:
+    path: api/set/position
     defaults:
-        _controller: AppBundle:Position:ajaxSaveNewRating
+        _controller: AppBundle:Api\Position:setPosition
     options:
         expose: true
