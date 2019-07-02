@@ -174,7 +174,9 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
 
      if (!globalObject.puzzleActive)
      {
-         saveRatingToDatabase(globalObject.userId, ratings.newPlayerRanking, globalObject.puzzleId, ratings.newPuzzleRanking, globalObject.puzzleResult);
+         savePuzzleRating(globalObject.puzzleId, ratings.newPuzzleRanking);
+         saveUserRanking(globalObject.userId, ratings.newPlayerRanking);
+         saveStatistics(globalObject.userId, ratings.newPlayerRanking, globalObject.puzzleId, ratings.newPuzzleRanking, globalObject.puzzleResult);
      }
 
     /*if (!globalObject.puzzleActive && (globalObject.puzzleRankingValue != ratings.newPuzzleRanking || globalObject.playerRankingValue != ratings.newPlayerRanking))
@@ -319,11 +321,51 @@ var cfg = {
 var board = ChessBoard('board', cfg);
 
 //TODO convert to axios
-var saveRatingToDatabase = function (userId, newPlayerRating, puzzleId, newPuzzleRating, puzzleResult) {
+var savePuzzleRating = function (puzzleId, newPuzzleRating) {
     $.LoadingOverlay("show");
 
     $.ajax({
         url: Routing.generate('api_set_position'),
+        type: 'POST',
+        dataType: 'json',
+        data: {puzzleId:puzzleId, newPuzzleRating:newPuzzleRating}
+    })
+        .done(function(response) {
+            //console.log("success");
+        })
+        .fail(function() {
+            //console.log("error");
+        })
+        .always(function() {
+            $.LoadingOverlay("hide");
+        });
+};
+
+var saveUserRanking = function (userId, newPlayerRating) {
+    $.LoadingOverlay("show");
+
+    $.ajax({
+        url: Routing.generate('api_put_user'),
+        type: 'PUT',
+        dataType: 'json',
+        data: {userId:userId, newPlayerRating: newPlayerRating}
+    })
+        .done(function(response) {
+            //console.log("success");
+        })
+        .fail(function() {
+            //console.log("error");
+        })
+        .always(function() {
+            $.LoadingOverlay("hide");
+        });
+};
+
+var saveStatistics = function (userId, newPlayerRating, puzzleId, newPuzzleRating, puzzleResult) {
+    $.LoadingOverlay("show");
+
+    $.ajax({
+        url: Routing.generate('api_send_statistic_to_queue'),
         type: 'POST',
         dataType: 'json',
         data: {userId:userId, newPlayerRating: newPlayerRating, puzzleId:puzzleId, newPuzzleRating:newPuzzleRating, puzzleResult:puzzleResult}
@@ -337,7 +379,7 @@ var saveRatingToDatabase = function (userId, newPlayerRating, puzzleId, newPuzzl
         .always(function() {
             $.LoadingOverlay("hide");
         });
-}
+};
 
 //TODO convert to axios
 $(document).on( "click", "#show_solution_button", function(event) {
@@ -372,7 +414,7 @@ $('#next_position').click(function(event) {
 
   $.ajax({
     url: Routing.generate('api_get_random_position'),
-    type: 'POST',
+    type: 'GET',
     dataType: 'json'
   })
   .done(function(response) {

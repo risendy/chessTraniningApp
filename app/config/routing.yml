@@ -16,22 +16,34 @@ fos_js_routing:
 # app/config/routing.yml
 homepage:
     path:     /
-    defaults: { _controller: AppBundle:Default:index }
+    defaults: { _controller: AppBundle:Web\Default:index }
 
 profile:
     path:     /profile
-    defaults: { _controller: AppBundle:Profile:show }
+    defaults: { _controller: AppBundle:Web\Profile:show }
 
-api_get_random_position:
-    path: api/get/position
-    defaults:
-        _controller: AppBundle:Api\Position:getRandomPosition
-    options:
-        expose: true
+#api_get_random_position:
+#    path: api/get/random-position
+#    defaults:
+#        _controller: AppBundle:Api\Position:getRandomPosition
+#    options:
+#        expose: true
 
-api_set_position:
-    path: api/set/position
-    defaults:
-        _controller: AppBundle:Api\Position:setPosition
-    options:
-        expose: true
+rest_controller:
+    resource: ../../src/AppBundle/Controller/Api/
+    type: annotation
+    prefix: /api
+
+#api_set_position:
+#    path: api/set/position
+#    defaults:
+#        _controller: AppBundle:Api\Position:setPosition
+#    options:
+#        expose: true
+#
+#api_get_user_history:
+#    path: api/get/user-history/{id}
+#    defaults:
+#        _controller: AppBundle:Api\UserHistory:getUserHistory
+#    options:
+#        expose: true

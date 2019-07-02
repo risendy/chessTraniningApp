@@ -22,6 +22,8 @@ class UserRepository extends EntityRepository
 
         $em->persist($user);
         $em->flush();
+
+        return $user;
     }
 
     public function updateUserSolvedPuzzleCount(User $user)

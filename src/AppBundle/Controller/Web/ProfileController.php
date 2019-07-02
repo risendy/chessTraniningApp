@@ -6,7 +6,7 @@
  * Time: 22:03
  */
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Web;
 
 
 use AppBundle\Stats\UserStatsService;

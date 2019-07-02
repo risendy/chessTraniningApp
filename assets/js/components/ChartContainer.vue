@@ -33,7 +33,7 @@ export default {
   async mounted () {
     this.loaded = false
     try {
-      const { userlist } = await fetch('https://www.mocky.io/v2/5a945fa435000074009b0e78')
+      const { userlist } = await fetch(Routing.generate('api_get_user_history', {id: 3} ));
       this.chartdata = {
       labels: ['January', 'February'],
       datasets: [

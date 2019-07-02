@@ -29,4 +29,9 @@ class UserRankingHistoryRepository extends \Doctrine\ORM\EntityRepository
                 $em->persist($historyRecord);
                 $em->flush();
 	}
+
+    public function getUserRankingHistory($idUser)
+    {
+       return $this->findByUser($idUser);
+    }
 }

@@ -5,104 +5,74 @@ use AppBundle\Entity\Position;
 use AppBundle\Service\MessageService;
 use AppBundle\Service\StatisticalService;
 use AppBundle\Service\UserService;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
+use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Service\PositionService;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\HttpFoundation\Response;
 
-class PositionController extends Controller
+class PositionController extends AbstractFOSRestController
 {
 	private $positionService;
-	private $userService;
-    private $statisticalService;
-    private $messageService;
 
-    public function __construct(PositionService $positionService, UserService $userService, StatisticalService $statisticalService, MessageService $messageService)
+    public function __construct(PositionService $positionService)
     {
         $this->positionService = $positionService;
-        $this->userService = $userService;
-        $this->statisticalService = $statisticalService;
-        $this->messageService = $messageService;
     }
 
-    public function getRandomPositionAction(Request $request)
+    /**
+     * Retrieves an random chess position
+     * @Rest\Get("/random-position/", name="api_get_random_position", options={"expose"=true})
+     * @return View
+     */
+    public function getRandomPositionAction() : View
     {
         /**
          * @var Position
          */
     	$randPosition = $this->positionService->getRandomPosition();
 
-    	if (!$request->isXmlHttpRequest()) {
-    	        return new JsonResponse(array(
-    	            'status' => 'Error',
-    	            'message' => 'Not an ajax request'),
-    	        400);
-    	    }
+    	$array = [
+            'fen' => $randPosition->getFen(),
+            'solution' => $randPosition->getSolution(),
+            'puzzleRanking' => $randPosition->getPuzzleRanking(),
+            'puzzleId' => $randPosition->getIdPosition(),
+            'status' => 'Ok',
+            'message' => 'Success'
+        ];
 
-    	 return new JsonResponse(array(
-                'fen' => $randPosition->getFen(),
-                'solution' => $randPosition->getSolution(),
-                'puzzleRanking' => $randPosition->getPuzzleRanking(),
-                'puzzleId' => $randPosition->getIdPosition(),
-                'status' => 'Ok',
-                'message' => 'Success'),
-            200);
+        return View::create($array, Response::HTTP_OK);
     }
 
-    public function setPositionAction(Request $request)
+    /**
+     * Set position
+     * @Rest\Post("/position/", name="api_set_position", options={"expose"=true})
+     * @param Request $request
+     * @return View
+     */
+    public function setPositionAction(Request $request) : View
     {
         $positionId = $request->get('puzzleId');
-        $userId = $request->get('userId');
-        $puzzleResult = $request->get('puzzleResult');
-
         $newPuzzleRanking = $request->get('newPuzzleRating');
-        $newPlayerRating = $request->get('newPlayerRating');
 
-        if (!$positionId || !$userId)
+        if (!$positionId)
         {
-            return new JsonResponse(array(
-                'status' => 'Error',
-                'message' => 'Wrong parameters'),
-                400);
+            return View::create('Wrong parameters',Response::HTTP_BAD_REQUEST);
         }
 
         try
         {
             $position = $this->positionService->getPositionById($positionId);
             $this->positionService->savePuzzleRating($position, $newPuzzleRanking);
-
-            $user = $this->userService->getUserById($userId);
-            $this->userService->updateUserRanking($user, $newPlayerRating);
-
-            /**
-             * Sending statistical data to rabbitMQ queue
-             */
-            $array = [
-                "userId" => $userId,
-                "userRanking" => $user->getRanking(),
-                "positionId" => $positionId,
-                "positionRanking" => $position->getPuzzleRanking(),
-                "puzzleResult" => $puzzleResult
-            ];
-
-            $message = $this->messageService->prepareStatsDtoMessage($array);
-
-            $this->messageService->sendMessageToQueue($message);
-
-            //$this->statisticalService->saveStatistics($user, $position, $puzzleResult);
-        }
+         }
         catch (\Exception $e)
         {
-            return new JsonResponse(array(
-                'status' => 'Error',
-                'message' => 'Error while connecting to the database. Error message: '.$e->getMessage()),
-                500);
+            return View::create("Error while connecting to the database. Error message:'.$e->getMessage()",Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        return new JsonResponse(array(
-            'status' => 'Ok',
-            'message' => 'Success'),
-            200);
+        return View::create($position, Response::HTTP_OK);
     }
 
 }

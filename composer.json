@@ -21,7 +21,7 @@
         "doctrine/orm": "^2.5",
         "easycorp/easyadmin-bundle": "^1.17",
         "friendsofsymfony/jsrouting-bundle": "^2.3",
-        "friendsofsymfony/rest-bundle": "^2.3",
+        "friendsofsymfony/rest-bundle": "^2.5",
         "friendsofsymfony/user-bundle": "~2.0",
         "incenteev/composer-parameter-handler": "^2.0",
         "jms/serializer-bundle": "^2.3",

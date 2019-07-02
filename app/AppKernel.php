@@ -23,7 +23,8 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new OldSound\RabbitMqBundle\OldSoundRabbitMqBundle(),
             new AppBundle\AppBundle(),
-            new \Symfony\WebpackEncoreBundle\WebpackEncoreBundle()
+            new \Symfony\WebpackEncoreBundle\WebpackEncoreBundle(),
+            new FOS\RestBundle\FOSRestBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

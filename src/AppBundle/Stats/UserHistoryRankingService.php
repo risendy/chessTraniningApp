@@ -14,4 +14,10 @@ class UserHistoryRankingService extends AbstractStatsService
 
         return $user;
     }
+
+    public function getUserRankingHistory($idUser) {
+        $userRankingHistory = $this->em->getRepository(UserRankingHistory::class)->getUserRankingHistory($idUser);
+
+        return $userRankingHistory;
+    }
 }

@@ -30,8 +30,8 @@ class UserService
 
     public function updateUserRanking(User $user, $newRanking)
     {
-        $randomPosition = $this->em->getRepository(User::class)->updateUserRanking($user, $newRanking);
+        $updatedUser = $this->em->getRepository(User::class)->updateUserRanking($user, $newRanking);
 
-        return $randomPosition;
+        return $updatedUser;
     }
 }
