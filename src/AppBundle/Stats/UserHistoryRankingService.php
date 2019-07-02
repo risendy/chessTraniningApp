@@ -20,4 +20,15 @@ class UserHistoryRankingService extends AbstractStatsService
 
         return $userRankingHistory;
     }
+
+    public function prepareData($data) {
+        $array = [];
+
+        foreach ( $data as $item) {
+            $array['label'][] = $item->getCreated()->format('Y-m-d');;
+            $array['data'][] = $item->getUserRanking();
+        }
+
+        return $array;
+    }
 }

@@ -1,17 +1,17 @@
 <?php
 namespace AppBundle\Controller\Api;
 
-use AppBundle\Entity\Position;
-use AppBundle\Service\MessageService;
-use AppBundle\Service\StatisticalService;
-use AppBundle\Service\UserService;
-use AppBundle\Stats\UserHistoryRankingService;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Service\PositionService;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
-class UserHistoryController extends Controller
+use AppBundle\Stats\UserHistoryRankingService;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
+use FOS\RestBundle\View\View;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\HttpFoundation\Response;
+
+
+class UserHistoryController extends AbstractFOSRestController
 {
     private $userHistoryRankingService;
 
@@ -20,17 +20,18 @@ class UserHistoryController extends Controller
         $this->userHistoryRankingService = $userHistoryRankingService;
     }
 
-    public function getUserHistoryAction($id)
+    /**
+     * Retrieves an random chess position
+     * @Rest\Get("/user/{id}/history/ranking", name="api_get_user_history_ranking", options={"expose"=true})
+     * @param $id int
+     * @return View
+     */
+    public function getUserHistoryAction($id): View
     {
         $userHistory = $this->userHistoryRankingService->getUserRankingHistory($id);
+        $preparedData = $this->userHistoryRankingService->prepareData($userHistory);
 
-        var_dump($userHistory);
-        die;
+        return View::create($preparedData, Response::HTTP_OK);
 
-        return new JsonResponse(array(
-            'userRankingHistory' => $userHistory,
-            'status' => 'Ok',
-            'message' => 'Success'),
-            200);
     }
 }

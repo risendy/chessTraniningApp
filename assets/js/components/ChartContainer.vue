@@ -1,10 +1,12 @@
 <template>
+  <center>
   <div class="container">
-    <line-chart
+    <line-chart :width=800 :height=400
       v-if="loaded"
       :chartdata="chartdata"
       :options="options"/>
   </div>
+  </center>
 </template>
 
 <script>
@@ -33,14 +35,16 @@ export default {
   async mounted () {
     this.loaded = false
     try {
-      const { userlist } = await fetch(Routing.generate('api_get_user_history', {id: 3} ));
+      var userRankingHistory = await fetch(Routing.generate('api_get_user_history_ranking', {id: 3} ));
+      var historyJson = await userRankingHistory.json();
+
       this.chartdata = {
-      labels: ['January', 'February'],
+      labels: historyJson.label,
       datasets: [
         {
-          label: 'Data One',
+          label: 'User ranking',
           backgroundColor: '#f87979',
-          data: [40, 20]
+          data: historyJson.data,
         }
       ]
     };

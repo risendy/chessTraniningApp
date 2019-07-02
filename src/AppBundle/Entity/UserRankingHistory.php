@@ -142,18 +142,23 @@ class UserRankingHistory
         return $this;
     }
 
-    private function setCreated(\DateTime $param)
+    public function setCreated(\DateTime $param)
     {
         $this->created = $param;
     }
 
-    private function setModified(\DateTime $param)
+    public function setModified(\DateTime $param)
     {
         $this->modified = $param;
     }
 
-    private function getModified()
+    public function getModified()
     {
         return $this->modified;
+    }
+
+    public function getCreated()
+    {
+        return $this->created;
     }
 }
