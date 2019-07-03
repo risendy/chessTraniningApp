@@ -17,21 +17,50 @@
             </h4>
         </center>
 
-        <center>
-          <div id="board" style="width: 600px"></div>
-        </center>
+          <div class="row">
+              <div class="col-3">
+                  <div class="card card_info card_info_upper">
+
+                      <div class="card-body">
+                          <h5> Your ranking: </br>
+                              <player-ranking-component data-user-ranking="{{ userRanking }}"></player-ranking-component>
+                              <player-ranking-difference-component></player-ranking-difference-component>
+                          </h5>
+
+                          <p>
+                              <status-component>${statusValue}</status-component>
+                              <progress-information-component></progress-information-component>
+                          </p>
+
+                      </div>
+                  </div>
+
+                  <div class="card card_info">
+
+                      <div class="card-body card_body_graph">
+                          <h6 class="user_ranking_header">User ranking history</h6>
+                          <line-chart-container> </line-chart-container>
+                      </div>
+                  </div>
+
+              </div>
+              <div class="col-9">
+                  <div id="board" style="width: 600px"></div>
+              </div>
+              </div>
+              <div class="col">
+
+              </div>
+          </div>
+
      
-        <div class="card card_info">
+        <div class="card card_info card_info_bottom">
           <div class="card-header">
-            Informacje
-          </div>  
+            Actions
+          </div>
           <div class="card-body">
-            <h4>Your ranking:
-                <player-ranking-component data-user-ranking="{{ userRanking }}"></player-ranking-component>
-                <player-ranking-difference-component></player-ranking-difference-component>
-            </h4>
-              <status-component>${statusValue}</status-component>
-              <progress-information-component></progress-information-component>
+
+
             <a id="next_position" href="#" class="btn btn-primary">Next position <i class="fas fa-arrow-right"></i></a>
             <show-solution-component></show-solution-component>
           </div>

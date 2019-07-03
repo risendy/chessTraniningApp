@@ -1,5 +1,8 @@
-.card_info {
+.card_info_bottom {
     margin-top: 15px;
+}
+.card_info_upper {
+    padding-top:0px;
 }
 .menu_right>a {
     color:white;
@@ -19,4 +22,16 @@
 }
 .puzzleRankingBox{
     margin-bottom: 15px;
+}
+#line-chart {
+    max-height: 200px;
+}
+.card_body_graph{
+    padding: 0 !important;
+    padding-bottom: 15px !important;
+}
+.user_ranking_header{
+    padding-top:15px;
+    padding-bottom:15px;
+    text-align: center;
 }

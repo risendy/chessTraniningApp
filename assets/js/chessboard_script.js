@@ -9,6 +9,7 @@ import puzzleRankingDifferenceComponent from './components/puzzleRankingDifferen
 import showSolutionComponent from './components/showSolutionComponent.js';
 import playerRankingComponent from './components/playerRankingComponent.js';
 import statusComponent from './components/statusComponent.js';
+import LineChartContainerMini from './components/ChartContainerMini.vue'
 
 var appMainComponent = new Vue({
     delimiters: ['${', '}'],
@@ -23,7 +24,8 @@ var appMainComponent = new Vue({
         'puzzle-ranking-difference-component': puzzleRankingDifferenceComponent,
         'show-solution-component': showSolutionComponent,
         'player-ranking-component': playerRankingComponent,
-        'status-component': statusComponent
+        'status-component': statusComponent,
+        'line-chart-container': LineChartContainerMini
     }
 });
 
