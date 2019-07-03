@@ -32,6 +32,6 @@ class UserRankingHistoryRepository extends \Doctrine\ORM\EntityRepository
 
     public function getUserRankingHistory($idUser)
     {
-       return $this->findByUser($idUser);
+       return $this->findByUser($idUser, ['created'=>'DESC'], 10);
     }
 }

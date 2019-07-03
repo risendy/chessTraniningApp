@@ -36,8 +36,7 @@ export default {
       scales:{
         xAxes: [{
           display: false //this will remove all the x-axis grid lines
-        }],
-
+        }]
       }
     }
   }),

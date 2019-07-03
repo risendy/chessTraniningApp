@@ -176,6 +176,7 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
 
      if (!globalObject.puzzleActive)
      {
+         //TODO need fix
          savePuzzleRating(globalObject.puzzleId, ratings.newPuzzleRanking);
          saveUserRanking(globalObject.userId, ratings.newPlayerRanking);
          saveStatistics(globalObject.userId, ratings.newPlayerRanking, globalObject.puzzleId, ratings.newPuzzleRanking, globalObject.puzzleResult);

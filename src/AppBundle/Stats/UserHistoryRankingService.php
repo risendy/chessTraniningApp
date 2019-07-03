@@ -29,6 +29,13 @@ class UserHistoryRankingService extends AbstractStatsService
             $array['data'][] = $item->getUserRanking();
         }
 
+        $array['label'] = $this->reverseHistoryArray($array['label']);
+        $array['data'] = $this->reverseHistoryArray($array['data']);
+
         return $array;
+    }
+
+    public function reverseHistoryArray($array) {
+        return array_reverse($array);
     }
 }
