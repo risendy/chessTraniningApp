@@ -176,6 +176,8 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
 
      if (!globalObject.puzzleActive)
      {
+         console.log(ratings.newPlayerRanking);
+
          //TODO need fix
          savePuzzleRating(globalObject.puzzleId, ratings.newPuzzleRanking);
          saveUserRanking(globalObject.userId, ratings.newPlayerRanking);
@@ -381,13 +383,14 @@ var saveStatistics = function (userId, newPlayerRating, puzzleId, newPuzzleRatin
         })
         .always(function() {
             $.LoadingOverlay("hide");
+
+            appMainComponent.$refs.graph.forceRerender();
         });
 };
 
 //TODO convert to axios
 $(document).on( "click", "#show_solution_button", function(event) {
     event.preventDefault();
-
     globalObject.game.load(globalObject.currentPosition);
 
     var nextMove = getNextMoveFromSolution(globalObject.solutionCopy);
@@ -409,6 +412,7 @@ $(document).on( "click", "#show_solution_button", function(event) {
 //TODO convert to axios
 $('#next_position').click(function(event) {
   event.preventDefault();
+
   globalObject.progressInformationValue='';
 
   $.LoadingOverlay("show");  

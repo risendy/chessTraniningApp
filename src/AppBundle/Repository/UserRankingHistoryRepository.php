@@ -21,7 +21,7 @@ class UserRankingHistoryRepository extends \Doctrine\ORM\EntityRepository
 		$puzzleResult = ($data->puzzleResult == 'true') ? 1 : 0;
 
                 $historyRecord = new UserRankingHistory();
-                $historyRecord->setUserRanking($data->userRanking);
+                $historyRecord->setUserRanking($data->newUserRanking);
                 $historyRecord->setSolveResult($puzzleResult);
                 $historyRecord->setUser($user);
                 $historyRecord->setPosition($position);

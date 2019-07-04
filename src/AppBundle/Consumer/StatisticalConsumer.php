@@ -56,12 +56,13 @@ class StatisticalConsumer implements ConsumerInterface
         {
             $data = $this->messageService->decodeMessage($msg);
 
-            $this->logger->info('Received data: userID: '.$data->userId.' positionId: '.$data->positionId.' puzzleResult: '.$data->puzzleResult);
+            $this->logger->info('Received data: userID: '.$data->userId.' newUserRanking: '.$data->newUserRanking.' positionId: '.$data->positionId.' puzzleResult: '.$data->puzzleResult);
 
             $user = $this->userService->getUserById($data->userId);
             $position = $this->positionService->getPositionById($data->positionId);
 
             if ($user instanceof User && $position instanceof Position) {
+                $this->logger->info($data->newUserRanking);
                 $this->statisticalService->saveStatistics($data, $user, $position);
             }
             else

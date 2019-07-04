@@ -34,12 +34,14 @@ class StatisticalController extends AbstractFOSRestController
     {
         $positionId = $request->get('puzzleId');
         $userId = $request->get('userId');
+        $newUserRanking = $request->get('newPlayerRating');
         $puzzleResult = $request->get('puzzleResult');
         $position = $this->positionService->getPositionById($positionId);
         $user = $this->userService->getUserById($userId);
 
         $array = [
             "userId" => $userId,
+            "newUserRanking" => $newUserRanking,
             "userRanking" => $user->getRanking(),
             "positionId" => $positionId,
             "positionRanking" => $position->getPuzzleRanking(),
