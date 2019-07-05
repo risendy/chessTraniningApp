@@ -14,6 +14,7 @@ Project is created with:
 * FOSUserBundle for user login/registration
 * RabbitMQ for some asynchronous work
 * Vue.js
+* Vue-chartjs
 * Chess.js
 * Chessboard.js
 * MySQL database
@@ -22,6 +23,7 @@ Project is created with:
 ## Features
 * Solving chess puzzles
 * Computing rating difference for puzzle and user using ELO ranking system.
+* Displaying graphs using Chart.js/vue-chartjs libraries
 * Comes with the admin panel to add new puzzles
 * Comes with the data fixtures to load new user and 10 puzzles. User credentials are: user1/pass1
 
@@ -54,10 +56,10 @@ php bin/console rabbitmq:setup-fabric
 
 ## Screenshots
 
-### Failed puzzle
+### Homepage
 ![Main page](web/img/img2.png)
 
-### Successful puzzle
+### User profile
 ![Main page](web/img/img3.png)
 
 ### Admin panel
