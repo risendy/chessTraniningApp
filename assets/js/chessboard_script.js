@@ -2,6 +2,7 @@ import Chess from './chess.js';
 import globalObject from './globals.js';
 
 import Vue from 'vue';
+import axios from 'axios';
 import progressInformationComponent from './components/progressInformationComponent.js';
 import puzzleRankingComponent from './components/puzzleRankingComponent.js';
 import playerRankingDifference from './components/playerRankingDifferenceComponent.js';
@@ -10,13 +11,14 @@ import showSolutionComponent from './components/showSolutionComponent.js';
 import playerRankingComponent from './components/playerRankingComponent.js';
 import statusComponent from './components/statusComponent.js';
 import LineChartContainerMini from './components/ChartContainerMini.vue'
+import NextPosition from './components/NextPosition.vue'
 
 var appMainComponent = new Vue({
     delimiters: ['${', '}'],
     el: '#app',
     data: {
         statusValue: 0
-    },
+            },
     components: {
         'progress-information-component': progressInformationComponent,
         'puzzle-ranking-component': puzzleRankingComponent,
@@ -25,8 +27,17 @@ var appMainComponent = new Vue({
         'show-solution-component': showSolutionComponent,
         'player-ranking-component': playerRankingComponent,
         'status-component': statusComponent,
-        'line-chart-container': LineChartContainerMini
-    }
+        'line-chart-container': LineChartContainerMini,
+        'next-position': NextPosition
+    },
+    methods: {
+      getposition: function () {
+          globalObject.progressInformationValue='';
+          hideProgressInfo();
+
+          getRandomPosition();          
+      }
+  }
 });
 
 // do not pick up pieces if the game is over
@@ -409,39 +420,24 @@ $(document).on( "click", "#show_solution_button", function(event) {
     }
 });
 
-//TODO convert to axios
-$('#next_position').click(function(event) {
-  event.preventDefault();
-
-  globalObject.progressInformationValue='';
-
+var getRandomPosition = function() {
   $.LoadingOverlay("show");  
 
-  hideProgressInfo();
+  axios
+    .get(Routing.generate('api_get_random_position'))
+    .then(response => {
+          globalObject.currentPosition = response.data.fen;
 
-  $.ajax({
-    url: Routing.generate('api_get_random_position'),
-    type: 'GET',
-    dataType: 'json'
-  })
-  .done(function(response) {
-    globalObject.currentPosition = response.fen;
+          initNewPosition(response.data.fen);
+          globalObject.solution = setSolutionArray(response.data.solution);
+          globalObject.solutionCopy = setSolutionArray(response.data.solution);
+          globalObject.puzzleRankingValue = parseFloat(response.data.puzzleRanking).toFixed(2);
+          globalObject.puzzleActive = true;
+          globalObject.puzzleId = response.data.puzzleId;
 
-    initNewPosition(response.fen);
-    globalObject.solution = setSolutionArray(response.solution);
-    globalObject.solutionCopy = setSolutionArray(response.solution);
-    globalObject.puzzleRankingValue = parseFloat(response.puzzleRanking).toFixed(2);
-    globalObject.puzzleActive = true;
-    globalObject.puzzleId = response.puzzleId;
-
-    resetValuesInTemplateAfterChangingPosition();
-    updateStatus();
-  })
-  .fail(function() {
-
-  })
-  .always(function() {
-    $.LoadingOverlay("hide");
-  });
-  
-});
+          resetValuesInTemplateAfterChangingPosition();
+          updateStatus();
+      })
+    .catch(error => console.log(error))
+    .finally($.LoadingOverlay("hide") );
+}
