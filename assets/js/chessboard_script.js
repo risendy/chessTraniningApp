@@ -1,15 +1,15 @@
 import Chess from './chess.js';
-import globalObject from './globals.js';
+import store from './globals.js';
 
 import Vue from 'vue';
 import axios from 'axios';
-import progressInformationComponent from './components/progressInformationComponent.js';
-import puzzleRankingComponent from './components/puzzleRankingComponent.js';
-import playerRankingDifference from './components/playerRankingDifferenceComponent.js';
-import puzzleRankingDifferenceComponent from './components/puzzleRankingDifferenceComponent.js';
-import showSolutionComponent from './components/showSolutionComponent.js';
-import playerRankingComponent from './components/playerRankingComponent.js';
-import statusComponent from './components/statusComponent.js';
+import progressInformationComponent from './components/progressInformationComponent.vue';
+import puzzleRankingComponent from './components/puzzleRankingComponent.vue';
+import playerRankingDifference from './components/playerRankingDifferenceComponent.vue';
+import puzzleRankingDifferenceComponent from './components/puzzleRankingDifferenceComponent.vue';
+import showSolutionComponent from './components/showSolutionComponent.vue';
+import playerRankingComponent from './components/playerRankingComponent.vue';
+import statusComponent from './components/statusComponent.vue';
 import LineChartContainerMini from './components/ChartContainerMini.vue'
 import NextPosition from './components/NextPosition.vue'
 
@@ -32,21 +32,43 @@ var appMainComponent = new Vue({
     },
     methods: {
       getposition: function () {
-          globalObject.progressInformationValue='';
+          store.progressInformationValue='';
           hideProgressInfo();
 
           getRandomPosition();          
+      },
+      showsolution: function() {
+        showSolutionFunc();
       }
   }
 });
+
+var showSolutionFunc = function() {
+  store.game.load(store.currentPosition);
+
+        var nextMove = getNextMoveFromSolution(store.solutionCopy);
+
+        if (nextMove)
+        {
+            var movesNextMove = nextMove.split("-");
+            var playerMove = makeMove(movesNextMove[0], movesNextMove[1]);
+
+            var newFen = store.game.fen();
+
+            cfg.position = newFen;
+            cfg.draggable = false;
+            board = ChessBoard('board', cfg);
+            store.showSolutionFlag = false;
+        }
+}
 
 // do not pick up pieces if the game is over
 // only pick up pieces for the side to move
 
 var onDragStart = function(source, piece, position, orientation) {
-  if (globalObject.game.game_over() === true ||
-      (globalObject.game.turn() === 'w' && piece.search(/^b/) !== -1) ||
-      (globalObject.game.turn() === 'b' && piece.search(/^w/) !== -1)) {
+  if (store.game.game_over() === true ||
+      (store.game.turn() === 'w' && piece.search(/^b/) !== -1) ||
+      (store.game.turn() === 'b' && piece.search(/^w/) !== -1)) {
     return false;
   }
 };
@@ -56,7 +78,7 @@ var onDrop = function(source, target) {
 
   if (playerMove)
   {
-     var solutionMove = getNextMoveFromSolution(globalObject.solution);
+     var solutionMove = getNextMoveFromSolution(store.solution);
      checkPlayerSolution(playerMove, solutionMove);
   }
 
@@ -69,11 +91,11 @@ var onDrop = function(source, target) {
 // update the board position after the piece snap
 // for castling, en passant, pawn promotion
 var onSnapEnd = function() {
-  board.position(globalObject.game.fen());
+  board.position(store.game.fen());
 };
 
 var updateStatus = function() {
-  if (!globalObject.puzzleActive)
+  if (!store.puzzleActive)
   {
       return;
   }
@@ -83,7 +105,7 @@ var updateStatus = function() {
   var moveColor = 'White';
   cfg.orientation='white';
 
-  if (globalObject.game.turn() === 'b') {
+  if (store.game.turn() === 'b') {
     moveColor = 'Black';
     moveIcon = '<i class="fas fa-chess-king" style="padding-right:5px;"></i>';
     cfg.orientation='black';
@@ -93,12 +115,12 @@ var updateStatus = function() {
   board = ChessBoard('board', cfg);
 
   // checkmate?
-  if (globalObject.game.in_checkmate() === true) {
+  if (store.game.in_checkmate() === true) {
     status = 'Game over, ' + moveColor + ' is in checkmate.';
   }
 
   // draw?
-  else if (globalObject.game.in_draw() === true) {
+  else if (store.game.in_draw() === true) {
     status = 'Game over, drawn position';
   }
 
@@ -107,16 +129,16 @@ var updateStatus = function() {
     status = moveColor + ' to move';
 
     // check?
-    if (globalObject.game.in_check() === true) {
+    if (store.game.in_check() === true) {
       status += ', ' + moveColor + ' is in check';
     }
   }
 
-  globalObject.statusValue = status;
+  store.statusValue = status;
 };
 
 var initNewPosition = function(fen) {
-    globalObject.game.load(fen);
+    store.game.load(fen);
 
     cfg.position = fen;
     cfg.draggable = true;
@@ -137,7 +159,7 @@ var getNextMoveFromSolution = function(solution) {
 }
 
 var makeMove = function(from, to) {
-    var move = globalObject.game.move({
+    var move = store.game.move({
       from: from,
       to: to,
       promotion: 'q' // NOTE: always promote to a queen for example simplicity
@@ -151,7 +173,7 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
 
      if (movesSolution[0] == playerMove.from && movesSolution[1] == playerMove.to)
      {
-        var nextMove = getNextMoveFromSolution(globalObject.solution);
+        var nextMove = getNextMoveFromSolution(store.solution);
 
         setProgressInfo(true);
 
@@ -165,8 +187,8 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
         {
             var ratings = calculateNewRankings(true);
 
-            globalObject.puzzleResult = true;
-            globalObject.puzzleActive = false;
+            store.puzzleResult = true;
+            store.puzzleActive = false;
             setPuzzleCompleted();
             changePlayerRatingInTemplate(ratings.newPlayerRanking);
             changePuzzleRankingInTemplate(ratings.newPuzzleRanking);
@@ -177,21 +199,21 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
      {
         var ratings = calculateNewRankings(false);
 
-        globalObject.puzzleResult = false;
-        globalObject.puzzleActive = false;
-        globalObject.showSolutionFlag = true;
+        store.puzzleResult = false;
+        store.puzzleActive = false;
+        store.showSolutionFlag = true;
         setProgressInfo(false);
         changePlayerRatingInTemplate(ratings.newPlayerRanking);
         changePuzzleRankingInTemplate(ratings.newPuzzleRanking);
      }
 
-     if (!globalObject.puzzleActive)
+     if (!store.puzzleActive)
      {
          console.log(ratings.newPlayerRanking);
 
-         savePuzzleRatingAxios(globalObject.puzzleId, ratings.newPuzzleRanking)
-         .then(saveUserRankingAxios(globalObject.userId, ratings.newPlayerRanking))
-         .then(saveStatisticsAxios(globalObject.userId, ratings.newPlayerRanking, globalObject.puzzleId, ratings.newPuzzleRanking, globalObject.puzzleResult));
+         savePuzzleRatingAxios(store.puzzleId, ratings.newPuzzleRanking)
+         .then(saveUserRankingAxios(store.userId, ratings.newPlayerRanking))
+         .then(saveStatisticsAxios(store.userId, ratings.newPlayerRanking, store.puzzleId, ratings.newPuzzleRanking, store.puzzleResult));
      }
 }
 
@@ -207,22 +229,22 @@ var setProgressInfo = function(type) {
         html = '<i class="fas fa-times" style="color:red"></i> Bad move :(';
     }
 
-    globalObject.progressInformationValue=html;
+    store.progressInformationValue=html;
 }
 
 var setPuzzleCompleted = function() {
     var html = '<i class="fas fa-check" style="color:green"></i> Puzzle completed :)';
-    globalObject.progressInformationValue=html;
+    store.progressInformationValue=html;
 
-    globalObject.puzzleActive = false;
+    store.puzzleActive = false;
 }
 
 var calculateNewRankings = function(result) {
  var k = 32;
  var s1,s2;
  var resultArray = {};
- var floatUserRanking = parseFloat(globalObject.playerRankingValue);
- var floatPuzzleRanking = parseFloat(globalObject.puzzleRankingValue);
+ var floatUserRanking = parseFloat(store.playerRankingValue);
+ var floatPuzzleRanking = parseFloat(store.puzzleRankingValue);
 
  if (floatUserRanking && floatPuzzleRanking)
  {
@@ -264,7 +286,7 @@ var calculateRankingDifference = function (ranking1, ranking2) {
 }
 
 var changePlayerRatingInTemplate = function(newRating) {
-  var playerRating = globalObject.playerRankingValue;
+  var playerRating = store.playerRankingValue;
   var difference = calculateRankingDifference(playerRating, newRating);
 
   if (newRating > playerRating)
@@ -276,20 +298,20 @@ var changePlayerRatingInTemplate = function(newRating) {
       var icon = '<i class="fas fa-minus" style="color:red;"></i>';
   }
 
-    globalObject.playerRankingDifferenceValue = '('+ icon + difference + ')';
-    globalObject.playerRankingValue = newRating;
+    store.playerRankingDifferenceValue = '('+ icon + difference + ')';
+    store.playerRankingValue = newRating;
     setNewPlayerRating(newRating);
 }
 
 var setNewPlayerRating = function(newRating) {
-    globalObject.playerRankingValue = newRating;
+    store.playerRankingValue = newRating;
 }
 
 var changePuzzleRankingInTemplate = function(newPuzzleRanking) {
-  var difference = calculateRankingDifference(globalObject.puzzleRankingValue, newPuzzleRanking);
+  var difference = calculateRankingDifference(store.puzzleRankingValue, newPuzzleRanking);
   var icon;
 
-  if (newPuzzleRanking > globalObject.puzzleRankingValue)
+  if (newPuzzleRanking > store.puzzleRankingValue)
   {
       icon = '<i class="fas fa-plus" style="color:green;"></i>';
   }
@@ -298,22 +320,22 @@ var changePuzzleRankingInTemplate = function(newPuzzleRanking) {
       icon = '<i class="fas fa-minus" style="color:red;"></i>';
   }
 
-  globalObject.puzzleRankingValue = newPuzzleRanking;
-  globalObject.puzzleRankingDifferenceValue = '('+icon+difference+')';
+  store.puzzleRankingValue = newPuzzleRanking;
+  store.puzzleRankingDifferenceValue = '('+icon+difference+')';
 }
 
 var resetValuesInTemplateAfterChangingPosition = function () {
-    globalObject.playerRankingDifferenceValue = null;
-    globalObject.puzzleRankingDifferenceValue= null;
-    //globalObject.puzzleRankingValue = '?';
+    store.playerRankingDifferenceValue = null;
+    store.puzzleRankingDifferenceValue= null;
+    //store.puzzleRankingValue = '?';
 }
 
 var hideProgressInfo = function () {
-    //globalObject.progressInformation.html('');
+    //store.progressInformation.html('');
 }
 
 var disableShowSolutionButton = function () {
-    globalObject.showSolutionFlag = false;
+    store.showSolutionFlag = false;
 }
 
 updateStatus();
@@ -372,41 +394,20 @@ var saveStatisticsAxios = function(userId, newPlayerRating, puzzleId, newPuzzleR
     );
 }
 
-//TODO convert to axios
-$(document).on( "click", "#show_solution_button", function(event) {
-    event.preventDefault();
-    globalObject.game.load(globalObject.currentPosition);
-
-    var nextMove = getNextMoveFromSolution(globalObject.solutionCopy);
-
-    if (nextMove)
-    {
-        var movesNextMove = nextMove.split("-");
-        var playerMove = makeMove(movesNextMove[0], movesNextMove[1]);
-
-        var newFen = globalObject.game.fen();
-
-        cfg.position = newFen;
-        cfg.draggable = false;
-        board = ChessBoard('board', cfg);
-        globalObject.showSolutionFlag = false;
-    }
-});
-
 var getRandomPosition = function() {
   $.LoadingOverlay("show");  
 
   axios
     .get(Routing.generate('api_get_random_position'))
     .then(response => {
-          globalObject.currentPosition = response.data.fen;
+          store.currentPosition = response.data.fen;
 
           initNewPosition(response.data.fen);
-          globalObject.solution = setSolutionArray(response.data.solution);
-          globalObject.solutionCopy = setSolutionArray(response.data.solution);
-          globalObject.puzzleRankingValue = parseFloat(response.data.puzzleRanking).toFixed(2);
-          globalObject.puzzleActive = true;
-          globalObject.puzzleId = response.data.puzzleId;
+          store.solution = setSolutionArray(response.data.solution);
+          store.solutionCopy = setSolutionArray(response.data.solution);
+          store.puzzleRankingValue = parseFloat(response.data.puzzleRanking).toFixed(2);
+          store.puzzleActive = true;
+          store.puzzleId = response.data.puzzleId;
 
           resetValuesInTemplateAfterChangingPosition();
           updateStatus();

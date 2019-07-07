@@ -1,18 +1,23 @@
+<template>
+    <span id="status" v-html="statusValue"></span>
+</template>
+
+<script>
 import Vue from 'vue';
-import globalObject from './../globals.js';
+import store from './../globals.js';
 
 var statusComponent = Vue.component('status-component', {
     data: function () {
         return {
-            status: globalObject.status,
+            
         }
     },
-    template: globalObject.status,
     computed: {
         statusValue() {
-            return globalObject.statusValue;
+            return store.statusValue;
         }
     }
 });
 
 export default statusComponent;
+</script>

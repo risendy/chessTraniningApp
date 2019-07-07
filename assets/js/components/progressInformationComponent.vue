@@ -1,18 +1,23 @@
+<template>
+    <p id="progressInformation" v-html="progressInformationValue" class="card-text"></p>
+</template>
+
+<script>
 import Vue from 'vue';
-import globalObject from './../globals.js';
+import store from './../globals.js';
 
 var progressInformationComponent = Vue.component('progress-information-component', {
     data: function () {
         return {
-            progressInformation: globalObject.progressInformation,
+
         }
     },
     computed: {
         progressInformationValue() {
-            return globalObject.progressInformationValue;
+            return store.progressInformationValue;
         }
     },
-    template: globalObject.progressInformation
 });
 
 export default progressInformationComponent;
+</script>

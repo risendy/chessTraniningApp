@@ -1,23 +1,27 @@
+<template> 
+    <span id="playerRanking" v-html="playerRankingValue"></span>
+</template>
+
+<script>
 import Vue from 'vue';
-import globalObject from './../globals.js';
+import store from './../globals.js';
 
 var playerRankingComponent = Vue.component('player-ranking-component', {
     props: ['dataUserRanking'],
     data: function () {
         return {
-            playerRating: globalObject.playerRanking
+
         }
     },
-    template: globalObject.playerRanking,
     beforeMount: function() {
-        //this.playerRankingValue = this.dataUserRanking;
-        globalObject.playerRankingValue = this.dataUserRanking;
+        store.playerRankingValue = this.dataUserRanking;
     },
     computed: {
         playerRankingValue() {
-            return globalObject.playerRankingValue;
+            return store.playerRankingValue;
         }
     }
 });
 
 export default playerRankingComponent;
+</script>

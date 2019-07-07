@@ -1,18 +1,23 @@
+<template>
+    <span id="puzzleRanking" v-html="puzzleRankingValue"></span>
+</template>
+
+<script>
 import Vue from 'vue';
-import globalObject from './../globals.js';
+import store from './../globals.js';
 
 var puzzleRankingComponent = Vue.component('puzzle-ranking-component', {
     data: function () {
         return {
-            puzzleRanking: ''
+
         }
     },
-    template: globalObject.puzzleRanking,
     computed: {
         puzzleRankingValue() {
-            return globalObject.puzzleRankingValue;
+            return store.puzzleRankingValue;
         }
     },
 });
 
 export default puzzleRankingComponent;
+</script>
