@@ -189,17 +189,10 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
      {
          console.log(ratings.newPlayerRanking);
 
-         //TODO need fix
-         savePuzzleRating(globalObject.puzzleId, ratings.newPuzzleRanking);
-         saveUserRanking(globalObject.userId, ratings.newPlayerRanking);
-         saveStatistics(globalObject.userId, ratings.newPlayerRanking, globalObject.puzzleId, ratings.newPuzzleRanking, globalObject.puzzleResult);
+         savePuzzleRatingAxios(globalObject.puzzleId, ratings.newPuzzleRanking)
+         .then(saveUserRankingAxios(globalObject.userId, ratings.newPlayerRanking))
+         .then(saveStatisticsAxios(globalObject.userId, ratings.newPlayerRanking, globalObject.puzzleId, ratings.newPuzzleRanking, globalObject.puzzleResult));
      }
-
-    /*if (!globalObject.puzzleActive && (globalObject.puzzleRankingValue != ratings.newPuzzleRanking || globalObject.playerRankingValue != ratings.newPlayerRanking))
-    {
-        saveRatingToDatabase(globalObject.userId, ratings.newPlayerRanking, globalObject.puzzleId, ratings.newPuzzleRanking, globalObject.puzzleResult);
-    }*/
-
 }
 
 var setProgressInfo = function(type) {
@@ -336,68 +329,48 @@ var cfg = {
 
 var board = ChessBoard('board', cfg);
 
-//TODO convert to axios
-var savePuzzleRating = function (puzzleId, newPuzzleRating) {
-    $.LoadingOverlay("show");
+var savePuzzleRatingAxios = function(puzzleId, newPuzzleRating) {
+  $.LoadingOverlay("show");  
 
-    $.ajax({
-        url: Routing.generate('api_set_position'),
-        type: 'POST',
-        dataType: 'json',
-        data: {puzzleId:puzzleId, newPuzzleRating:newPuzzleRating}
-    })
-        .done(function(response) {
-            //console.log("success");
-        })
-        .fail(function() {
-            //console.log("error");
-        })
-        .always(function() {
-            $.LoadingOverlay("hide");
-        });
-};
+  return axios.post(Routing.generate('api_set_position'), {
+    puzzleId:puzzleId, 
+    newPuzzleRating:newPuzzleRating
+  })
+  .then(response => {
+          console.log(response);
+      })
+    .catch(error => console.log(error))
+    .finally();
+}
 
-var saveUserRanking = function (userId, newPlayerRating) {
-    $.LoadingOverlay("show");
+var saveUserRankingAxios = function(userId, newPlayerRating) {
+  return axios.put(Routing.generate('api_put_user'), {
+    userId:userId, 
+    newPlayerRating:newPlayerRating
+  })
+  .then(response => {
+          console.log(response);
+      })
+    .catch(error => console.log(error))
+    .finally();
+}
 
-    $.ajax({
-        url: Routing.generate('api_put_user'),
-        type: 'PUT',
-        dataType: 'json',
-        data: {userId:userId, newPlayerRating: newPlayerRating}
-    })
-        .done(function(response) {
-            //console.log("success");
-        })
-        .fail(function() {
-            //console.log("error");
-        })
-        .always(function() {
-            $.LoadingOverlay("hide");
-        });
-};
-
-var saveStatistics = function (userId, newPlayerRating, puzzleId, newPuzzleRating, puzzleResult) {
-    $.LoadingOverlay("show");
-
-    $.ajax({
-        url: Routing.generate('api_send_statistic_to_queue'),
-        type: 'POST',
-        dataType: 'json',
-        data: {userId:userId, newPlayerRating: newPlayerRating, puzzleId:puzzleId, newPuzzleRating:newPuzzleRating, puzzleResult:puzzleResult}
-    })
-        .done(function(response) {
-            //console.log("success");
-        })
-        .fail(function() {
-            //console.log("error");
-        })
-        .always(function() {
-            $.LoadingOverlay("hide");
-
-            appMainComponent.$refs.graph.forceRerender();
-        });
-};
+var saveStatisticsAxios = function(userId, newPlayerRating, puzzleId, newPuzzleRating, puzzleResult) {
+  return axios.post(Routing.generate('api_send_statistic_to_queue'), {
+    userId: userId, 
+    newPlayerRating: newPlayerRating, 
+    puzzleId: puzzleId, 
+    newPuzzleRating: newPuzzleRating, 
+    puzzleResult: puzzleResult
+  })
+  .then(response => {
+          console.log(response);
+      })
+    .catch(error => console.log(error))
+    .finally(
+          $.LoadingOverlay("hide")
+    );
+}
 
 //TODO convert to axios
 $(document).on( "click", "#show_solution_button", function(event) {
