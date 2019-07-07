@@ -9,6 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="favicon.ico">
     {% block stylesheets %}
+        {{ encore_entry_link_tags('bootstrap') }}
         <link rel="stylesheet" href="{{ asset('css/custom_login.css') }}">
     {% endblock %}
 
@@ -64,7 +65,7 @@
 <!-- Placed at the end of the document so the pages load faster -->
 
 {% block javascripts %}
-    {{ encore_entry_script_tags('jq') }}
+        {{ encore_entry_script_tags('jq') }}
 {% endblock %}
 </body>
 </html>
