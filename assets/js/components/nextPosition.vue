@@ -3,9 +3,9 @@
 </template>
 
 <script>
-export default {
+export default{
   data: () => ({
-    name: "Kuba"
+
   })
 }
 
