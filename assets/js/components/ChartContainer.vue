@@ -1,7 +1,7 @@
 <template>
   <center>
   <div class="container">
-    <line-chart :width=800 :height=400
+    <line-chart :width=1000 :height=600
       v-if="loaded"
       :chartdata="chartdata"
       :options="options"/>

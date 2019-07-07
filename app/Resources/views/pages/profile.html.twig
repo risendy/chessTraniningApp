@@ -57,9 +57,12 @@
 {% endblock %}
 
 		{% block stylesheets %}
+            {{ parent() }}
 			<link rel="stylesheet" type="text/css" href="{{ asset('css/custom-profile.css') }}" />
 			<link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}" />
-		{% endblock %}
+            {{ encore_entry_link_tags('bootstrap') }}
+
+        {% endblock %}
 
 
 		{% block javascripts %}

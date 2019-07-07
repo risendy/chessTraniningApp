@@ -19,6 +19,7 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
     .addEntry('jq', './assets/js/jq.js')
+    .addEntry('bootstrap', './assets/js/bootstrap.js')
     .addEntry('chessLibraries', './assets/js/chessLibraries.js')
     .addEntry('chessCustomLogic', './assets/js/chessCustomLogic.js')
     .addEntry('helpers', './assets/js/helpers.js')
