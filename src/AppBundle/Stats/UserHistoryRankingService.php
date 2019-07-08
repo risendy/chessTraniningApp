@@ -15,8 +15,8 @@ class UserHistoryRankingService extends AbstractStatsService
         return $user;
     }
 
-    public function getUserRankingHistory($idUser) {
-        $userRankingHistory = $this->em->getRepository(UserRankingHistory::class)->getUserRankingHistory($idUser);
+    public function getUserRankingHistory($idUser, $limit) {
+        $userRankingHistory = $this->em->getRepository(UserRankingHistory::class)->getUserRankingHistory($idUser, $limit);
 
         return $userRankingHistory;
     }
@@ -27,11 +27,15 @@ class UserHistoryRankingService extends AbstractStatsService
         foreach ( $data as $item) {
             $array['label'][] = $item->getCreated()->format('Y-m-d');;
             $array['data'][] = $item->getUserRanking();
-        }
+
+            $array['difference'][] = ['difference'=>$item->getRankingDifference(), 'result' => $item->getSolveResult()] ;
+          }
 
         if (sizeof($array) > 0) {
             $array['label'] = $this->reverseHistoryArray($array['label']);
             $array['data'] = $this->reverseHistoryArray($array['data']);
+            $array['difference'] = $this->reverseHistoryArray($array['difference']);
+
         }
         
         return $array;

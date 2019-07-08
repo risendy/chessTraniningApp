@@ -18,11 +18,12 @@ class UserRankingHistoryRepository extends \Doctrine\ORM\EntityRepository
 	{
 		$em = $this->getEntityManager();
 
-		$puzzleResult = ($data->puzzleResult == 'true') ? 1 : 0;
+		$puzzleResult = ($data->puzzleResult == 'true' || $data->puzzleResult == '1') ? 1 : 0;
 
                 $historyRecord = new UserRankingHistory();
                 $historyRecord->setUserRanking($data->newUserRanking);
                 $historyRecord->setSolveResult($puzzleResult);
+                $historyRecord->setRankingDifference($data->rankingDifference);
                 $historyRecord->setUser($user);
                 $historyRecord->setPosition($position);
 
@@ -30,8 +31,8 @@ class UserRankingHistoryRepository extends \Doctrine\ORM\EntityRepository
                 $em->flush();
 	}
 
-    public function getUserRankingHistory($idUser)
+    public function getUserRankingHistory($idUser, $limit = 10)
     {
-       return $this->findByUser($idUser, ['created'=>'DESC'], 10);
+       return $this->findByUser($idUser, ['created'=>'DESC'], $limit);
     }
 }

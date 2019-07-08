@@ -53,6 +53,17 @@
               </div>
           </div>
 
+        <div class="container">
+            <div class="row">
+                <div class="col-2 alert alert-primary rankingHistoryElement">History</div>
+                <div class="col-2 ratingDifferenceColumns" v-for="result in ratingsDifference">
+                    <div class="alert rankingHistoryElement" v-bind:class = "(result.result==0)?'alert-danger':'alert-success'">
+                        <span v-if="(result.result==0)"> ${ result.difference }</span>
+                        <span v-else> +${ result.difference }</span>
+                    </div>
+                </div>
+            </div>
+        </div>
      
         <div class="card card_info card_info_bottom">
           <div class="card-header">
@@ -65,6 +76,8 @@
         </div>
 
       </div>
+
+
 
 
     </div><!-- /.container -->

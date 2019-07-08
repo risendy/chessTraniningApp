@@ -17,8 +17,9 @@ var appMainComponent = new Vue({
     delimiters: ['${', '}'],
     el: '#app',
     data: {
-        statusValue: 0
-            },
+        statusValue: 0,
+        ratingsDifference: []
+    },
     components: {
         'progress-information-component': progressInformationComponent,
         'puzzle-ranking-component': puzzleRankingComponent,
@@ -39,9 +40,26 @@ var appMainComponent = new Vue({
       },
       showsolution: function() {
         showSolutionFunc();
-      }
-  }
+      },
+      forceRerenderHistory: function () {
+            axios.get(Routing.generate('api_get_user_history_ranking', {id: store.userId, limit:5} ))
+                .then(response => {
+                    this.ratingsDifference = response.data.difference;
+                })
+                .catch(error => console.log(error));
+        },
+
+    },
+    created: function () {
+        axios.get(Routing.generate('api_get_user_history_ranking', {id: store.userId, limit:5} ))
+            .then(response => {
+                this.ratingsDifference = response.data.difference;
+            })
+            .catch(error => console.log(error));
+    }
+
 });
+
 
 var showSolutionFunc = function() {
   store.game.load(store.currentPosition);
@@ -213,7 +231,9 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
 
          savePuzzleRatingAxios(store.puzzleId, ratings.newPuzzleRanking)
          .then(saveUserRankingAxios(store.userId, ratings.newPlayerRanking))
-         .then(saveStatisticsAxios(store.userId, ratings.newPlayerRanking, store.puzzleId, ratings.newPuzzleRanking, store.puzzleResult));
+         .then(saveStatisticsAxios(store.userId, ratings.newPlayerRanking, store.puzzleId, ratings.newPuzzleRanking, store.puzzleResult, ratings.rankingDifference))
+         .then(appMainComponent.forceRerenderHistory())
+         .then(appMainComponent.$refs.graph.forceRerender());
      }
 }
 
@@ -274,7 +294,10 @@ var calculateNewRankings = function(result) {
    var newPuzzleRanking = floatPuzzleRanking+(k*param2Part2);
    newPuzzleRanking = newPuzzleRanking.toFixed(2);
 
-   resultArray = {newPlayerRanking: newPlayerRanking, newPuzzleRanking: newPuzzleRanking};
+   var rankingDifference = newPlayerRanking - floatUserRanking;
+   var rankingDifference = rankingDifference.toFixed(2);
+
+   resultArray = {newPlayerRanking: newPlayerRanking, newPuzzleRanking: newPuzzleRanking, rankingDifference: rankingDifference};
  }
 
  return resultArray;
@@ -377,13 +400,14 @@ var saveUserRankingAxios = function(userId, newPlayerRating) {
     .finally();
 }
 
-var saveStatisticsAxios = function(userId, newPlayerRating, puzzleId, newPuzzleRating, puzzleResult) {
+var saveStatisticsAxios = function(userId, newPlayerRating, puzzleId, newPuzzleRating, puzzleResult, rankingDifference) {
   return axios.post(Routing.generate('api_send_statistic_to_queue'), {
     userId: userId, 
     newPlayerRating: newPlayerRating, 
     puzzleId: puzzleId, 
     newPuzzleRating: newPuzzleRating, 
-    puzzleResult: puzzleResult
+    puzzleResult: puzzleResult,
+    rankingDifference:rankingDifference
   })
   .then(response => {
           console.log(response);

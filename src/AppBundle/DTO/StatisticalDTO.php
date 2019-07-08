@@ -9,7 +9,8 @@ class StatisticalDTO implements \JsonSerializable
     public $positionId;
     public $positionRanking;
     public $puzzleResult;
- 
+    public $rankingDifference;
+
     public function __construct(array $data)
     {
         $this->userId = isset($data['userId']) ? (int)$data['userId'] : null;
@@ -18,6 +19,7 @@ class StatisticalDTO implements \JsonSerializable
         $this->positionId = isset($data['positionId']) ? (string)$data['positionId'] : '';
         $this->positionRanking = isset($data['positionRanking']) ? (string)$data['positionRanking'] : '';
         $this->puzzleResult = isset($data['puzzleResult']) ? (string)$data['puzzleResult'] : '';
+        $this->rankingDifference = isset($data['rankingDifference']) ? (string)$data['rankingDifference'] : '';
     }
  
     public function jsonSerialize()

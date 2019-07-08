@@ -11,6 +11,7 @@
 
 <script>
 import LineChart from './Chart.vue'
+import store from './../globals.js';
 import "babel-core/register";
 import "babel-polyfill";
 
@@ -35,7 +36,7 @@ export default {
   async mounted () {
     this.loaded = false
     try {
-      var userRankingHistory = await fetch(Routing.generate('api_get_user_history_ranking', {id: 3} ));
+      var userRankingHistory = await fetch(Routing.generate('api_get_user_history_ranking', {id: store.userId, limit:10} ));
       var historyJson = await userRankingHistory.json();
 
       this.chartdata = {

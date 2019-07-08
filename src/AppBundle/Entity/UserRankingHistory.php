@@ -38,6 +38,13 @@ class UserRankingHistory
     private $solveResult;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="rankingDifference", type="decimal", scale=2)
+     */
+    private $rankingDifference;
+
+    /**
      * @var Datetime
      *
      * @ORM\Column(name="modified_at", type="datetime", nullable=true)
@@ -160,5 +167,29 @@ class UserRankingHistory
     public function getCreated()
     {
         return $this->created;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRankingDifference(): float
+    {
+        return $this->rankingDifference;
+    }
+
+    /**
+     * @param float $rankingDifference
+     */
+    public function setRankingDifference(float $rankingDifference): void
+    {
+        $this->rankingDifference = $rankingDifference;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSolveResult()
+    {
+        return $this->solveResult;
     }
 }

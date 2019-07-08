@@ -22,16 +22,18 @@ class UserHistoryController extends AbstractFOSRestController
 
     /**
      * Retrieves an random chess position
-     * @Rest\Get("/user/{id}/history/ranking", name="api_get_user_history_ranking", options={"expose"=true})
+     * @Rest\Get("/user/{id}/history/ranking/limit/{limit}", name="api_get_user_history_ranking", options={"expose"=true})
      * @param $id int
+     * @param $limit int
      * @return View
      */
-    public function getUserHistoryAction($id): View
+    public function getUserHistoryAction($id, $limit): View
     {
-        $userHistory = $this->userHistoryRankingService->getUserRankingHistory($id);
+        $userHistory = $this->userHistoryRankingService->getUserRankingHistory($id, $limit);
         $preparedData = $this->userHistoryRankingService->prepareData($userHistory);
 
         return View::create($preparedData, Response::HTTP_OK);
-
     }
+
+
 }

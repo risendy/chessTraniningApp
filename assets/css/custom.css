@@ -1,6 +1,3 @@
-.card_info_bottom {
-    margin-top: 15px;
-}
 .card_info_upper {
     padding-top:0px;
 }
@@ -34,4 +31,12 @@
     padding-top:15px;
     padding-bottom:15px;
     text-align: center;
+}
+.rankingHistoryElement {
+    margin-bottom:0px;
+    text-align:center;
+}
+.ratingDifferenceColumns{
+    padding-left:0px;
+    padding-right:0px;
 }
