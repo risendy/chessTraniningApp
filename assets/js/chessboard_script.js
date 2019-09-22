@@ -9,6 +9,7 @@ import playerRankingDifference from './components/playerRankingDifferenceCompone
 import puzzleRankingDifferenceComponent from './components/puzzleRankingDifferenceComponent.vue';
 import showSolutionComponent from './components/showSolutionComponent.vue';
 import playerRankingComponent from './components/playerRankingComponent.vue';
+import PuzzleInformationComponent from './components/PuzzleInformationComponent.vue';
 import statusComponent from './components/statusComponent.vue';
 import LineChartContainerMini from './components/ChartContainerMini.vue'
 import NextPosition from './components/NextPosition.vue'
@@ -22,6 +23,7 @@ var appMainComponent = new Vue({
     },
     components: {
         'progress-information-component': progressInformationComponent,
+        'puzzle-information-component': PuzzleInformationComponent,
         'puzzle-ranking-component': puzzleRankingComponent,
         'player-ranking-difference-component': playerRankingDifference,
         'puzzle-ranking-difference-component': puzzleRankingDifferenceComponent,
@@ -35,6 +37,7 @@ var appMainComponent = new Vue({
       getposition: function () {
           store.progressInformationValue='';
           hideProgressInfo();
+          resetPuzzleInformation();
 
           getRandomPosition();          
       },
@@ -227,7 +230,7 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
 
      if (!store.puzzleActive)
      {
-         console.log(ratings.newPlayerRanking);
+         displayPuzzleInformation();
 
          savePuzzleRatingAxios(store.puzzleId, ratings.newPuzzleRanking)
          .then(saveUserRankingAxios(store.userId, ratings.newPlayerRanking))
@@ -250,6 +253,26 @@ var setProgressInfo = function(type) {
     }
 
     store.progressInformationValue=html;
+}
+
+var displayPuzzleInformation = function() {
+    var puzzleRating = store.puzzleRankingValue;
+    var puzzleTotalTimesTried = store.puzzleInformationTotalTries;
+    var puzzleSuccessRate = store.puzzleSuccessRate;
+
+    const html = `
+        <i class="fas fa-info-circle" style="color:green"></i> Puzzle information: 
+        <p class="puzzle-info-paragraph"> Puzzle rating: ${puzzleRating}</p>
+        <p class="puzzle-info-paragraph"> Times solved: ${puzzleTotalTimesTried}</p>
+        <p class="puzzle-info-paragraph"> Success rate: ${puzzleSuccessRate}%</p>
+    `;
+
+    const greeting = `Hello ${name}`
+    store.puzzleInformation = html;
+}
+
+var resetPuzzleInformation = function(){
+    store.puzzleInformation = '';
 }
 
 var setPuzzleCompleted = function() {
@@ -432,6 +455,8 @@ var getRandomPosition = function() {
           store.puzzleRankingValue = parseFloat(response.data.puzzleRanking).toFixed(2);
           store.puzzleActive = true;
           store.puzzleId = response.data.puzzleId;
+          store.puzzleInformationTotalTries = response.data.puzzleTotalTries;
+          store.puzzleSuccessRate = response.data.puzzleSuccessRate;
 
           resetValuesInTemplateAfterChangingPosition();
           updateStatus();

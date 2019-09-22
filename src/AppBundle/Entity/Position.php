@@ -107,6 +107,19 @@ class Position
         $this->timesFailed = $timesFailed;
     }
 
+    public function getTotalTimesTried(){
+        return $this->timesFailed + $this->timesSolved;
+    }
+
+    public function getSuccessRate() {
+        if ($this->timesSolved == 0) return '0';
+        if ($this->timesFailed == 0) return '100';
+
+        $percent = ($this->timesSolved/$this->timesFailed)*100;
+
+        return number_format($percent, 2, '.', '');
+    }
+
     /**
      * @return mixed
      */

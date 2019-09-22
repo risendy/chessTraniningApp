@@ -14,6 +14,9 @@ var progressInformationValue = '';
 var playerRankingDifferenceValue = '';
 var puzzleRankingDifferenceValue = '';
 var showSolutionFlag = false;
+var puzzleInformation = '';
+var puzzleInformationTotalTries = '';
+var puzzleSuccessRate = '';
 
 var store = new Vue({
     data: {
@@ -29,7 +32,10 @@ var store = new Vue({
         playerRankingDifferenceValue,
         puzzleRankingDifferenceValue,
         showSolutionFlag,
-        statusValue
+        statusValue,
+        puzzleInformation,
+        puzzleInformationTotalTries,
+        puzzleSuccessRate
     },
     computed: {
 
