@@ -13,6 +13,7 @@ import PuzzleInformationComponent from './components/PuzzleInformationComponent.
 import statusComponent from './components/statusComponent.vue';
 import LineChartContainerMini from './components/ChartContainerMini.vue'
 import NextPosition from './components/NextPosition.vue'
+import GameHistory from './components/gameHistoryComponent.vue'
 
 var appMainComponent = new Vue({
     delimiters: ['${', '}'],
@@ -31,15 +32,17 @@ var appMainComponent = new Vue({
         'player-ranking-component': playerRankingComponent,
         'status-component': statusComponent,
         'line-chart-container': LineChartContainerMini,
-        'next-position': NextPosition
+        'next-position': NextPosition,
+        'game-history-component': GameHistory
     },
     methods: {
       getposition: function () {
           store.progressInformationValue='';
           hideProgressInfo();
           resetPuzzleInformation();
+          resetGameHistory();
 
-          getRandomPosition();          
+          getRandomPosition();
       },
       showsolution: function() {
         showSolutionFunc();
@@ -186,7 +189,21 @@ var makeMove = function(from, to) {
       promotion: 'q' // NOTE: always promote to a queen for example simplicity
     });
 
+    updateGameHistory();
+
     return move;
+}
+
+var updateGameHistory = function() {
+    var gameHistory = store.game.pgn();
+
+    console.log(gameHistory);
+
+    store.gameHistory = gameHistory;
+}
+
+var resetGameHistory = function() {
+    store.gameHistory = '';
 }
 
 var checkPlayerSolution = function(playerMove, solutionMove) {
@@ -405,7 +422,7 @@ var savePuzzleRatingAxios = function(puzzleId, newPuzzleRating) {
     newPuzzleRating:newPuzzleRating
   })
   .then(response => {
-          console.log(response);
+
       })
     .catch(error => console.log(error))
     .finally();
@@ -417,7 +434,7 @@ var saveUserRankingAxios = function(userId, newPlayerRating) {
     newPlayerRating:newPlayerRating
   })
   .then(response => {
-          console.log(response);
+
       })
     .catch(error => console.log(error))
     .finally();
@@ -433,7 +450,7 @@ var saveStatisticsAxios = function(userId, newPlayerRating, puzzleId, newPuzzleR
     rankingDifference:rankingDifference
   })
   .then(response => {
-          console.log(response);
+
       })
     .catch(error => console.log(error))
     .finally(
@@ -460,7 +477,8 @@ var getRandomPosition = function() {
 
           resetValuesInTemplateAfterChangingPosition();
           updateStatus();
-      })
+          updateGameHistory();
+    })
     .catch(error => console.log(error))
     .finally($.LoadingOverlay("hide") );
 }

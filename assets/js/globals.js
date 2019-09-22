@@ -17,6 +17,7 @@ var showSolutionFlag = false;
 var puzzleInformation = '';
 var puzzleInformationTotalTries = '';
 var puzzleSuccessRate = '';
+var gameHistory = '';
 
 var store = new Vue({
     data: {
@@ -35,7 +36,8 @@ var store = new Vue({
         statusValue,
         puzzleInformation,
         puzzleInformationTotalTries,
-        puzzleSuccessRate
+        puzzleSuccessRate,
+        gameHistory,
     },
     computed: {
 
