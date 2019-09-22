@@ -58,6 +58,9 @@ php bin/console rabbitmq:setup-fabric
 
 ### Homepage
 ![Main page](web/img/img2.png)
+                              
+### Puzzle completed
+![Main page](web/img/img22.png)                          
 
 ### User profile
 ![Main page](web/img/img3.png)
