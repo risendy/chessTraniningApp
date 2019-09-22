@@ -6,7 +6,7 @@
 * [Screenshots](#screenshots)
 
 ## General info
-Symfony/js app to solve chess puzzles using chess.js and chessboard.js libraries. The puzzles are loaded from the database in the FEN format using AJAX. Puzzle solution is kept in json array.
+Symfony/js app to solve chess puzzles using chess.js and chessboard.js libraries. The puzzles are loaded from the database in the PGN/FEN format using AJAX. Puzzle solutions are kept in json array.
 	
 ## Technologies
 Project is created with:
@@ -24,6 +24,7 @@ Project is created with:
 * Solving chess puzzles
 * Computing rating difference for puzzle and user using ELO ranking system.
 * Displaying graphs using Chart.js/vue-chartjs libraries
+* Displaying game history
 * Comes with the admin panel to add new puzzles
 * Comes with the data fixtures to load new user and 10 puzzles. User credentials are: user1/pass1
 
