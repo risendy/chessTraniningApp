@@ -17,9 +17,14 @@ class Position
     private $idPosition;
 
     /**
-     * @ORM\Column(type="string", length=200)
+     * @ORM\Column(type="text")
      */
     private $fen;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $pgn;
 
     /**
      * @ORM\Column(type="string", length=10)
@@ -134,5 +139,21 @@ class Position
     public function setStartingColor($startingColor): void
     {
         $this->startingColor = $startingColor;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPgn()
+    {
+        return $this->pgn;
+    }
+
+    /**
+     * @param mixed $pgn
+     */
+    public function setPgn($pgn): void
+    {
+        $this->pgn = $pgn;
     }
 }

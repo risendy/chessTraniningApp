@@ -161,8 +161,8 @@ var updateStatus = function() {
   store.statusValue = status;
 };
 
-var initNewPosition = function(fen) {
-    store.game.load(fen);
+var initNewPosition = function(fen, pgn) {
+    store.game.load_pgn(pgn);
 
     cfg.position = fen;
     cfg.draggable = true;
@@ -195,9 +195,7 @@ var makeMove = function(from, to) {
 }
 
 var updateGameHistory = function() {
-    var gameHistory = store.game.pgn();
-
-    console.log(gameHistory);
+    var gameHistory = store.game.history();
 
     store.gameHistory = gameHistory;
 }
@@ -211,6 +209,8 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
 
      if (movesSolution[0] == playerMove.from && movesSolution[1] == playerMove.to)
      {
+         console.log('in');
+
         var nextMove = getNextMoveFromSolution(store.solution);
 
         setProgressInfo(true);
@@ -466,7 +466,7 @@ var getRandomPosition = function() {
     .then(response => {
           store.currentPosition = response.data.fen;
 
-          initNewPosition(response.data.fen);
+          initNewPosition(response.data.fen, response.data.pgn);
           store.solution = setSolutionArray(response.data.solution);
           store.solutionCopy = setSolutionArray(response.data.solution);
           store.puzzleRankingValue = parseFloat(response.data.puzzleRanking).toFixed(2);

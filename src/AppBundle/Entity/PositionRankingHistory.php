@@ -158,4 +158,24 @@ class PositionRankingHistory
         return $this->modified;
     }
 
+
+    /**
+     * Get solveResult.
+     *
+     * @return bool
+     */
+    public function getSolveResult()
+    {
+        return $this->solveResult;
+    }
+
+    /**
+     * Get created.
+     *
+     * @return \DateTime|null
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
 }

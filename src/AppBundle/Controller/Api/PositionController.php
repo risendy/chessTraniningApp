@@ -36,6 +36,7 @@ class PositionController extends AbstractFOSRestController
 
     	$array = [
             'fen' => $randPosition->getFen(),
+            'pgn' => $randPosition->getPgn(),
             'solution' => $randPosition->getSolution(),
             'puzzleRanking' => $randPosition->getPuzzleRanking(),
             'puzzleId' => $randPosition->getIdPosition(),
