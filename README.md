@@ -54,6 +54,11 @@ php bin/console doctrine:fixtures:load
 php bin/console rabbitmq:setup-fabric
 ```
 
+#### Start rabbitMQ consumer process
+```
+php bin/console rabbitmq:consumer -m 50 process_statistic
+```
+
 ## Screenshots
 
 ### Homepage
