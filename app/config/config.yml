@@ -79,8 +79,12 @@ fos_user:
 easy_admin:
     entities:
         # change the following to the namespaces of your own entities
-        - AppBundle\Entity\Position
-        - AppBundle\Entity\User
+        Position:
+              class: AppBundle\Entity\Position
+              templates:
+                    edit: 'EasyAdmin/position/edit.html.twig'
+        User:
+              class: AppBundle\Entity\User
 
 old_sound_rabbit_mq:
     connections:

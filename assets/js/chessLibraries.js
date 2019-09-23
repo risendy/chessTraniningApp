@@ -1,2 +1,2 @@
 require('./chess.js');
-require('./chessboard-0.3.0.js');
+require('@chrisoakman/chessboardjs/dist/chessboard-1.0.0.js');
