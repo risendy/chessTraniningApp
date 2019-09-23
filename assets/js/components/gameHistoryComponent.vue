@@ -5,6 +5,12 @@
         <p id="gameHistory" v-html="gameHistory" class="card-text">
 
         </p>
+        <p>
+<!--            <input type="button" id="startPositionBtn5" value="|<" v-on:click="resetPosition"/>-->
+            <input type="button" id="prevBtn5" value="<" v-on:click="prevMove"/>
+            <input type="button" id="nextBtn5" value=">" v-on:click="nextMove"/>
+<!--            <input type="button" id="endPositionBtn5" value=">|" />-->
+        </p>
     </div>
 </template>
 
@@ -17,6 +23,14 @@ var gameHistoryComponent = Vue.component('game-history-component', {
         return {
 
         }
+    },
+    methods: {
+        prevMove: function () {
+            store.board.position(store.game.back());
+        },
+        nextMove: function () {
+            store.board.position(store.game.next());
+        },
     },
     computed: {
         gameHistory() {
@@ -33,7 +47,7 @@ var gameHistoryComponent = Vue.component('game-history-component', {
                     if (i % 2 == 0) {
                         //last move
                         if (i == gameHistory.length-1) {
-                            resultHtml += "<b><p class='game-history-paragraph'>"+counter+'. '+gameHistory[i]+' </b>';
+                            resultHtml += "<p class='game-history-paragraph'>"+counter+'. '+gameHistory[i];
                             continue;
                         }
 
@@ -45,7 +59,7 @@ var gameHistoryComponent = Vue.component('game-history-component', {
                     {
                         //last move
                         if (i == gameHistory.length-1) {
-                            resultHtml += "<b>"+gameHistory[i]+"</b></p>";
+                            resultHtml += gameHistory[i]+"</p>";
                             continue;
                         }
 
@@ -55,8 +69,15 @@ var gameHistoryComponent = Vue.component('game-history-component', {
             }
 
             return resultHtml;
-        }
+        },
+        history() {
+            return store.game.history();
+        },
+
     },
+    mounted() {
+
+    }
 });
 
 export default gameHistoryComponent;

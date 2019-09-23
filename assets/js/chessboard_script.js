@@ -82,6 +82,7 @@ var showSolutionFunc = function() {
             cfg.position = newFen;
             cfg.draggable = false;
             board = ChessBoard('board', cfg);
+            store.board = board;
             store.showSolutionFlag = false;
         }
 }
@@ -137,6 +138,7 @@ var updateStatus = function() {
 
   //update orientation
   board = ChessBoard('board', cfg);
+  store.board = board;
 
   // checkmate?
   if (store.game.in_checkmate() === true) {
@@ -168,6 +170,7 @@ var initNewPosition = function(fen, pgn) {
     cfg.draggable = true;
 
     board = ChessBoard('board', cfg);
+    store.board = board;
 }
 
 var setSolutionArray = function(solution) {
@@ -413,6 +416,7 @@ var cfg = {
 };
 
 var board = ChessBoard('board', cfg);
+store.board = board;
 
 var savePuzzleRatingAxios = function(puzzleId, newPuzzleRating) {
   $.LoadingOverlay("show");  

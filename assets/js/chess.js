@@ -167,6 +167,7 @@ var Chess = function(fen) {
   var move_number = 1;
   var history = [];
   var header = {};
+  var future = [];
 
   /* if the user passes in a fen string, load it, else default to
    * starting position
@@ -1702,6 +1703,23 @@ var Chess = function(fen) {
 
     perft: function(depth) {
       return perft(depth);
+    },
+
+    back: function() {
+      var moves = this.history();
+      var tmp = new Chess();
+      var previous = moves.length-future.length-1;
+      for(var i=0;i<previous;i++) {
+        tmp.move(moves[i]);
+      }
+      var previous_fen = tmp.fen();
+      tmp.move(moves[previous]);
+      future.push(tmp.fen());
+      return previous_fen;
+    },
+
+    next: function() {
+      return future.pop();
     },
 
     square_color: function(square) {

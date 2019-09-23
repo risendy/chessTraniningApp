@@ -2,6 +2,7 @@ import Chess from "./chess";
 import Vue from 'vue';
 
 var game = new Chess();
+var board;
 var solution = null;
 var solutionCopy = null;
 var currentPosition = null;
@@ -22,6 +23,7 @@ var gameHistory = '';
 var store = new Vue({
     data: {
         game,
+        board,
         solution,
         solutionCopy,
         currentPosition,
