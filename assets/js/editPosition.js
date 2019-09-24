@@ -13,28 +13,46 @@ var appMainComponent = new Vue({
     },
     methods: {
         loadFen: function (event) {
+            let currentFen = document.getElementById("position_fen").value;
+            let chess = new Chess();
+console.log(chess.validate_fen(currentFen));
 
+            if (chess.validate_fen(currentFen).valid)
+            {
+                this.cfg = {
+                    position: currentFen,
+                    orientation: 'white',
+                    draggable: false,
+                    pieceTheme: '/img/chesspieces/wikipedia/{piece}.png'
+                };
+
+                this.board = ChessBoard('board', this.cfg);
+            }
+            else
+            {
+                alert('invalid FEN. Error message: '+chess.validate_fen(currentFen).error);
+            }
         }
     },
     created: function () {
-        let fen = document.getElementById("position_fen").value;
-
-        if (!fen) {
-            fen = 'start';
-        }
-
+        let currentFen = document.getElementById("position_fen").value;
         let chess = new Chess();
 
+        if (!chess.validate_fen(currentFen).valid){
+            currentFen = 'start';
+        }
+
         this.cfg = {
-            position: fen,
+            position: currentFen,
             orientation: 'white',
             draggable: false,
             pieceTheme: '/img/chesspieces/wikipedia/{piece}.png'
         };
 
         this.board = ChessBoard('board', this.cfg);
-    }
 
+
+    }
 });
 
 export default appMainComponent;

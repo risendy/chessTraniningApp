@@ -82,6 +82,7 @@ easy_admin:
         Position:
               class: AppBundle\Entity\Position
               templates:
+                    new: 'EasyAdmin/position/new.html.twig'
                     edit: 'EasyAdmin/position/edit.html.twig'
         User:
               class: AppBundle\Entity\User
