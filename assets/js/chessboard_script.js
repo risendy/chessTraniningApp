@@ -171,6 +171,9 @@ var initNewPosition = function(fen, pgn) {
 
     board = ChessBoard('board', cfg);
     store.board = board;
+
+    store.currentMove = store.game.history().length;
+    store.gameHistory = store.game.history();
 }
 
 var setSolutionArray = function(solution) {

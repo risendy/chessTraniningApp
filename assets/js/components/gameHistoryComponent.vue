@@ -27,16 +27,25 @@ var gameHistoryComponent = Vue.component('game-history-component', {
     methods: {
         prevMove: function () {
             store.board.position(store.game.back());
+
+            store.currentMove -= 1;
+            if (store.currentMove < 0) {
+                store.currentMove = 0;
+            }
         },
         nextMove: function () {
             store.board.position(store.game.next());
+            store.currentMove += 1;
+
+            if (store.currentMove > store.gameHistory.length) {
+                store.currentMove = store.gameHistory.length;
+            }
         },
     },
     computed: {
         gameHistory() {
             let gameHistory =  store.gameHistory;
             let resultHtml = '';
-            let counter = 1;
 
             if (gameHistory === '') {
                 return  'no data';
@@ -45,35 +54,32 @@ var gameHistoryComponent = Vue.component('game-history-component', {
             if (gameHistory) {
                 for (let i=0; i<gameHistory.length; i++) {
                     if (i % 2 == 0) {
-                        //last move
-                        if (i == gameHistory.length-1) {
-                            resultHtml += "<p class='game-history-paragraph'>"+counter+'. '+gameHistory[i];
-                            continue;
-                        }
 
-                        resultHtml += "<p class='game-history-paragraph'>"+counter+'. '+gameHistory[i]+' ';
+                        if (i == store.currentMove-1){
+                            resultHtml += "<p class='game-history-paragraph'>"+counter+'.<b> '+gameHistory[i]+'</b> ';
+                        }
+                        else
+                        {
+                            resultHtml += "<p class='game-history-paragraph'>"+counter+'. '+gameHistory[i]+' ';
+                        }
 
                         counter++;
                     }
                     else
                     {
-                        //last move
-                        if (i == gameHistory.length-1) {
-                            resultHtml += gameHistory[i]+"</p>";
-                            continue;
+                        if (i == store.currentMove-1){
+                            resultHtml += '<b>'+gameHistory[i]+"</b></p>";
                         }
-
-                        resultHtml += gameHistory[i]+"</p>";
+                        else
+                        {
+                            resultHtml += gameHistory[i]+"</p>";
+                        }
                     }
                 }
             }
 
             return resultHtml;
         },
-        history() {
-            return store.game.history();
-        },
-
     },
     mounted() {
 
