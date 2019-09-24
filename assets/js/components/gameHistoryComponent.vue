@@ -46,6 +46,7 @@ var gameHistoryComponent = Vue.component('game-history-component', {
         gameHistory() {
             let gameHistory =  store.gameHistory;
             let resultHtml = '';
+            let counter = 1;
 
             if (gameHistory === '') {
                 return  'no data';

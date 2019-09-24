@@ -196,6 +196,7 @@ var makeMove = function(from, to) {
     });
 
     updateGameHistory();
+    store.currentMove++;
 
     return move;
 }

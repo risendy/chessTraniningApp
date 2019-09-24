@@ -73,3 +73,6 @@ php bin/console rabbitmq:consumer -m 50 process_statistic
 
 ### Admin panel
 ![Main page](web/img/img4.png)
+
+### Adding new positions
+![Main page](web/img/img5.png)
