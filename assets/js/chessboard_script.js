@@ -66,6 +66,27 @@ var appMainComponent = new Vue({
 
 });
 
+var greySquare = function(square) {
+    var whiteSquareGrey = '#a9a9a9'
+    var blackSquareGrey = '#696969'
+
+    var $square = $('.square-' + square)
+
+    var background = whiteSquareGrey
+    if ($square.hasClass('black-3c85d')) {
+        background = blackSquareGrey
+    }
+
+    $square.css('background', background)
+}
+
+var removeGreySquares = function() {
+    $('.square-55d63').css('background', '')
+}
+
+var onMouseoutSquare = function(square, piece) {
+    removeGreySquares()
+}
 
 var showSolutionFunc = function() {
   store.game.load(store.currentPosition);
@@ -91,6 +112,22 @@ var showSolutionFunc = function() {
 // only pick up pieces for the side to move
 
 var onDragStart = function(source, piece, position, orientation) {
+    var moves = store.game.moves({
+        square: source,
+        verbose: true
+    })
+
+    // exit if there are no moves available for this square
+    if (moves.length === 0) return
+
+    // highlight the square they moused over
+    greySquare(source)
+
+    // highlight the possible squares for this piece
+    for (var i = 0; i < moves.length; i++) {
+        greySquare(moves[i].to)
+    }
+
   if (store.game.game_over() === true ||
       (store.game.turn() === 'w' && piece.search(/^b/) !== -1) ||
       (store.game.turn() === 'b' && piece.search(/^w/) !== -1)) {
@@ -99,6 +136,8 @@ var onDragStart = function(source, piece, position, orientation) {
 };
 
 var onDrop = function(source, target) {
+  removeGreySquares()
+
   var playerMove = makeMove(source, target);
 
   if (playerMove)
