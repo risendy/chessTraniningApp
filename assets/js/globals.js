@@ -1,60 +1,45 @@
 import Chess from "./chess";
 import Vue from 'vue';
 
-var game = new Chess();
-var board;
-var solution = null;
-var solutionCopy = null;
-var currentPosition = null;
-var playerRankingValue = null;
-var puzzleRankingValue = null;
-var statusValue = null;
-var puzzleActive = false;
 var userId = $("#userId").val();
-var progressInformationValue = '';
-var playerRankingDifferenceValue = '';
-var puzzleRankingDifferenceValue = '';
-var showSolutionFlag = false;
-var puzzleInformation = '';
-var puzzleInformationTotalTries = '';
-var puzzleSuccessRate = '';
-var gameHistory = '';
-var currentMove = '';
-var gameHistory = '';
 
 var store = new Vue({
     data: {
-        game,
-        board,
-        solution,
-        solutionCopy,
-        currentPosition,
-        playerRankingValue,
-        puzzleRankingValue,
-        puzzleActive,
+        game: null,
+        board: null,
+        cfg: null,
+        solution: null,
+        solutionCopy: null,
+        currentPosition: null,
+        playerRankingValue: null,
+        puzzleRankingValue: null,
+        puzzleActive: false,
         userId,
-        progressInformationValue,
-        playerRankingDifferenceValue,
-        puzzleRankingDifferenceValue,
-        showSolutionFlag,
-        statusValue,
-        puzzleInformation,
-        puzzleInformationTotalTries,
-        puzzleSuccessRate,
-        gameHistory,
-        currentMove,
+        progressInformationValue: '',
+        playerRankingDifferenceValue: '',
+        puzzleRankingDifferenceValue: '',
+        showSolutionFlag: false,
+        statusValue: null,
+        puzzleInformation: '',
+        puzzleInformationTotalTries: '',
+        puzzleSuccessRate: '',
+        gameHistory: '',
+        currentMove: '',
     },
     computed: {
 
     },
     methods: {
         setProgressInformationAction (newValue) {
-            if (this.debug) console.log('setProgressInformationAction triggered with', newValue)
             this.progressInformation = newValue
+        },
+        initBoard (cfg) {
+            this.board = ChessBoard('board', cfg);
+        },
+        initGame () {
+            this.game = new Chess();
         },
     }
 });
-
-
 
 export default store;
