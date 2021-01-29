@@ -1,4 +1,4 @@
-import store from "../globals";
+import store from "../store/globals";
 
 export function initNewPosition(fen, pgn) {
     store.game.load_pgn(pgn);

@@ -18,11 +18,11 @@ Encore
      * and one CSS file (e.g. app.css) if you JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
-    .addEntry('jq', './assets/js/jq.js')
-    .addEntry('bootstrap', './assets/js/bootstrap.js')
-    .addEntry('chessLibraries', './assets/js/chessLibraries.js')
-    .addEntry('chessCustomLogic', './assets/js/chessCustomLogic.js')
-    .addEntry('helpers', './assets/js/helpers.js')
+    .addEntry('jq', './assets/js/lib/jq.js')
+    .addEntry('bootstrap', './assets/js/lib/bootstrap.js')
+    .addEntry('chessLibraries', './assets/js/lib/chessLibraries.js')
+    .addEntry('chessCustomLogic', './assets/js/lib/chessCustomLogic.js')
+    .addEntry('helpers', './assets/js/lib/helpers.js')
     .addEntry('profile', './assets/js/profile.js')
     .addEntry('editPosition', './assets/js/editPosition.js')
     //.addEntry('page1', './assets/js/page1.js')

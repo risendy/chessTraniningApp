@@ -1,4 +1,4 @@
-import Chess from "./chess";
+import Chess from "../lib/chess";
 import Vue from 'vue';
 
 var userId = $("#userId").val();

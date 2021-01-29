@@ -4,7 +4,7 @@
 
 <script>
 import Vue from 'vue';
-import store from './../globals.js';
+import store from '../store/globals.js';
 
 var playerRankingComponent = Vue.component('player-ranking-component', {
     props: ['dataUserRanking'],

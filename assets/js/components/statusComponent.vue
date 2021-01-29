@@ -4,7 +4,7 @@
 
 <script>
 import Vue from 'vue';
-import store from './../globals.js';
+import store from '../store/globals.js';
 
 var statusComponent = Vue.component('status-component', {
     data: function () {

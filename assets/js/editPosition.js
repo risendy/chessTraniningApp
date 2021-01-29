@@ -1,5 +1,5 @@
 import Vue from "vue";
-import Chess from './chess.js';
+import Chess from './lib/chess.js';
 
 var appMainComponent = new Vue({
     delimiters: ['${', '}'],

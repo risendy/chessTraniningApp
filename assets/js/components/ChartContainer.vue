@@ -11,7 +11,7 @@
 
 <script>
 import LineChart from './Chart.vue'
-import store from './../globals.js';
+import store from '../store/globals.js';
 import "babel-core/register";
 import "babel-polyfill";
 

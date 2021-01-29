@@ -4,7 +4,7 @@
 
 <script>
 import Vue from 'vue';
-import store from './../globals.js';
+import store from '../store/globals.js';
 
 var showSolutionComponent = Vue.component('show-solution-component', {
     data: function () {

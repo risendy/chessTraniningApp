@@ -1,5 +1,5 @@
 import axios from 'axios';
-import store from "../globals";
+import store from "../store/globals";
 import * as MyFn from './functions.js';
 
 export function savePuzzleRatingAxios(puzzleId, newPuzzleRating) {

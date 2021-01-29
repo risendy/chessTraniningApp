@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import store from './globals.js';
+import store from './store/globals.js';
 import axios from 'axios';
 import progressInformationComponent from './components/progressInformationComponent.vue';
 import puzzleRankingComponent from './components/puzzleRankingComponent.vue';
@@ -7,10 +7,10 @@ import playerRankingDifference from './components/playerRankingDifferenceCompone
 import puzzleRankingDifferenceComponent from './components/puzzleRankingDifferenceComponent.vue';
 import showSolutionComponent from './components/showSolutionComponent.vue';
 import playerRankingComponent from './components/playerRankingComponent.vue';
-import PuzzleInformationComponent from './components/PuzzleInformationComponent.vue';
+import PuzzleInformationComponent from './components/puzzleInformationComponent.vue';
 import statusComponent from './components/statusComponent.vue';
 import LineChartContainerMini from './components/ChartContainerMini.vue'
-import NextPosition from './components/NextPosition.vue'
+import NextPosition from './components/nextPosition.vue'
 import GameHistory from './components/gameHistoryComponent.vue'
 import * as ajaxFunc from './modules/ajaxCalls.js';
 import * as Func from './modules/functions.js';
