@@ -1,15 +1,13 @@
-import store from "../store/globals";
+import store from "../store/store.js";
 
 export function initNewPosition(fen, pgn) {
-    store.game.load_pgn(pgn);
+    store.getters.game.load_pgn(pgn);
 
-    store.cfg.position = fen;
-    store.cfg.draggable = true;
+    store.dispatch('changeCfg', {fen: fen, draggable:true});
+    store.commit('initBoard', store.getters.cfg);
 
-    store.board = ChessBoard('board', store.cfg);
-
-    store.currentMove = store.game.history().length;
-    store.gameHistory = store.game.history();
+    store.state.currentMove = store.getters.game.history().length;
+    store.state.gameHistory = store.getters.game.history();
 }
 
 export function setSolutionArray(solution) {
@@ -20,12 +18,12 @@ export function setSolutionArray(solution) {
 }
 
 export function resetValuesInTemplateAfterChangingPosition() {
-    store.playerRankingDifferenceValue = null;
-    store.puzzleRankingDifferenceValue= null;
+    store.state.playerRankingDifferenceValue = null;
+    store.state.puzzleRankingDifferenceValue= null;
 }
 
 export function updateStatus() {
-    if (!store.puzzleActive)
+    if (!store.getters.puzzleActive)
     {
         return;
     }
@@ -33,24 +31,24 @@ export function updateStatus() {
     var status = '';
     var moveIcon = '<i class="fas fa-chess-king" style="color:#ced4da; padding-right:5px;"></i>';
     var moveColor = 'White';
-    store.cfg.orientation='white';
+    store.state.cfg.orientation='white';
 
-    if (store.game.turn() === 'b') {
+    if (store.getters.game.turn() === 'b') {
         moveColor = 'Black';
         moveIcon = '<i class="fas fa-chess-king" style="padding-right:5px;"></i>';
         cfg.orientation='black';
     }
 
     //update orientation
-    store.board = ChessBoard('board', store.cfg);
+    store.state.board = ChessBoard('board', store.getters.cfg);
 
     // checkmate?
-    if (store.game.in_checkmate() === true) {
+    if (store.getters.game.in_checkmate() === true) {
         status = 'Game over, ' + moveColor + ' is in checkmate.';
     }
 
     // draw?
-    else if (store.game.in_draw() === true) {
+    else if (store.getters.game.in_draw() === true) {
         status = 'Game over, drawn position';
     }
 
@@ -59,26 +57,26 @@ export function updateStatus() {
         status = moveColor + ' to move';
 
         // check?
-        if (store.game.in_check() === true) {
+        if (store.getters.game.in_check() === true) {
             status += ', ' + moveColor + ' is in check';
         }
     }
 
-    store.statusValue = status;
+    store.state.statusValue = status;
 };
 
 export function updateGameHistory() {
-    var gameHistory = store.game.history();
+    var gameHistory = store.getters.game.history();
 
-    store.gameHistory = gameHistory;
+    store.state.gameHistory = gameHistory;
 }
 
 export function calculateNewRankings(result) {
     var k = 32;
     var s1,s2;
     var resultArray = {};
-    var floatUserRanking = parseFloat(store.playerRankingValue);
-    var floatPuzzleRanking = parseFloat(store.puzzleRankingValue);
+    var floatUserRanking = parseFloat(store.getters.playerRankingValue);
+    var floatPuzzleRanking = parseFloat(store.getters.puzzleRankingValue);
 
     if (floatUserRanking && floatPuzzleRanking)
     {
@@ -130,13 +128,13 @@ export function setProgressInfo(type) {
         html = '<i class="fas fa-times" style="color:red"></i> Bad move :(';
     }
 
-    store.progressInformationValue=html;
+    store.state.progressInformationValue=html;
 }
 
 export function displayPuzzleInformation() {
-    var puzzleRating = store.puzzleRankingValue;
-    var puzzleTotalTimesTried = store.puzzleInformationTotalTries;
-    var puzzleSuccessRate = store.puzzleSuccessRate;
+    var puzzleRating = store.getters.puzzleRankingValue;
+    var puzzleTotalTimesTried = store.getters.puzzleInformationTotalTries;
+    var puzzleSuccessRate = store.getters.puzzleSuccessRate;
 
     const html = `
         <i class="fas fa-info-circle" style="color:green"></i> Puzzle information: 
@@ -146,11 +144,11 @@ export function displayPuzzleInformation() {
     `;
 
     const greeting = `Hello ${name}`
-    store.puzzleInformation = html;
+    store.state.puzzleInformation = html;
 }
 
 export function resetPuzzleInformation(){
-    store.puzzleInformation = '';
+    store.state.puzzleInformation = '';
 }
 
 export function removeGreySquares() {
@@ -163,11 +161,11 @@ export function getNextMoveFromSolution(solution) {
 }
 
 export function disableShowSolutionButton() {
-    store.showSolutionFlag = false;
+    store.state.showSolutionFlag = false;
 }
 
 export function changePlayerRatingInTemplate(newRating) {
-    var playerRating = store.playerRankingValue;
+    var playerRating = store.getters.playerRankingValue;
     var difference = calculateRankingDifference(playerRating, newRating);
 
     if (newRating > playerRating)
@@ -179,16 +177,19 @@ export function changePlayerRatingInTemplate(newRating) {
         var icon = '<i class="fas fa-minus" style="color:red;"></i>';
     }
 
-    store.playerRankingDifferenceValue = '('+ icon + difference + ')';
-    store.playerRankingValue = newRating;
+    store.dispatch('setPlayerRatingInformation', {
+        playerRankingDifferenceValue: '('+ icon + difference + ')',
+        playerRankingValue: newRating
+    });
+
     setNewPlayerRating(newRating);
 }
 
 export function changePuzzleRankingInTemplate(newPuzzleRanking) {
-    var difference = calculateRankingDifference(store.puzzleRankingValue, newPuzzleRanking);
+    var difference = calculateRankingDifference(store.getters.puzzleRankingValue, newPuzzleRanking);
     var icon;
 
-    if (newPuzzleRanking > store.puzzleRankingValue)
+    if (newPuzzleRanking > store.getters.puzzleRankingValue)
     {
         icon = '<i class="fas fa-plus" style="color:green;"></i>';
     }
@@ -197,8 +198,8 @@ export function changePuzzleRankingInTemplate(newPuzzleRanking) {
         icon = '<i class="fas fa-minus" style="color:red;"></i>';
     }
 
-    store.puzzleRankingValue = newPuzzleRanking;
-    store.puzzleRankingDifferenceValue = '('+icon+difference+')';
+    store.state.puzzleRankingValue = newPuzzleRanking;
+    store.state.puzzleRankingDifferenceValue = '('+icon+difference+')';
 }
 
 export function calculateRankingDifference(ranking1, ranking2) {
@@ -206,41 +207,40 @@ export function calculateRankingDifference(ranking1, ranking2) {
 }
 
 export function setNewPlayerRating(newRating) {
-    store.playerRankingValue = newRating;
+    store.state.playerRankingValue = newRating;
 }
 
 export function setPuzzleCompleted() {
     var html = '<i class="fas fa-check" style="color:green"></i> Puzzle completed :)';
-    store.progressInformationValue=html;
 
-    store.puzzleActive = false;
+    store.state.progressInformationValue=html;
+    store.state.puzzleActive = false;
 }
 
 export function resetGameHistory() {
-    store.gameHistory = '';
+    store.state.gameHistory = '';
 }
 
 export function showSolutionFunc() {
-    store.game.load(store.currentPosition);
+    store.getters.game.load(store.getters.currentPosition);
 
-    var nextMove = getNextMoveFromSolution(store.solutionCopy);
+    var nextMove = getNextMoveFromSolution(store.getters.solutionCopy);
 
     if (nextMove)
     {
         var movesNextMove = nextMove.split("-");
         var playerMove = makeMove(movesNextMove[0], movesNextMove[1]);
 
-        var newFen = store.game.fen();
+        var newFen = store.getters.game.fen();
 
-        cfg.position = newFen;
-        cfg.draggable = false;
-        store.board = ChessBoard('board', cfg);
-        store.showSolutionFlag = false;
+        store.dispatch('changeCfg', {fen: newFen, draggable: false});
+        store.state.board = ChessBoard('board', store.getters.cfg);
+        store.state.showSolutionFlag = false;
     }
 }
 
 export function makeMove(from, to) {
-    var move = store.game.move({
+    var move = store.getters.game.move({
         from: from,
         to: to,
         promotion: 'q' // NOTE: always promote to a queen for example simplicity

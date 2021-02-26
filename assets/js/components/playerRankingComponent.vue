@@ -4,7 +4,7 @@
 
 <script>
 import Vue from 'vue';
-import store from '../store/globals.js';
+import store from '../store/store.js';
 
 var playerRankingComponent = Vue.component('player-ranking-component', {
     props: ['dataUserRanking'],
@@ -14,11 +14,11 @@ var playerRankingComponent = Vue.component('player-ranking-component', {
         }
     },
     beforeMount: function() {
-        store.playerRankingValue = this.dataUserRanking;
+        store.state.playerRankingValue = this.dataUserRanking;
     },
     computed: {
         playerRankingValue() {
-            return store.playerRankingValue;
+            return store.getters.playerRankingValue;
         }
     }
 });

@@ -16,7 +16,7 @@
 
 <script>
 import Vue from 'vue';
-import store from '../store/globals.js';
+import store from '../store/store.js';
 
 var gameHistoryComponent = Vue.component('game-history-component', {
     data: function () {
@@ -26,7 +26,7 @@ var gameHistoryComponent = Vue.component('game-history-component', {
     },
     methods: {
         prevMove: function () {
-            store.board.position(store.game.back());
+            store.board.position(store.getters.game.back());
 
             store.currentMove -= 1;
             if (store.currentMove < 0) {
@@ -34,17 +34,17 @@ var gameHistoryComponent = Vue.component('game-history-component', {
             }
         },
         nextMove: function () {
-            store.board.position(store.game.next());
+            store.board.position(store.getters.game.next());
             store.currentMove += 1;
 
-            if (store.currentMove > store.gameHistory.length) {
-                store.currentMove = store.gameHistory.length;
+            if (store.getters.currentMove > store.getters.gameHistory.length) {
+                store.getters.currentMove = store.getters.gameHistory.length;
             }
         },
     },
     computed: {
         gameHistory() {
-            let gameHistory =  store.gameHistory;
+            let gameHistory =  store.getters.gameHistory;
             let resultHtml = '';
             let counter = 1;
 
@@ -56,7 +56,7 @@ var gameHistoryComponent = Vue.component('game-history-component', {
                 for (let i=0; i<gameHistory.length; i++) {
                     if (i % 2 == 0) {
 
-                        if (i == store.currentMove-1){
+                        if (i == store.getters.currentMove-1){
                             resultHtml += "<p class='game-history-paragraph'>"+counter+'.<b> '+gameHistory[i]+'</b> ';
                         }
                         else
@@ -68,7 +68,7 @@ var gameHistoryComponent = Vue.component('game-history-component', {
                     }
                     else
                     {
-                        if (i == store.currentMove-1){
+                        if (i == store.getters.currentMove-1){
                             resultHtml += '<b>'+gameHistory[i]+"</b></p>";
                         }
                         else

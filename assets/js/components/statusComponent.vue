@@ -4,7 +4,7 @@
 
 <script>
 import Vue from 'vue';
-import store from '../store/globals.js';
+import store from '../store/store.js';
 
 var statusComponent = Vue.component('status-component', {
     data: function () {
@@ -14,7 +14,7 @@ var statusComponent = Vue.component('status-component', {
     },
     computed: {
         statusValue() {
-            return store.statusValue;
+            return store.getters.statusValue;
         }
     }
 });

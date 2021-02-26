@@ -6,7 +6,7 @@
 
 <script>
 import Vue from 'vue';
-import store from '../store/globals.js';
+import store from '../store/store.js';
 
 var puzzleInformationComponent = Vue.component('puzzle-information-component', {
     data: function () {
@@ -16,7 +16,7 @@ var puzzleInformationComponent = Vue.component('puzzle-information-component', {
     },
     computed: {
         puzzleInformation() {
-            return store.puzzleInformation;
+            return store.getters.puzzleInformation;
         }
     },
 });

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import store from "../store/globals";
+import store from "../store/store.js";
 import * as MyFn from './functions.js';
 
 export function savePuzzleRatingAxios(puzzleId, newPuzzleRating) {
@@ -52,16 +52,19 @@ export function getRandomPosition() {
     axios
         .get(Routing.generate('api_get_random_position'))
         .then(response => {
-            store.currentPosition = response.data.fen;
+            store.state.currentPosition = response.data.fen;
 
             MyFn.initNewPosition(response.data.fen, response.data.pgn);
-            store.solution = MyFn.setSolutionArray(response.data.solution);
-            store.solutionCopy = MyFn.setSolutionArray(response.data.solution);
-            store.puzzleRankingValue = parseFloat(response.data.puzzleRanking).toFixed(2);
-            store.puzzleActive = true;
-            store.puzzleId = response.data.puzzleId;
-            store.puzzleInformationTotalTries = response.data.puzzleTotalTries;
-            store.puzzleSuccessRate = response.data.puzzleSuccessRate;
+
+            store.dispatch('setNewPositionData', {
+                solution: MyFn.setSolutionArray(response.data.solution),
+                solutionCopy:  MyFn.setSolutionArray(response.data.solution),
+                puzzleRankingValue: parseFloat(response.data.puzzleRanking).toFixed(2),
+                puzzleActive: true,
+                puzzleId: response.data.puzzleId,
+                puzzleInformationTotalTries: response.data.puzzleTotalTries,
+                puzzleSuccessRate: response.data.puzzleSuccessRate
+            });
 
             MyFn.resetValuesInTemplateAfterChangingPosition();
             MyFn.updateStatus();

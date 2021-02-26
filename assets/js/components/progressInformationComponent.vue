@@ -4,7 +4,7 @@
 
 <script>
 import Vue from 'vue';
-import store from '../store/globals.js';
+import store from '../store/store.js';
 
 var progressInformationComponent = Vue.component('progress-information-component', {
     data: function () {
@@ -14,7 +14,7 @@ var progressInformationComponent = Vue.component('progress-information-component
     },
     computed: {
         progressInformationValue() {
-            return store.progressInformationValue;
+            return store.getters.progressInformationValue;
         }
     },
 });

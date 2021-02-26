@@ -4,7 +4,7 @@
 
 <script>
 import Vue from 'vue';
-import store from '../store/globals.js';
+import store from '../store/store.js';
 
 var showSolutionComponent = Vue.component('show-solution-component', {
     data: function () {
@@ -14,7 +14,7 @@ var showSolutionComponent = Vue.component('show-solution-component', {
     },
     computed: {
         showSolutionFlag() {
-            return store.showSolutionFlag;
+            return store.getters.showSolutionFlag;
         }
     },
 });

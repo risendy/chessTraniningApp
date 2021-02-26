@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import store from './store/globals.js';
+import store from './store/store.js';
 import axios from 'axios';
 import progressInformationComponent from './components/progressInformationComponent.vue';
 import puzzleRankingComponent from './components/puzzleRankingComponent.vue';
@@ -37,17 +37,17 @@ var appMainComponent = new Vue({
     },
     methods: {
       getposition: function () {
-          store.progressInformationValue='';
+          store.state.progressInformationValue='';
           Func.resetPuzzleInformation();
           Func.resetGameHistory();
 
           ajaxFunc.getRandomPosition();
       },
       showsolution: function() {
-        showSolutionFunc();
+          Func.showSolutionFunc();
       },
       forceRerenderHistory: function () {
-            axios.get(Routing.generate('api_get_user_history_ranking', {id: store.userId, limit:5} ))
+            axios.get(Routing.generate('api_get_user_history_ranking', {id: store.getters.userId, limit:5} ))
                 .then(response => {
                     this.ratingsDifference = response.data.difference;
                 })
@@ -56,7 +56,7 @@ var appMainComponent = new Vue({
 
     },
     created: function () {
-        axios.get(Routing.generate('api_get_user_history_ranking', {id: store.userId, limit:5} ))
+        axios.get(Routing.generate('api_get_user_history_ranking', {id: store.getters.userId, limit:5} ))
             .then(response => {
                 this.ratingsDifference = response.data.difference;
             })
@@ -68,7 +68,7 @@ var appMainComponent = new Vue({
 // do not pick up pieces if the game is over
 // only pick up pieces for the side to move
 var onDragStart = function(source, piece, position, orientation) {
-    var moves = store.game.moves({
+    var moves = store.getters.game.moves({
         square: source,
         verbose: true
     })
@@ -84,9 +84,9 @@ var onDragStart = function(source, piece, position, orientation) {
         Func.greySquare(moves[i].to)
     }
 
-  if (store.game.game_over() === true ||
-      (store.game.turn() === 'w' && piece.search(/^b/) !== -1) ||
-      (store.game.turn() === 'b' && piece.search(/^w/) !== -1)) {
+  if (store.getters.game.game_over() === true ||
+      (store.getters.game.turn() === 'w' && piece.search(/^b/) !== -1) ||
+      (store.getters.game.turn() === 'b' && piece.search(/^w/) !== -1)) {
     return false;
   }
 };
@@ -98,7 +98,7 @@ var onDrop = function(source, target) {
 
   if (playerMove)
   {
-     var solutionMove = Func.getNextMoveFromSolution(store.solution);
+     var solutionMove = Func.getNextMoveFromSolution(store.getters.solution);
      checkPlayerSolution(playerMove, solutionMove);
   }
 
@@ -111,7 +111,7 @@ var onDrop = function(source, target) {
 // update the board position after the piece snap
 // for castling, en passant, pawn promotion
 var onSnapEnd = function() {
-  store.board.position(store.game.fen());
+    store.getters.board.position(store.getters.game.fen());
 };
 
 var checkPlayerSolution = function(playerMove, solutionMove) {
@@ -119,9 +119,7 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
 
      if (movesSolution[0] == playerMove.from && movesSolution[1] == playerMove.to)
      {
-         console.log('in');
-
-        var nextMove = Func.getNextMoveFromSolution(store.solution);
+        var nextMove = Func.getNextMoveFromSolution(store.getters.solution);
 
         Func.setProgressInfo(true);
 
@@ -135,8 +133,8 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
         {
             var ratings = Func.calculateNewRankings(true);
 
-            store.puzzleResult = true;
-            store.puzzleActive = false;
+            store.state.puzzleResult = true;
+            store.state.puzzleActive = false;
             Func.setPuzzleCompleted();
             Func.changePlayerRatingInTemplate(ratings.newPlayerRanking);
             Func.changePuzzleRankingInTemplate(ratings.newPuzzleRanking);
@@ -147,21 +145,21 @@ var checkPlayerSolution = function(playerMove, solutionMove) {
      {
         var ratings = Func.calculateNewRankings(false);
 
-        store.puzzleResult = false;
-        store.puzzleActive = false;
-        store.showSolutionFlag = true;
+        store.state.puzzleResult = false;
+        store.state.puzzleActive = false;
+        store.state.showSolutionFlag = true;
         Func.setProgressInfo(false);
         Func.changePlayerRatingInTemplate(ratings.newPlayerRanking);
         Func.changePuzzleRankingInTemplate(ratings.newPuzzleRanking);
      }
 
-     if (!store.puzzleActive)
+     if (!store.getters.puzzleActive)
      {
          Func.displayPuzzleInformation();
 
-         ajaxFunc.savePuzzleRatingAxios(store.puzzleId, ratings.newPuzzleRanking)
-         .then(ajaxFunc.saveUserRankingAxios(store.userId, ratings.newPlayerRanking))
-         .then(ajaxFunc.saveStatisticsAxios(store.userId, ratings.newPlayerRanking, store.puzzleId, ratings.newPuzzleRanking, store.puzzleResult, ratings.rankingDifference))
+         ajaxFunc.savePuzzleRatingAxios(store.getters.puzzleId, ratings.newPuzzleRanking)
+         .then(ajaxFunc.saveUserRankingAxios(store.getters.userId, ratings.newPlayerRanking))
+         .then(ajaxFunc.saveStatisticsAxios(store.getters.userId, ratings.newPlayerRanking, store.getters.puzzleId, ratings.newPuzzleRanking, store.getters.puzzleResult, ratings.rankingDifference))
          .then(appMainComponent.forceRerenderHistory())
          .then(appMainComponent.$refs.graph.forceRerender());
      }
@@ -176,9 +174,9 @@ var cfg = {
     onSnapEnd: onSnapEnd
 };
 
-store.cfg = cfg;
-store.initBoard(cfg);
-store.initGame();
+store.state.cfg = cfg;
+store.commit('initBoard', cfg);
+store.commit('initGame');
 
 Func.updateStatus();
 

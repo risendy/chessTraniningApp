@@ -4,7 +4,7 @@
 
 <script>
 import Vue from 'vue';
-import store from '../store/globals.js';
+import store from '../store/store.js';
 
 var puzzleRankingComponent = Vue.component('puzzle-ranking-component', {
     data: function () {
@@ -14,7 +14,7 @@ var puzzleRankingComponent = Vue.component('puzzle-ranking-component', {
     },
     computed: {
         puzzleRankingValue() {
-            return store.puzzleRankingValue;
+            return store.getters.puzzleRankingValue;
         }
     },
 });
