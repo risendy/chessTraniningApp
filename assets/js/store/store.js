@@ -96,8 +96,23 @@ const store = new Vuex.Store({
         changePlayerRankingDifferenceValue (state, playerRankingDifferenceValue) {
             state.playerRankingDifferenceValue = playerRankingDifferenceValue;
         },
+        changePuzzleRankingDifferenceValue (state, puzzleRankingDifferenceValue) {
+            state.puzzleRankingDifferenceValue = puzzleRankingDifferenceValue;
+        },
         changePlayerRankingValue (state, playerRankingValue) {
             state.playerRankingValue = playerRankingValue;
+        },
+        changeCurrentPosition (state, currentPosition) {
+            state.currentPosition = currentPosition;
+        },
+        changeGameHistory (state, gameHistory) {
+            state.gameHistory = gameHistory;
+        },
+        changeProgressInformationValue(state, progressInformationValue) {
+            state.progressInformationValue = progressInformationValue;
+        },
+        changePuzzleInformation(state, puzzleInformation) {
+            state.puzzleInformation = puzzleInformation;
         },
     },
     actions: {
@@ -109,6 +124,7 @@ const store = new Vuex.Store({
             state.commit('changeCfgDraggable', payload.draggable);
         },
         setNewPositionData(state, payload) {
+            state.commit('changeCurrentPosition', payload.currentPosition);
             state.commit('changeSolution', payload.solution);
             state.commit('changeSolutionCopy', payload.solutionCopy);
             state.commit('changePuzzleRankingValue', payload.puzzleRankingValue);
@@ -120,6 +136,20 @@ const store = new Vuex.Store({
         setPlayerRatingInformation(state, payload) {
             state.commit('changePlayerRankingDifferenceValue', payload.playerRankingDifferenceValue)
             state.commit('changePlayerRankingValue', payload.playerRankingValue)
+        },
+        resetValuesInTemplateAfterChangingPosition(state) {
+            state.commit('changePlayerRankingDifferenceValue', null)
+            state.commit('changePuzzleRankingDifferenceValue', null)
+        },
+        updateGameHistory(state) {
+            let gameHistory = state.getters.game.history();
+
+            state.commit('changeGameHistory', gameHistory);
+        },
+        resetPuzzleAndGameValues(state) {
+            state.commit('changeProgressInformationValue', '');
+            state.commit('changePuzzleInformation', '');
+            state.commit('changeGameHistory', '');
         }
     }
 })

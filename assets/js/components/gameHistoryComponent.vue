@@ -26,16 +26,16 @@ var gameHistoryComponent = Vue.component('game-history-component', {
     },
     methods: {
         prevMove: function () {
-            store.board.position(store.getters.game.back());
+            store.getters.board.position(store.getters.game.back());
 
-            store.currentMove -= 1;
-            if (store.currentMove < 0) {
-                store.currentMove = 0;
+            store.state.currentMove -= 1;
+            if (store.getters.currentMove < 0) {
+                store.state.currentMove = 0;
             }
         },
         nextMove: function () {
-            store.board.position(store.getters.game.next());
-            store.currentMove += 1;
+            store.getters.board.position(store.getters.game.next());
+            store.state.currentMove += 1;
 
             if (store.getters.currentMove > store.getters.gameHistory.length) {
                 store.getters.currentMove = store.getters.gameHistory.length;

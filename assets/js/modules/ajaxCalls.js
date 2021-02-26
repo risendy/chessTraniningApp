@@ -52,11 +52,10 @@ export function getRandomPosition() {
     axios
         .get(Routing.generate('api_get_random_position'))
         .then(response => {
-            store.state.currentPosition = response.data.fen;
-
             MyFn.initNewPosition(response.data.fen, response.data.pgn);
 
             store.dispatch('setNewPositionData', {
+                currentPosition: response.data.fen,
                 solution: MyFn.setSolutionArray(response.data.solution),
                 solutionCopy:  MyFn.setSolutionArray(response.data.solution),
                 puzzleRankingValue: parseFloat(response.data.puzzleRanking).toFixed(2),
@@ -66,9 +65,11 @@ export function getRandomPosition() {
                 puzzleSuccessRate: response.data.puzzleSuccessRate
             });
 
-            MyFn.resetValuesInTemplateAfterChangingPosition();
+            store.dispatch('resetValuesInTemplateAfterChangingPosition');
+
             MyFn.updateStatus();
-            MyFn.updateGameHistory();
+
+            store.dispatch('updateGameHistory');
         })
         .catch(error => console.log(error))
         .finally($.LoadingOverlay("hide") );

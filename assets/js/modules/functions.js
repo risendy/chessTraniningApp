@@ -1,4 +1,55 @@
 import store from "../store/store.js";
+import * as ajaxFunc from '../modules/ajaxCalls.js';
+import {appMainComponent} from "../chessboard_script";
+
+// do not pick up pieces if the game is over
+// only pick up pieces for the side to move
+export function onDragStart(source, piece, position, orientation) {
+    var moves = store.getters.game.moves({
+        square: source,
+        verbose: true
+    })
+
+    // exit if there are no moves available for this square
+    if (moves.length === 0) return
+
+    // highlight the square they moused over
+    greySquare(source)
+
+    // highlight the possible squares for this piece
+    for (var i = 0; i < moves.length; i++) {
+        greySquare(moves[i].to)
+    }
+
+    if (store.getters.game.game_over() === true ||
+        (store.getters.game.turn() === 'w' && piece.search(/^b/) !== -1) ||
+        (store.getters.game.turn() === 'b' && piece.search(/^w/) !== -1)) {
+        return false;
+    }
+};
+
+export function onDrop(source, target) {
+    removeGreySquares()
+
+    var playerMove = makeMove(source, target);
+
+    if (playerMove)
+    {
+        var solutionMove = getNextMoveFromSolution(store.getters.solution);
+        checkPlayerSolution(playerMove, solutionMove);
+    }
+
+    // illegal move
+    if (playerMove === null) return 'snapback';
+
+    updateStatus();
+};
+
+// update the board position after the piece snap
+// for castling, en passant, pawn promotion
+export function onSnapEnd() {
+    store.getters.board.position(store.getters.game.fen());
+};
 
 export function initNewPosition(fen, pgn) {
     store.getters.game.load_pgn(pgn);
@@ -15,11 +66,6 @@ export function setSolutionArray(solution) {
     solutionTmp.array.reverse();
 
     return solutionTmp.array;
-}
-
-export function resetValuesInTemplateAfterChangingPosition() {
-    store.state.playerRankingDifferenceValue = null;
-    store.state.puzzleRankingDifferenceValue= null;
 }
 
 export function updateStatus() {
@@ -64,12 +110,6 @@ export function updateStatus() {
 
     store.state.statusValue = status;
 };
-
-export function updateGameHistory() {
-    var gameHistory = store.getters.game.history();
-
-    store.state.gameHistory = gameHistory;
-}
 
 export function calculateNewRankings(result) {
     var k = 32;
@@ -147,10 +187,6 @@ export function displayPuzzleInformation() {
     store.state.puzzleInformation = html;
 }
 
-export function resetPuzzleInformation(){
-    store.state.puzzleInformation = '';
-}
-
 export function removeGreySquares() {
     $('.square-55d63').css('background', '')
 }
@@ -158,10 +194,6 @@ export function removeGreySquares() {
 export function getNextMoveFromSolution(solution) {
     var nextMove = solution.pop();
     return nextMove;
-}
-
-export function disableShowSolutionButton() {
-    store.state.showSolutionFlag = false;
 }
 
 export function changePlayerRatingInTemplate(newRating) {
@@ -217,10 +249,6 @@ export function setPuzzleCompleted() {
     store.state.puzzleActive = false;
 }
 
-export function resetGameHistory() {
-    store.state.gameHistory = '';
-}
-
 export function showSolutionFunc() {
     store.getters.game.load(store.getters.currentPosition);
 
@@ -246,8 +274,8 @@ export function makeMove(from, to) {
         promotion: 'q' // NOTE: always promote to a queen for example simplicity
     });
 
-    updateGameHistory();
-    store.currentMove++;
+    store.dispatch('updateGameHistory');
+    store.state.currentMove++;
 
     return move;
 }
@@ -264,4 +292,55 @@ export function greySquare(square) {
     }
 
     $square.css('background', background)
+}
+
+export function checkPlayerSolution(playerMove, solutionMove) {
+    var movesSolution = solutionMove.split("-");
+
+    if (movesSolution[0] == playerMove.from && movesSolution[1] == playerMove.to)
+    {
+        var nextMove = getNextMoveFromSolution(store.getters.solution);
+
+        setProgressInfo(true);
+
+        if (nextMove)
+        {
+            var movesNextMove = nextMove.split("-");
+            var move = makeMove(movesNextMove[0], movesNextMove[1]);
+        }
+        //no more moves - ending
+        else
+        {
+            var ratings = calculateNewRankings(true);
+
+            store.state.puzzleResult = true;
+            store.state.puzzleActive = false;
+            setPuzzleCompleted();
+            changePlayerRatingInTemplate(ratings.newPlayerRanking);
+            changePuzzleRankingInTemplate(ratings.newPuzzleRanking);
+        }
+    }
+    //user error
+    else
+    {
+        var ratings = calculateNewRankings(false);
+
+        store.state.puzzleResult = false;
+        store.state.puzzleActive = false;
+        store.state.showSolutionFlag = true;
+        setProgressInfo(false);
+        changePlayerRatingInTemplate(ratings.newPlayerRanking);
+        changePuzzleRankingInTemplate(ratings.newPuzzleRanking);
+    }
+
+    if (!store.getters.puzzleActive)
+    {
+        displayPuzzleInformation();
+
+        ajaxFunc.savePuzzleRatingAxios(store.getters.puzzleId, ratings.newPuzzleRanking)
+            .then(ajaxFunc.saveUserRankingAxios(store.getters.userId, ratings.newPlayerRanking))
+            .then(ajaxFunc.saveStatisticsAxios(store.getters.userId, ratings.newPlayerRanking, store.getters.puzzleId, ratings.newPuzzleRanking, store.getters.puzzleResult, ratings.rankingDifference))
+            .then(appMainComponent.forceRerenderHistory())
+            .then(appMainComponent.$refs.graph.forceRerender());
+    }
 }
