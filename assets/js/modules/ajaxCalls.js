@@ -66,6 +66,7 @@ export function getRandomPosition() {
             });
 
             store.dispatch('resetValuesInTemplateAfterChangingPosition');
+            store.dispatch('startCountingTime');
 
             MyFn.updateStatus();
 

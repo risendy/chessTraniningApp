@@ -175,12 +175,14 @@ export function displayPuzzleInformation() {
     var puzzleRating = store.getters.puzzleRankingValue;
     var puzzleTotalTimesTried = store.getters.puzzleInformationTotalTries;
     var puzzleSuccessRate = store.getters.puzzleSuccessRate;
+    var timeElapsed = store.getters.getPuzzleElapsedTime;
 
     const html = `
         <i class="fas fa-info-circle" style="color:green"></i> Puzzle information: 
         <p class="puzzle-info-paragraph"> Puzzle rating: ${puzzleRating}</p>
         <p class="puzzle-info-paragraph"> Times solved: ${puzzleTotalTimesTried}</p>
         <p class="puzzle-info-paragraph"> Success rate: ${puzzleSuccessRate}%</p>
+        <p class="puzzle-info-paragraph"> Time spent: ${timeElapsed} [s]</p>
     `;
 
     const greeting = `Hello ${name}`
@@ -335,6 +337,7 @@ export function checkPlayerSolution(playerMove, solutionMove) {
 
     if (!store.getters.puzzleActive)
     {
+        store.dispatch('stopCountingTime');
         displayPuzzleInformation();
 
         ajaxFunc.savePuzzleRatingAxios(store.getters.puzzleId, ratings.newPuzzleRanking)

@@ -29,6 +29,8 @@ const store = new Vuex.Store({
         puzzleSuccessRate: '',
         gameHistory: '',
         currentMove: '',
+        puzzleTimeStart: '',
+        puzzleTimeStop: '',
     },
     getters: {
         game: state => state.game,
@@ -52,6 +54,16 @@ const store = new Vuex.Store({
         gameHistory: state => state.gameHistory,
         currentMove: state => state.currentMove,
         userId: state => state.userId,
+        puzzleTimeStart: state => state.puzzleTimeStart,
+        puzzleTimeStop: state => state.puzzleTimeStop,
+        getPuzzleElapsedTime: state => {
+            var timeDiff = state.puzzleTimeStop - state.puzzleTimeStart; //in ms
+            // strip the ms
+            timeDiff /= 1000;
+
+            // get seconds
+            return timeDiff;
+        }
     },
     mutations: {
         increment (state) {
@@ -114,6 +126,12 @@ const store = new Vuex.Store({
         changePuzzleInformation(state, puzzleInformation) {
             state.puzzleInformation = puzzleInformation;
         },
+        startCountingTime(state) {
+            state.puzzleTimeStart = new Date();
+        },
+        stopCountingTime(state) {
+            state.puzzleTimeStop = new Date();
+        },
     },
     actions: {
         changeCfgPosition (state, fen) {
@@ -150,7 +168,14 @@ const store = new Vuex.Store({
             state.commit('changeProgressInformationValue', '');
             state.commit('changePuzzleInformation', '');
             state.commit('changeGameHistory', '');
+        },
+        startCountingTime(state) {
+            state.commit('startCountingTime');
+        },
+        stopCountingTime(state) {
+            state.commit('stopCountingTime');
         }
+
     }
 })
 
