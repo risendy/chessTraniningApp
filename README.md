@@ -6,14 +6,14 @@
 * [Screenshots](#screenshots)
 
 ## General info
-Symfony/js app to solve chess puzzles using chess.js and chessboard.js libraries. The puzzles are loaded from the database in the PGN/FEN format using AJAX. Puzzle solutions are kept in json array.
+Symfony/js app to solve chess puzzles using chess.js and chessboard.js libraries. The puzzles are loaded from the database in the PGN/FEN format using AJAX. 
 	
 ## Technologies
 Project is created with:
 * Symfony 3.4
 * FOSUserBundle for user login/registration
 * RabbitMQ for some asynchronous work
-* Vue.js
+* Vue.js/Vuex
 * Vue-chartjs
 * Chess.js
 * Chessboard.js
