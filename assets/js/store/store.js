@@ -2,6 +2,7 @@ import Chess from "../lib/chess";
 import Vue from 'vue';
 import Vuex from 'vuex'
 import * as MyFn from "../modules/functions";
+import {calculateRankingDifference} from "../modules/functions";
 
 Vue.use(Vuex)
 
@@ -228,13 +229,96 @@ const store = new Vuex.Store({
         makeFirstMove(state) {
             var nextMove = MyFn.getNextMoveFromSolution(state.getters.solution);
             var movesNextMove = nextMove.split("-");
-            var move = MyFn.makeMove(movesNextMove[0], movesNextMove[1]);
+
+            var move = state.dispatch('makeMove', {
+                from: movesNextMove[0],
+                to: movesNextMove[1]
+            });
+
             var newFen = state.getters.game.fen();
 
             setTimeout(function(){
                 state.dispatch('changeCfg', {fen: newFen, draggable: true});
                 MyFn.updateStatus();
             }, 2000);
+        },
+        makeMove(state, payload) {
+            return new Promise((resolve, reject) => {
+                var move = state.getters.game.move({
+                    from: payload.from,
+                    to: payload.to,
+                    promotion: 'q' // NOTE: always promote to a queen for example simplicity
+                });
+
+                state.dispatch('updateGameHistory');
+                state.currentMove++;
+
+                resolve();
+
+                return move;
+            })
+        },
+        displayPuzzleInformation(state) {
+            var puzzleRating = state.getters.puzzleRankingValue;
+            var puzzleTotalTimesTried = state.getters.puzzleInformationTotalTries;
+            var puzzleSuccessRate = state.getters.puzzleSuccessRate;
+            var timeElapsed = state.getters.getPuzzleElapsedTime;
+
+            const html = `
+            <i class="fas fa-info-circle" style="color:green"></i> Puzzle information: 
+            <p class="puzzle-info-paragraph"> Puzzle rating: ${puzzleRating}</p>
+            <p class="puzzle-info-paragraph"> Times solved: ${puzzleTotalTimesTried}</p>
+            <p class="puzzle-info-paragraph"> Success rate: ${puzzleSuccessRate}%</p>
+            <p class="puzzle-info-paragraph"> Time spent: ${timeElapsed} [s]</p>
+            `;
+
+            state.puzzleInformation = html;
+        },
+        setProgressInfo(state, type) {
+            var html;
+
+            if (type)
+            {
+                html = '<i class="fas fa-check" style="color:green"></i> Good move, keep on :)';
+            }
+            else
+            {
+                html = '<i class="fas fa-times" style="color:red"></i> Bad move :(';
+            }
+
+            state.commit('changeProgressInformationValue', html);
+        },
+        changePlayerRatingInTemplate(state, newRating) {
+            var playerRating = state.getters.playerRankingValue;
+            var difference = MyFn.calculateRankingDifference(playerRating, newRating);
+
+            if (newRating > playerRating)
+            {
+                var icon = '<i class="fas fa-plus" style="color:green;"></i>';
+            }
+            else
+            {
+                var icon = '<i class="fas fa-minus" style="color:red;"></i>';
+            }
+
+            state.commit('changePlayerRankingDifferenceValue', '('+ icon + difference + ')')
+            state.commit('changePlayerRankingValue', newRating)
+        },
+        changePuzzleRankingInTemplate(state, newPuzzleRanking) {
+            var difference = MyFn.calculateRankingDifference(state.getters.puzzleRankingValue, newPuzzleRanking);
+            var icon;
+
+            if (newPuzzleRanking > state.getters.puzzleRankingValue)
+            {
+                icon = '<i class="fas fa-plus" style="color:green;"></i>';
+            }
+            else
+            {
+                icon = '<i class="fas fa-minus" style="color:red;"></i>';
+            }
+
+            state.commit('changePuzzleRankingValue', newPuzzleRanking);
+            state.commit('changePuzzleRankingDifferenceValue', '('+icon+difference+')');
         }
 
     }

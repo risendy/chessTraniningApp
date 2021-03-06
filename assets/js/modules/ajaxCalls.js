@@ -1,5 +1,6 @@
 import axios from 'axios';
 import store from "../store/store.js";
+import {appMainComponent} from "../chessboard_script";
 
 export function savePuzzleRatingAxios(puzzleId, newPuzzleRating) {
     $.LoadingOverlay("show");
@@ -60,7 +61,7 @@ export function getRandomPosition() {
             store.dispatch('setNewPositionData', {
                 currentPosition: response.data.fen,
                 solution: store.getters.solution,
-                solutionCopy:  store.getters.solution,
+                solutionCopy:  [...store.getters.solution],
                 puzzleRankingValue: parseFloat(response.data.puzzleRanking).toFixed(2),
                 puzzleActive: true,
                 puzzleId: response.data.puzzleId,

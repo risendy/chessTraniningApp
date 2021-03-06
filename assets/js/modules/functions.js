@@ -41,10 +41,6 @@ export function onDrop(source, target) {
 
     // illegal move
     if (playerMove === null) return 'snapback';
-
-/*    setTimeout(function(){
-        updateStatus();
-    }, 2000);*/
 };
 
 // update the board position after the piece snap
@@ -54,13 +50,6 @@ export function onSnapEnd() {
         store.getters.board.position(store.getters.game.fen());
     }, 1000);
 };
-
-export function setSolutionArray(solution) {
-    var solutionTmp = JSON.parse(solution);
-    solutionTmp.reverse();
-
-    return solutionTmp;
-}
 
 export function updateStatus() {
     if (!store.getters.puzzleActive)
@@ -150,104 +139,46 @@ export function calculateNewRankings(result) {
 
 }
 
-export function setProgressInfo(type) {
-    var html;
-
-    if (type)
-    {
-        html = '<i class="fas fa-check" style="color:green"></i> Good move, keep on :)';
-    }
-    else
-    {
-        html = '<i class="fas fa-times" style="color:red"></i> Bad move :(';
-    }
-
-    store.state.progressInformationValue=html;
-}
-
-export function displayPuzzleInformation() {
-    var puzzleRating = store.getters.puzzleRankingValue;
-    var puzzleTotalTimesTried = store.getters.puzzleInformationTotalTries;
-    var puzzleSuccessRate = store.getters.puzzleSuccessRate;
-    var timeElapsed = store.getters.getPuzzleElapsedTime;
-
-    const html = `
-        <i class="fas fa-info-circle" style="color:green"></i> Puzzle information: 
-        <p class="puzzle-info-paragraph"> Puzzle rating: ${puzzleRating}</p>
-        <p class="puzzle-info-paragraph"> Times solved: ${puzzleTotalTimesTried}</p>
-        <p class="puzzle-info-paragraph"> Success rate: ${puzzleSuccessRate}%</p>
-        <p class="puzzle-info-paragraph"> Time spent: ${timeElapsed} [s]</p>
-    `;
-
-    store.state.puzzleInformation = html;
-}
-
-export function removeGreySquares() {
-    $('.square-55d63').css('background', '')
-}
-
 export function getNextMoveFromSolution(solution) {
     var nextMove = solution.pop();
 
     return nextMove;
 }
 
-export function changePlayerRatingInTemplate(newRating) {
-    var playerRating = store.getters.playerRankingValue;
-    var difference = calculateRankingDifference(playerRating, newRating);
-
-    if (newRating > playerRating)
-    {
-        var icon = '<i class="fas fa-plus" style="color:green;"></i>';
-    }
-    else
-    {
-        var icon = '<i class="fas fa-minus" style="color:red;"></i>';
-    }
-
-    store.dispatch('setPlayerRatingInformation', {
-        playerRankingDifferenceValue: '('+ icon + difference + ')',
-        playerRankingValue: newRating
-    });
-}
-
-export function changePuzzleRankingInTemplate(newPuzzleRanking) {
-    var difference = calculateRankingDifference(store.getters.puzzleRankingValue, newPuzzleRanking);
-    var icon;
-
-    if (newPuzzleRanking > store.getters.puzzleRankingValue)
-    {
-        icon = '<i class="fas fa-plus" style="color:green;"></i>';
-    }
-    else
-    {
-        icon = '<i class="fas fa-minus" style="color:red;"></i>';
-    }
-
-    store.state.puzzleRankingValue = newPuzzleRanking;
-    store.state.puzzleRankingDifferenceValue = '('+icon+difference+')';
-}
-
 export function calculateRankingDifference(ranking1, ranking2) {
     return Math.abs(parseFloat(ranking1) - parseFloat(ranking2)).toFixed(2);
 }
 
+function solutionRecursive(length) {
+        if (length)  {
+            setTimeout(function() {
+                var nextMove = getNextMoveFromSolution(store.getters.solutionCopy);
+
+                if (nextMove) {
+                    var movesNextMove = nextMove.split("-");
+                    var playerMove = makeMove(movesNextMove[0], movesNextMove[1]);
+                    var newFen = store.getters.game.fen();
+                    var history = store.getters.game.history();
+
+                    store.dispatch('updateGameHistory', history);
+                    store.state.showSolutionFlag = false;
+
+                    store.commit('changeCfgPosition', newFen);
+                    store.commit('changeCfgDraggable', false);
+                    store.commit('initBoard', store.getters.cfg);
+
+                    solutionRecursive(length--);
+                }
+            }, 1000)
+    }
+}
+
 export function showSolutionFunc() {
+    let solutionLength = store.getters.solutionCopy.length;
+
     store.getters.game.load(store.getters.currentPosition);
 
-    var nextMove = getNextMoveFromSolution(store.getters.solutionCopy);
-
-    if (nextMove)
-    {
-        var movesNextMove = nextMove.split("-");
-        var playerMove = makeMove(movesNextMove[0], movesNextMove[1]);
-
-        var newFen = store.getters.game.fen();
-
-        store.dispatch('changeCfg', {fen: newFen, draggable: false});
-        store.state.board = ChessBoard('board', store.getters.cfg);
-        store.state.showSolutionFlag = false;
-    }
+    solutionRecursive(solutionLength);
 }
 
 export function makeMove(from, to) {
@@ -277,6 +208,10 @@ export function greySquare(square) {
     $square.css('background', background)
 }
 
+export function removeGreySquares() {
+    $('.square-55d63').css('background', '')
+}
+
 export function checkPlayerSolution(playerMove, solutionMove) {
     var movesSolution = solutionMove.split("-");
 
@@ -284,7 +219,7 @@ export function checkPlayerSolution(playerMove, solutionMove) {
     {
         var nextMove = getNextMoveFromSolution(store.getters.solution);
 
-        setProgressInfo(true);
+        store.dispatch('setProgressInfo', true);
 
         if (nextMove)
         {
@@ -302,9 +237,8 @@ export function checkPlayerSolution(playerMove, solutionMove) {
             });
 
             store.dispatch('setPuzzleCompleted')
-
-            changePlayerRatingInTemplate(ratings.newPlayerRanking);
-            changePuzzleRankingInTemplate(ratings.newPuzzleRanking);
+            store.dispatch('changePlayerRatingInTemplate', ratings.newPlayerRanking)
+            store.dispatch('changePuzzleRankingInTemplate', ratings.newPuzzleRanking)
         }
     }
     //user error
@@ -318,15 +252,15 @@ export function checkPlayerSolution(playerMove, solutionMove) {
         });
 
         store.state.showSolutionFlag = true;
-        setProgressInfo(false);
-        changePlayerRatingInTemplate(ratings.newPlayerRanking);
-        changePuzzleRankingInTemplate(ratings.newPuzzleRanking);
+        store.dispatch('setProgressInfo', false);
+        store.dispatch('changePlayerRatingInTemplate', ratings.newPlayerRanking)
+        store.dispatch('changePuzzleRankingInTemplate', ratings.newPuzzleRanking)
     }
 
     if (!store.getters.puzzleActive)
     {
         store.dispatch('stopCountingTime');
-        displayPuzzleInformation();
+        store.dispatch('displayPuzzleInformation');
 
         ajaxFunc.savePuzzleRatingAxios(store.getters.puzzleId, ratings.newPuzzleRanking)
             .then(ajaxFunc.saveUserRankingAxios(store.getters.userId, ratings.newPlayerRanking))
