@@ -15,7 +15,6 @@ var appMainComponent = new Vue({
         loadFen: function (event) {
             let currentFen = document.getElementById("position_fen").value;
             let chess = new Chess();
-console.log(chess.validate_fen(currentFen));
 
             if (chess.validate_fen(currentFen).valid)
             {

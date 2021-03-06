@@ -6,13 +6,13 @@
 * [Screenshots](#screenshots)
 
 ## General info
-Symfony/js app to solve chess puzzles using chess.js and chessboard.js libraries. The puzzles are loaded from the database in the PGN/FEN format using AJAX. 
+Symfony/js app to solve chess puzzles using chess.js and chessboard.js libraries. 
+The puzzles are loaded into the database from the lichess open database with around 1,5M puzzles. 
 	
 ## Technologies
 Project is created with:
 * Symfony 3.4
 * FOSUserBundle for user login/registration
-* RabbitMQ for some asynchronous work
 * Vue.js/Vuex
 * Vue-chartjs
 * Chess.js
@@ -24,9 +24,9 @@ Project is created with:
 * Solving chess puzzles
 * Computing rating difference for puzzle and user using ELO ranking system.
 * Displaying graphs using Chart.js/vue-chartjs libraries
-* Displaying game history
+* Displaying time spent on solving a puzzle
 * Comes with the admin panel to add new puzzles
-* Comes with the data fixtures to load new user and 10 puzzles. User credentials are: user1/pass1
+* Comes with the data fixtures to load new user. User credentials are: user1/pass1
 
 ## Installation
 #### Clone the repository
@@ -46,18 +46,14 @@ yarn encore dev
 ```
 php bin/console doctrine:migrations:migrate
 ```
-#### Load fixtures
+#### Download lichess puzzles CSV (https://database.lichess.org/lichess_db_puzzle.csv.bz2) and put it into app/Resources folder. Then run symfony command to load puzzles into the db:
 ```
-php bin/console doctrine:fixtures:load
-```
-#### Setup rabbitMQ
-```
-php bin/console rabbitmq:setup-fabric
+php bin/console app:import-puzzle filename
 ```
 
-#### Start rabbitMQ consumer process
+#### Load sample user from fixture with append option (prevents purge)
 ```
-php bin/console rabbitmq:consumer -m 50 process_statistic
+php bin/console doctrine:fixtures:load --append
 ```
 
 ## Screenshots

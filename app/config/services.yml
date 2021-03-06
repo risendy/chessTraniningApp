@@ -50,8 +50,6 @@ services:
     app.message.service:
         class: AppBundle\Service\MessageService
 
-    AppBundle\Producer\StatProducer: '@old_sound_rabbit_mq.app_stat_producer'
-
     # makes classes in src/AppBundle/DataFixtures available to be used as services
     # and have a tag that allows actions to type-hint services
     AppBundle\DataFixtures\:

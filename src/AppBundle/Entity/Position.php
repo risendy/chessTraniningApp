@@ -22,9 +22,9 @@ class Position
     private $fen;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
-    private $pgn;
+    private $pgn = null;
 
     /**
      * @ORM\Column(type="string", length=10)
@@ -32,7 +32,7 @@ class Position
     private $startingColor;
 
     /**
-     * @ORM\Column(type="string", length=200)
+     * @ORM\Column(type="text")
      */
     private $solution = null;
 
@@ -51,6 +51,10 @@ class Position
      */
     private $timesFailed= 0;
 
+    /**
+     * @ORM\Column(type="string", length=200)
+     */
+    private $theme = null;
 
     public function getIdPosition()
     {
@@ -155,5 +159,21 @@ class Position
     public function setPgn($pgn): void
     {
         $this->pgn = $pgn;
+    }
+
+    /**
+     * @return null
+     */
+    public function getTheme()
+    {
+        return $this->theme;
+    }
+
+    /**
+     * @param null $theme
+     */
+    public function setTheme($theme): void
+    {
+        $this->theme = $theme;
     }
 }

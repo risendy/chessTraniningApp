@@ -2,6 +2,6 @@
 
 namespace AppBundle\Producer;
 
-class StatProducer extends \OldSound\RabbitMqBundle\RabbitMq\Producer
+class StatProducer
 {
 }

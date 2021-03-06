@@ -42,6 +42,7 @@ class PositionController extends AbstractFOSRestController
             'puzzleId' => $randPosition->getIdPosition(),
             'puzzleTotalTries' => $randPosition->getTotalTimesTried(),
             'puzzleSuccessRate' => $randPosition->getSuccessRate(),
+            'color' => $randPosition->getStartingColor(),
             'status' => 'Ok',
             'message' => 'Success'
         ];

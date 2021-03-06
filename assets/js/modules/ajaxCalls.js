@@ -1,6 +1,5 @@
 import axios from 'axios';
 import store from "../store/store.js";
-import * as MyFn from './functions.js';
 
 export function savePuzzleRatingAxios(puzzleId, newPuzzleRating) {
     $.LoadingOverlay("show");
@@ -29,7 +28,7 @@ export function saveUserRankingAxios(userId, newPlayerRating) {
 }
 
 export function saveStatisticsAxios(userId, newPlayerRating, puzzleId, newPuzzleRating, puzzleResult, rankingDifference) {
-    return axios.post(Routing.generate('api_send_statistic_to_queue'), {
+    return axios.post(Routing.generate('api_save_statistic'), {
         userId: userId,
         newPlayerRating: newPlayerRating,
         puzzleId: puzzleId,
@@ -52,26 +51,36 @@ export function getRandomPosition() {
     axios
         .get(Routing.generate('api_get_random_position'))
         .then(response => {
-            MyFn.initNewPosition(response.data.fen, response.data.pgn);
+            store.dispatch('initNewPosition',{
+                fen: response.data.fen,
+                solution: response.data.solution,
+                color: response.data.color
+            });
 
             store.dispatch('setNewPositionData', {
                 currentPosition: response.data.fen,
-                solution: MyFn.setSolutionArray(response.data.solution),
-                solutionCopy:  MyFn.setSolutionArray(response.data.solution),
+                solution: store.getters.solution,
+                solutionCopy:  store.getters.solution,
                 puzzleRankingValue: parseFloat(response.data.puzzleRanking).toFixed(2),
                 puzzleActive: true,
                 puzzleId: response.data.puzzleId,
                 puzzleInformationTotalTries: response.data.puzzleTotalTries,
                 puzzleSuccessRate: response.data.puzzleSuccessRate
-            });
+            })
 
             store.dispatch('resetValuesInTemplateAfterChangingPosition');
             store.dispatch('startCountingTime');
-
-            MyFn.updateStatus();
-
+            store.dispatch('makeFirstMove');
             store.dispatch('updateGameHistory');
         })
         .catch(error => console.log(error))
         .finally($.LoadingOverlay("hide") );
+}
+
+export function getPuzzleHistoryUser() {
+    axios.get(Routing.generate('api_get_user_history_ranking', {id: store.getters.userId, limit:5} ))
+        .then(response => {
+            store.dispatch('setRatingDifferenceArray', response.data.difference);
+        })
+        .catch(error => console.log(error));
 }

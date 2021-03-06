@@ -2,7 +2,10 @@
 namespace AppBundle\Controller\Api;
 
 
+use AppBundle\Entity\Position;
+use AppBundle\Entity\User;
 use AppBundle\Service\MessageService;
+use AppBundle\Service\StatisticalService;
 use AppBundle\Service\UserService;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\View\View;
@@ -16,17 +19,22 @@ class StatisticalController extends AbstractFOSRestController
     private $positionService;
     private $userService;
     private $messageService;
+    /**
+     * @var statisticalService
+     */
+    private $statisticalService;
 
-    public function __construct(PositionService $positionService, UserService $userService, MessageService $messageService)
+    public function __construct(PositionService $positionService, UserService $userService, MessageService $messageService, statisticalService $statisticalService)
     {
         $this->positionService = $positionService;
         $this->userService = $userService;
         $this->messageService = $messageService;
+        $this->statisticalService = $statisticalService;
     }
 
     /**
      * Sends statistical data to rabbitMQ queue
-     * @Rest\Post("/statistic/queue/send", name="api_send_statistic_to_queue", options={"expose"=true})
+     * @Rest\Post("/statistic/save", name="api_save_statistic", options={"expose"=true})
      * @param Request $request
      * @return View
      */
@@ -50,9 +58,13 @@ class StatisticalController extends AbstractFOSRestController
             "rankingDifference" => $rankingDifference
         ];
 
-        $message = $this->messageService->prepareStatsDtoMessage($array);
+        $user = $this->userService->getUserById($userId);
+        $position = $this->positionService->getPositionById($positionId);
 
-        $this->messageService->sendMessageToQueue($message);
+        if ($user instanceof User && $position instanceof Position) {
+            $this->statisticalService->saveStatistics((object) $array, $user, $position);
+        }
+
         return View::create([], Response::HTTP_NO_CONTENT);
     }
 }

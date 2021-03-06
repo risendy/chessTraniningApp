@@ -22,7 +22,6 @@ appMainComponent = new Vue({
     el: '#app',
     data: {
         statusValue: 0,
-        ratingsDifference: []
     },
     components: {
         'progress-information-component': progressInformationComponent,
@@ -47,20 +46,17 @@ appMainComponent = new Vue({
           Func.showSolutionFunc();
       },
       forceRerenderHistory: function () {
-            axios.get(Routing.generate('api_get_user_history_ranking', {id: store.getters.userId, limit:5} ))
-                .then(response => {
-                    this.ratingsDifference = response.data.difference;
-                })
-                .catch(error => console.log(error));
+            ajaxFunc.getPuzzleHistoryUser();
         },
 
     },
+    computed: {
+        ratingsDifference() {
+            return store.getters.ratingsDifference;
+        }
+    },
     created: function () {
-        axios.get(Routing.generate('api_get_user_history_ranking', {id: store.getters.userId, limit:5} ))
-            .then(response => {
-                this.ratingsDifference = response.data.difference;
-            })
-            .catch(error => console.log(error));
+        ajaxFunc.getPuzzleHistoryUser();
     }
 
 });
@@ -74,7 +70,7 @@ var cfg = {
     onSnapEnd: Func.onSnapEnd
 };
 
-store.state.cfg = cfg;
+store.commit('changeCfg', cfg)
 store.commit('initBoard', cfg);
 store.commit('initGame');
 

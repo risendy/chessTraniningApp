@@ -42,30 +42,24 @@ export function onDrop(source, target) {
     // illegal move
     if (playerMove === null) return 'snapback';
 
-    updateStatus();
+/*    setTimeout(function(){
+        updateStatus();
+    }, 2000);*/
 };
 
 // update the board position after the piece snap
 // for castling, en passant, pawn promotion
 export function onSnapEnd() {
-    store.getters.board.position(store.getters.game.fen());
+    setTimeout(function(){
+        store.getters.board.position(store.getters.game.fen());
+    }, 1000);
 };
-
-export function initNewPosition(fen, pgn) {
-    store.getters.game.load_pgn(pgn);
-
-    store.dispatch('changeCfg', {fen: fen, draggable:true});
-    store.commit('initBoard', store.getters.cfg);
-
-    store.state.currentMove = store.getters.game.history().length;
-    store.state.gameHistory = store.getters.game.history();
-}
 
 export function setSolutionArray(solution) {
     var solutionTmp = JSON.parse(solution);
-    solutionTmp.array.reverse();
+    solutionTmp.reverse();
 
-    return solutionTmp.array;
+    return solutionTmp;
 }
 
 export function updateStatus() {
@@ -82,7 +76,7 @@ export function updateStatus() {
     if (store.getters.game.turn() === 'b') {
         moveColor = 'Black';
         moveIcon = '<i class="fas fa-chess-king" style="padding-right:5px;"></i>';
-        cfg.orientation='black';
+        store.state.cfg.orientation='black';
     }
 
     //update orientation
@@ -185,7 +179,6 @@ export function displayPuzzleInformation() {
         <p class="puzzle-info-paragraph"> Time spent: ${timeElapsed} [s]</p>
     `;
 
-    const greeting = `Hello ${name}`
     store.state.puzzleInformation = html;
 }
 
@@ -195,6 +188,7 @@ export function removeGreySquares() {
 
 export function getNextMoveFromSolution(solution) {
     var nextMove = solution.pop();
+
     return nextMove;
 }
 
@@ -215,8 +209,6 @@ export function changePlayerRatingInTemplate(newRating) {
         playerRankingDifferenceValue: '('+ icon + difference + ')',
         playerRankingValue: newRating
     });
-
-    setNewPlayerRating(newRating);
 }
 
 export function changePuzzleRankingInTemplate(newPuzzleRanking) {
@@ -238,17 +230,6 @@ export function changePuzzleRankingInTemplate(newPuzzleRanking) {
 
 export function calculateRankingDifference(ranking1, ranking2) {
     return Math.abs(parseFloat(ranking1) - parseFloat(ranking2)).toFixed(2);
-}
-
-export function setNewPlayerRating(newRating) {
-    store.state.playerRankingValue = newRating;
-}
-
-export function setPuzzleCompleted() {
-    var html = '<i class="fas fa-check" style="color:green"></i> Puzzle completed :)';
-
-    store.state.progressInformationValue=html;
-    store.state.puzzleActive = false;
 }
 
 export function showSolutionFunc() {
@@ -315,9 +296,13 @@ export function checkPlayerSolution(playerMove, solutionMove) {
         {
             var ratings = calculateNewRankings(true);
 
-            store.state.puzzleResult = true;
-            store.state.puzzleActive = false;
-            setPuzzleCompleted();
+            store.dispatch('savePuzzleInformation', {
+                puzzleResult: true,
+                puzzleActive: false
+            });
+
+            store.dispatch('setPuzzleCompleted')
+
             changePlayerRatingInTemplate(ratings.newPlayerRanking);
             changePuzzleRankingInTemplate(ratings.newPuzzleRanking);
         }
@@ -327,8 +312,11 @@ export function checkPlayerSolution(playerMove, solutionMove) {
     {
         var ratings = calculateNewRankings(false);
 
-        store.state.puzzleResult = false;
-        store.state.puzzleActive = false;
+        store.dispatch('savePuzzleInformation', {
+            puzzleResult: false,
+            puzzleActive: false
+        });
+
         store.state.showSolutionFlag = true;
         setProgressInfo(false);
         changePlayerRatingInTemplate(ratings.newPlayerRanking);

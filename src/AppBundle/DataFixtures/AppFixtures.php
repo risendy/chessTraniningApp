@@ -4,7 +4,6 @@ namespace AppBundle\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use AppBundle\Entity\Position;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -173,15 +172,6 @@ class AppFixtures extends Fixture implements FixtureInterface, ContainerAwareInt
             $user->setRoles(self::$users[$key]['role']);
 
             $userManager->updateUser($user, true);
-        }
-
-        foreach (self::$fenArray as $key => $value) {
-            $position = new Position();
-            $position->setStartingColor(self::$fenArray[$key]['startingColor']);
-            $position->setFen(self::$fenArray[$key]['fen']);
-            $position->setPgn(self::$fenArray[$key]['pgn']);
-            $position->setSolution(self::$fenArray[$key]['solution']);
-            $manager->persist($position);
         }
 
         $manager->flush();

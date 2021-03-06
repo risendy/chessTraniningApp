@@ -1,6 +1,7 @@
 import Chess from "../lib/chess";
 import Vue from 'vue';
 import Vuex from 'vuex'
+import * as MyFn from "../modules/functions";
 
 Vue.use(Vuex)
 
@@ -31,6 +32,8 @@ const store = new Vuex.Store({
         currentMove: '',
         puzzleTimeStart: '',
         puzzleTimeStop: '',
+        ratingsDifference: [],
+        puzzleResult: ''
     },
     getters: {
         game: state => state.game,
@@ -49,6 +52,7 @@ const store = new Vuex.Store({
         showSolutionFlag: state => state.showSolutionFlag,
         statusValue: state => state.statusValue,
         puzzleInformation: state => state.puzzleInformation,
+        puzzleResult: state => state.puzzleResult,
         puzzleInformationTotalTries: state => state.puzzleInformationTotalTries,
         puzzleSuccessRate: state => state.puzzleSuccessRate,
         gameHistory: state => state.gameHistory,
@@ -56,6 +60,7 @@ const store = new Vuex.Store({
         userId: state => state.userId,
         puzzleTimeStart: state => state.puzzleTimeStart,
         puzzleTimeStop: state => state.puzzleTimeStop,
+        ratingsDifference: state => state.ratingsDifference,
         getPuzzleElapsedTime: state => {
             var timeDiff = state.puzzleTimeStop - state.puzzleTimeStart; //in ms
             // strip the ms
@@ -78,11 +83,17 @@ const store = new Vuex.Store({
         initGame (state) {
             state.game = new Chess();
         },
+        changeCfg (state, cfg) {
+            state.cfg = cfg;
+        },
         changeCfgPosition (state, fen) {
             state.cfg.position = fen;
         },
         changeCfgDraggable (state, draggable) {
             state.cfg.draggable = draggable;
+        },
+        changeCfgOrientation (state, orientation) {
+            state.cfg.orientation = orientation;
         },
         changeSolution (state, solution) {
             state.solution = solution;
@@ -132,8 +143,21 @@ const store = new Vuex.Store({
         stopCountingTime(state) {
             state.puzzleTimeStop = new Date();
         },
+        changeRatingsDifference(state, ratingDifference) {
+            state.ratingsDifference = ratingDifference;
+        },
+        changePuzzleResult(state, puzzleResult) {
+            state.puzzleResult = puzzleResult;
+        },
+        changeCurrentMove(state, currentMove) {
+            state.currentMove = currentMove;
+        },
     },
     actions: {
+        savePuzzleInformation(state, payload) {
+            state.commit('changePuzzleResult', payload.puzzleResult);
+            state.commit('changePuzzleActive', payload.puzzleActive);
+        },
         changeCfgPosition (state, fen) {
             state.commit('changeCfgPosition', fen);
         },
@@ -174,6 +198,43 @@ const store = new Vuex.Store({
         },
         stopCountingTime(state) {
             state.commit('stopCountingTime');
+        },
+        setRatingDifferenceArray(state, ratingDifference) {
+            state.commit('changeRatingsDifference', ratingDifference);
+        },
+        setPuzzleCompleted(state) {
+            var html = '<i class="fas fa-check" style="color:green"></i> Puzzle completed :)';
+
+            state.commit('changeProgressInformationValue', html);
+        },
+        initNewPosition(state, payload) {
+            state.getters.game.load(payload.fen);
+
+            state.dispatch('changeCfg', {fen: payload.fen, draggable:true});
+            state.commit('changeCurrentMove', state.getters.game.history().length);
+            state.commit('changeGameHistory', state.getters.game.history());
+
+            let solutionTmp = JSON.parse(payload.solution);
+            solutionTmp.reverse();
+
+            state.commit('changeSolution', solutionTmp);
+
+            let color = payload.color;
+            (color == 'B')? color = 'black' : color = 'white';
+
+            state.commit('changeCfgOrientation', color);
+            state.commit('initBoard', store.getters.cfg);
+        },
+        makeFirstMove(state) {
+            var nextMove = MyFn.getNextMoveFromSolution(state.getters.solution);
+            var movesNextMove = nextMove.split("-");
+            var move = MyFn.makeMove(movesNextMove[0], movesNextMove[1]);
+            var newFen = state.getters.game.fen();
+
+            setTimeout(function(){
+                state.dispatch('changeCfg', {fen: newFen, draggable: true});
+                MyFn.updateStatus();
+            }, 2000);
         }
 
     }
