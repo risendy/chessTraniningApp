@@ -2,6 +2,7 @@
 namespace AppBundle\Command;
 
 use AppBundle\Entity\Position;
+use AppBundle\Entity\PositionTheme;
 use AppBundle\Service\PositionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Ryanhs\Chess\Chess;
@@ -47,6 +48,22 @@ protected function transformSolution($arr)
    return $returnArr;
 }
 
+protected function prepareThemeArray($themes) {
+    $returnArr = [];
+
+    if (!$themes) return [];
+
+    $split = explode(' ', $themes);
+
+    foreach ($split as $move) {
+        if ($move) {
+            $returnArr[] = $move;
+        }
+    }
+
+    return $returnArr;
+}
+
 protected function convertArrayToJson($arr) {
    return json_encode($arr);
 }
@@ -79,8 +96,17 @@ protected function execute(InputInterface $input, OutputInterface $output)
             $position->setFen($line[1]);
             $position->setSolution($solutionJson);
             $position->setPuzzleRanking($line[3]);
-            $position->setTheme($line[7]);
             $position->setStartingColor(strtoupper($turn));
+
+            $themes = $this->prepareThemeArray($line[7]);
+
+            foreach ($themes as $themeName) {
+                $themeObj = new PositionTheme();
+                $themeObj->setName($themeName);
+
+                $themeObj->setProducts($position);
+                $this->em->persist($themeObj);
+            }
 
             $this->em->persist($position);
 

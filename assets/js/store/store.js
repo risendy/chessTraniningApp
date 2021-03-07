@@ -35,7 +35,8 @@ const store = new Vuex.Store({
         puzzleTimeStart: '',
         puzzleTimeStop: '',
         ratingsDifference: [],
-        puzzleResult: ''
+        puzzleResult: '',
+        selectedThemes: {}
     },
     getters: {
         game: state => state.game,
@@ -64,6 +65,7 @@ const store = new Vuex.Store({
         puzzleTimeStop: state => state.puzzleTimeStop,
         ratingsDifference: state => state.ratingsDifference,
         puzzleDifficulty: state => state.puzzleDifficulty,
+        selectedThemes: state => state.selectedThemes,
         getPuzzleElapsedTime: state => {
             var timeDiff = state.puzzleTimeStop - state.puzzleTimeStart; //in ms
             // strip the ms
@@ -158,6 +160,9 @@ const store = new Vuex.Store({
         changePuzzleDifficulty (state, puzzleDifficulty) {
             state.puzzleDifficulty = puzzleDifficulty;
         },
+        changeSelectedThemes(state, selectedThemes) {
+            state.selectedThemes = selectedThemes;
+        }
     },
     actions: {
         savePuzzleInformation(state, payload) {

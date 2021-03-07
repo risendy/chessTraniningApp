@@ -51,11 +51,6 @@ class Position
      */
     private $timesFailed= 0;
 
-    /**
-     * @ORM\Column(type="string", length=200)
-     */
-    private $theme = null;
-
     public function getIdPosition()
     {
         return $this->idPosition;
@@ -159,21 +154,5 @@ class Position
     public function setPgn($pgn): void
     {
         $this->pgn = $pgn;
-    }
-
-    /**
-     * @return null
-     */
-    public function getTheme()
-    {
-        return $this->theme;
-    }
-
-    /**
-     * @param null $theme
-     */
-    public function setTheme($theme): void
-    {
-        $this->theme = $theme;
     }
 }

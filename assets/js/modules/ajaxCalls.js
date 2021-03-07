@@ -50,9 +50,14 @@ export function getRandomPosition() {
     $.LoadingOverlay("show");
 
     axios
-        .get(Routing.generate('api_get_random_position', {
-            puzzleDifficulty: store.getters.puzzleDifficulty
-        }))
+        .request({
+            method: 'POST',
+            url: Routing.generate('api_get_random_position'),
+            data: {
+                puzzleDifficulty: store.getters.puzzleDifficulty,
+                puzzleThemes: store.getters.selectedThemes
+            }
+        })
         .then(response => {
             store.dispatch('initNewPosition',{
                 fen: response.data.fen,

@@ -20,6 +20,7 @@
     "chart.js": "^2.8.0",
     "popper.js": "^1.15.0",
     "vue-chartjs": "^3.4.2",
+    "vue-multiselect": "^2.1.6",
     "vuex": "^3.6.2"
   }
 }

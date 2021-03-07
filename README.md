@@ -15,6 +15,7 @@ Project is created with:
 * FOSUserBundle for user login/registration
 * Vue.js/Vuex
 * Vue-chartjs
+* Vue-multiselect- https://vue-multiselect.js.org/  
 * Chess.js
 * Chessboard.js
 * MySQL database
@@ -22,7 +23,8 @@ Project is created with:
 
 ## Features
 * Solving chess puzzles
-* Choosing puzzle difficulty level  
+* Choosing puzzle difficulty level
+* Choosing puzzle theme  
 * Computing rating difference for puzzle and user using ELO ranking system.
 * Displaying graphs using Chart.js/vue-chartjs libraries
 * Displaying time spent on solving a puzzle
@@ -64,6 +66,9 @@ php bin/console doctrine:fixtures:load --append
                               
 ### Puzzle completed
 ![Main page](web/img/img22.png)                          
+
+### Choosing puzzle theme
+![Main page](web/img/img_theme.png)
 
 ### User profile
 ![Main page](web/img/img3.png)

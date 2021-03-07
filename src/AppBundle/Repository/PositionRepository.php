@@ -6,20 +6,55 @@ use AppBundle\Entity\Position;
 
 class PositionRepository extends EntityRepository
 {
-    public function findRandomPositionNativeQuery($puzzleDifficulty)
+    public function findRandomPositionNativeQuery($puzzleDifficulty, $puzzleThemes, $loggedUserId)
     {
+        $bindValue = 1;
+
+        $sql = '';
+        $themeSql = '';
+        $endSql = 'ORDER BY RAND() LIMIT 1';
+
+        if ($puzzleThemes) {
+            $themeSql .= " AND (";
+        }
+        else
+        {
+            $themeSql .= '';
+        }
+
         if ($puzzleDifficulty == 'easy') {
-            $sql = 'SELECT id_position from positions p, fos_user u WHERE (p.puzzle_ranking <= (u.ranking - 100)) ORDER BY RAND() LIMIT 1';
+            $sql = 'SELECT p.id_position from positions p LEFT JOIN positions_theme pt ON pt.id_position=p.id_position, fos_user u WHERE (p.puzzle_ranking <= (u.ranking - 100))'.$themeSql;
         }
         if ($puzzleDifficulty == 'medium') {
-            $sql = 'SELECT id_position from positions p, fos_user u WHERE (p.puzzle_ranking BETWEEN (u.ranking - 100) AND (u.ranking + 100)) ORDER BY RAND() LIMIT 1';
+            $sql = 'SELECT p.id_position from positions p LEFT JOIN positions_theme pt ON pt.id_position=p.id_position, fos_user u WHERE (p.puzzle_ranking BETWEEN (u.ranking - 100) AND (u.ranking + 100))'.$themeSql;
         }
         if ($puzzleDifficulty == 'hard') {
-            $sql = 'SELECT id_position from positions p, fos_user u WHERE (p.puzzle_ranking BETWEEN (u.ranking - 50) AND (u.ranking + 200)) ORDER BY RAND() LIMIT 1';
+            $sql = 'SELECT p.id_position from positions p LEFT JOIN positions_theme pt ON pt.id_position=p.id_position, fos_user u WHERE (p.puzzle_ranking BETWEEN (u.ranking - 50) AND (u.ranking + 200))'.$themeSql;
         }
+
+        foreach ($puzzleThemes as $key => $theme) {
+            if ($key == count($puzzleThemes) - 1) {
+                $sql .= 'pt.name = ? ) ';
+            }
+            else
+            {
+                $sql .= 'pt.name = ? OR ';
+            }
+        }
+
+        $sql.='AND u.id = ? ';
+        $sql.=$endSql;
 
     	$em = $this->getEntityManager();
     	$stmt = $em->getConnection()->prepare($sql);
+
+        foreach ($puzzleThemes as $theme) {
+            $stmt->bindValue($bindValue, $theme['name']);
+
+            $bindValue++;
+        }
+        $stmt->bindValue($bindValue, $loggedUserId);
+
     	$stmt->execute();
 
     	$random_ids = array();
