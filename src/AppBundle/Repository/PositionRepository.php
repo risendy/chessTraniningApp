@@ -6,9 +6,17 @@ use AppBundle\Entity\Position;
 
 class PositionRepository extends EntityRepository
 {
-    public function findRandomPositionNativeQuery()
+    public function findRandomPositionNativeQuery($puzzleDifficulty)
     {
-    	$sql = 'SELECT id_position from positions ORDER BY RAND() LIMIT 1';
+        if ($puzzleDifficulty == 'easy') {
+            $sql = 'SELECT id_position from positions p, fos_user u WHERE (p.puzzle_ranking <= (u.ranking - 100)) ORDER BY RAND() LIMIT 1';
+        }
+        if ($puzzleDifficulty == 'medium') {
+            $sql = 'SELECT id_position from positions p, fos_user u WHERE (p.puzzle_ranking BETWEEN (u.ranking - 100) AND (u.ranking + 100)) ORDER BY RAND() LIMIT 1';
+        }
+        if ($puzzleDifficulty == 'hard') {
+            $sql = 'SELECT id_position from positions p, fos_user u WHERE (p.puzzle_ranking BETWEEN (u.ranking - 50) AND (u.ranking + 200)) ORDER BY RAND() LIMIT 1';
+        }
 
     	$em = $this->getEntityManager();
     	$stmt = $em->getConnection()->prepare($sql);

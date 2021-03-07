@@ -5,7 +5,6 @@ import progressInformationComponent from './components/progressInformationCompon
 import puzzleRankingComponent from './components/puzzleRankingComponent.vue';
 import playerRankingDifference from './components/playerRankingDifferenceComponent.vue';
 import puzzleRankingDifferenceComponent from './components/puzzleRankingDifferenceComponent.vue';
-import showSolutionComponent from './components/showSolutionComponent.vue';
 import playerRankingComponent from './components/playerRankingComponent.vue';
 import PuzzleInformationComponent from './components/puzzleInformationComponent.vue';
 import statusComponent from './components/statusComponent.vue';
@@ -29,7 +28,6 @@ appMainComponent = new Vue({
         'puzzle-ranking-component': puzzleRankingComponent,
         'player-ranking-difference-component': playerRankingDifference,
         'puzzle-ranking-difference-component': puzzleRankingDifferenceComponent,
-        'show-solution-component': showSolutionComponent,
         'player-ranking-component': playerRankingComponent,
         'status-component': statusComponent,
         'line-chart-container': LineChartContainerMini,
@@ -41,9 +39,6 @@ appMainComponent = new Vue({
           store.dispatch('resetPuzzleAndGameValues');
 
           ajaxFunc.getRandomPosition();
-      },
-      showsolution: function() {
-          Func.showSolutionFunc();
       },
       forceRerenderHistory: function () {
             ajaxFunc.getPuzzleHistoryUser();

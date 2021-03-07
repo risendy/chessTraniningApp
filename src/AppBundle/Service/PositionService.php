@@ -16,9 +16,9 @@ class PositionService
     /**
      * @return Position mixed|null
      */
-    public function getRandomPosition()
+    public function getRandomPosition($puzzleDifficulty)
     {
-        $randomPosition = $this->em->getRepository(Position::class)->findRandomPositionNativeQuery();
+        $randomPosition = $this->em->getRepository(Position::class)->findRandomPositionNativeQuery($puzzleDifficulty);
 
         return $randomPosition;
     }

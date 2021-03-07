@@ -22,6 +22,7 @@ Project is created with:
 
 ## Features
 * Solving chess puzzles
+* Choosing puzzle difficulty level  
 * Computing rating difference for puzzle and user using ELO ranking system.
 * Displaying graphs using Chart.js/vue-chartjs libraries
 * Displaying time spent on solving a puzzle

@@ -19,6 +19,7 @@ const store = new Vuex.Store({
         playerRankingValue: null,
         puzzleRankingValue: null,
         puzzleActive: false,
+        puzzleDifficulty: 'medium',
         puzzleId: '',
         userId,
         progressInformationValue: '',
@@ -62,6 +63,7 @@ const store = new Vuex.Store({
         puzzleTimeStart: state => state.puzzleTimeStart,
         puzzleTimeStop: state => state.puzzleTimeStop,
         ratingsDifference: state => state.ratingsDifference,
+        puzzleDifficulty: state => state.puzzleDifficulty,
         getPuzzleElapsedTime: state => {
             var timeDiff = state.puzzleTimeStop - state.puzzleTimeStart; //in ms
             // strip the ms
@@ -152,6 +154,9 @@ const store = new Vuex.Store({
         },
         changeCurrentMove(state, currentMove) {
             state.currentMove = currentMove;
+        },
+        changePuzzleDifficulty (state, puzzleDifficulty) {
+            state.puzzleDifficulty = puzzleDifficulty;
         },
     },
     actions: {

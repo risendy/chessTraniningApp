@@ -27,12 +27,14 @@ class PositionController extends AbstractFOSRestController
      * @Rest\Get("/random-position/", name="api_get_random_position", options={"expose"=true})
      * @return View
      */
-    public function getRandomPositionAction() : View
+    public function getRandomPositionAction(Request $request) : View
     {
+        $puzzleDifficulty = $request->get('puzzleDifficulty');
+
         /**
          * @var Position
          */
-    	$randPosition = $this->positionService->getRandomPosition();
+    	$randPosition = $this->positionService->getRandomPosition($puzzleDifficulty);
 
     	$array = [
             'fen' => $randPosition->getFen(),
