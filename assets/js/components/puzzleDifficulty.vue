@@ -1,6 +1,6 @@
 <template>
   <div>
-      <label class="difficulty-level-label">Puzzle difficulty level: </label>
+      <label class="difficulty-level-label"><i class="fas fa-balance-scale"></i> Puzzle difficulty level: </label>
       <div class="custom-control custom-radio custom-control-inline">
         <input type="radio" v-on:change="difficultyChanged" v-model="puzzleDifficulty" value="easy" id="customRadioInline1" name="customRadioInline" class="custom-control-input">
         <label class="custom-control-label" for="customRadioInline1">Easy</label>

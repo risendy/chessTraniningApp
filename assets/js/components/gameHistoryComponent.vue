@@ -1,6 +1,6 @@
 <template>
     <div class="card card-body bg-light">
-        <h5>History</h5>
+        <h5><i class="fas fa-history"></i> History</h5>
 
         <p id="gameHistory" v-html="gameHistory" class="card-text">
 

@@ -1,6 +1,6 @@
 <template>
     <div class="card card-body bg-light">
-        <h5>Puzzle information: </h5>
+        <h5><i class="fas fa-info-circle"></i> Puzzle information: </h5>
 
         <div v-if="puzzleRanking">
           <p class="puzzleListElement" v-if="puzzleTimeSpent > 0">

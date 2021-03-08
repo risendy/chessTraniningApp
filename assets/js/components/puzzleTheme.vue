@@ -1,6 +1,6 @@
 <template>
   <div class="puzzle-theme-row">
-    <label>Puzzle Theme:</label>
+    <label><i class="fa fa-adjust"> </i> Puzzle Theme:</label>
     <multiselect
         v-model="selected"
         :options="options"
