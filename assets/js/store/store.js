@@ -37,7 +37,8 @@ const store = new Vuex.Store({
         ratingsDifference: [],
         puzzleResult: '',
         selectedThemes: {},
-        puzzleThemes: []
+        puzzleThemes: [],
+        lastMoveSquareTo: ''
     },
     getters: {
         game: state => state.game,
@@ -68,6 +69,7 @@ const store = new Vuex.Store({
         puzzleDifficulty: state => state.puzzleDifficulty,
         selectedThemes: state => state.selectedThemes,
         puzzleThemes: state => state.puzzleThemes,
+        lastMoveSquareTo: state => state.lastMoveSquareTo,
         getPuzzleElapsedTime: state => {
             var timeDiff = state.puzzleTimeStop - state.puzzleTimeStart; //in ms
             // strip the ms
@@ -301,6 +303,8 @@ const store = new Vuex.Store({
                 html = `<div class="alert alert-success" role="alert">
                             <i class="fas fa-check" style="color:green"></i> Good move
                         </div>`;
+
+                MyFn.appendGoodMoveIconToSquare(state.getters.lastMoveSquareTo);
             }
             else
             {

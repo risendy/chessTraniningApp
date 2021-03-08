@@ -211,6 +211,7 @@ export function makeMove(from, to) {
 
     store.dispatch('updateGameHistory');
     store.state.currentMove++;
+    store.state.lastMoveSquareTo = to;
 
     return move;
 }
@@ -229,11 +230,29 @@ export function greySquare(square) {
     $square.css('background', background)
 }
 
+export function appendGoodMoveIconToSquare(square) {
+    let span = document.createElement("span");
+    span.className = 'icon-good-move';
+    span.style.cssText = 'position: absolute;';
+    span.innerHTML = `
+        <i class="fas fa-square fa-stack fa-inverse" style="position: relative;top: -12px;right: -54px;font-size: 23px;color: #008000"></i>
+        <i class="fas fa-check fa-stack icon-good-move" style="position: relative;top: -56px;right: -54px;font-size: 21px;color: #f3fff1;"></i>
+    `;
+    document.querySelector('.square-' + square).append(span);
+}
+
 export function removeGreySquares() {
     $('.square-55d63').css('background', '')
 }
 
+export function removeGoodMoveIcons() {
+    const removeElements = (elms) => elms.forEach(el => el.remove());
+    removeElements( document.querySelectorAll(".icon-good-move") );
+}
+
 export function checkPlayerSolution(playerMove, solutionMove) {
+    removeGoodMoveIcons();
+
     var movesSolution = solutionMove.split("-");
 
     if (movesSolution[0] == playerMove.from && movesSolution[1] == playerMove.to)
