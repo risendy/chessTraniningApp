@@ -36,7 +36,8 @@ const store = new Vuex.Store({
         puzzleTimeStop: '',
         ratingsDifference: [],
         puzzleResult: '',
-        selectedThemes: {}
+        selectedThemes: {},
+        puzzleThemes: []
     },
     getters: {
         game: state => state.game,
@@ -66,6 +67,7 @@ const store = new Vuex.Store({
         ratingsDifference: state => state.ratingsDifference,
         puzzleDifficulty: state => state.puzzleDifficulty,
         selectedThemes: state => state.selectedThemes,
+        puzzleThemes: state => state.puzzleThemes,
         getPuzzleElapsedTime: state => {
             var timeDiff = state.puzzleTimeStop - state.puzzleTimeStart; //in ms
             // strip the ms
@@ -157,11 +159,17 @@ const store = new Vuex.Store({
         changeCurrentMove(state, currentMove) {
             state.currentMove = currentMove;
         },
+        incrementCurrentMove(state) {
+          state.currentMove++;
+        },
         changePuzzleDifficulty (state, puzzleDifficulty) {
             state.puzzleDifficulty = puzzleDifficulty;
         },
         changeSelectedThemes(state, selectedThemes) {
             state.selectedThemes = selectedThemes;
+        },
+        changePuzzleThemes(state, themes) {
+            state.puzzleThemes = themes;
         }
     },
     actions: {
@@ -185,6 +193,7 @@ const store = new Vuex.Store({
             state.commit('changePuzzleId', payload.puzzleId);
             state.commit('changePuzzleInformationTotalTries', payload.puzzleInformationTotalTries);
             state.commit('changePuzzleSuccessRate', payload.puzzleSuccessRate);
+            state.commit('changePuzzleThemes', payload.puzzleThemes);
         },
         setPlayerRatingInformation(state, payload) {
             state.commit('changePlayerRankingDifferenceValue', payload.playerRankingDifferenceValue)
@@ -214,7 +223,9 @@ const store = new Vuex.Store({
             state.commit('changeRatingsDifference', ratingDifference);
         },
         setPuzzleCompleted(state) {
-            var html = '<i class="fas fa-check" style="color:green"></i> Puzzle completed :)';
+            let html = `<div class="alert alert-success" role="alert">
+                            <i class="fas fa-check" style="color:green"></i> Puzzle completed
+                        </div>`;
 
             state.commit('changeProgressInformationValue', html);
         },
@@ -261,7 +272,7 @@ const store = new Vuex.Store({
                 });
 
                 state.dispatch('updateGameHistory');
-                state.currentMove++;
+                state.commit('incrementCurrentMove');
 
                 resolve();
 
@@ -276,8 +287,6 @@ const store = new Vuex.Store({
 
             const html = `
             <i class="fas fa-info-circle" style="color:green"></i> Puzzle information: 
-            <p class="puzzle-info-paragraph"> Puzzle rating: ${puzzleRating}</p>
-            <p class="puzzle-info-paragraph"> Times solved: ${puzzleTotalTimesTried}</p>
             <p class="puzzle-info-paragraph"> Success rate: ${puzzleSuccessRate}%</p>
             <p class="puzzle-info-paragraph"> Time spent: ${timeElapsed} [s]</p>
             `;
@@ -289,11 +298,15 @@ const store = new Vuex.Store({
 
             if (type)
             {
-                html = '<i class="fas fa-check" style="color:green"></i> Good move, keep on :)';
+                html = `<div class="alert alert-success" role="alert">
+                            <i class="fas fa-check" style="color:green"></i> Good move
+                        </div>`;
             }
             else
             {
-                html = '<i class="fas fa-times" style="color:red"></i> Bad move :(';
+                html = `<div class="alert alert-danger" role="alert">
+                            <i class="fas fa-times" style="color:red"></i> Bad move
+                        </div>`;
             }
 
             state.commit('changeProgressInformationValue', html);

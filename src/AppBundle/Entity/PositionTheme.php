@@ -5,7 +5,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\PositionTheme")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\PositionThemeRepository")
  * @ORM\Table(name="positions_theme")
  */
 class PositionTheme
@@ -28,15 +28,12 @@ class PositionTheme
      */
     private $name;
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getProducts(): ArrayCollection
+    public function getProducts()
     {
         return $this->products;
     }
 
-    public function setProducts(?Position $position): self
+    public function setProducts(?Position $position)
     {
         $this->products = $position;
 

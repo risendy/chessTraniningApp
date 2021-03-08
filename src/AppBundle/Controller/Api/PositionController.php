@@ -3,6 +3,7 @@ namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\Position;
 use AppBundle\Service\MessageService;
+use AppBundle\Service\PositionThemeService;
 use AppBundle\Service\StatisticalService;
 use AppBundle\Service\UserService;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
@@ -16,10 +17,15 @@ use Symfony\Component\HttpFoundation\Response;
 class PositionController extends AbstractFOSRestController
 {
 	private $positionService;
+    /**
+     * @var PositionThemeService
+     */
+    private $positionThemeService;
 
-    public function __construct(PositionService $positionService)
+    public function __construct(PositionService $positionService, PositionThemeService $positionThemeService)
     {
         $this->positionService = $positionService;
+        $this->positionThemeService = $positionThemeService;
     }
 
     /**
@@ -29,6 +35,7 @@ class PositionController extends AbstractFOSRestController
      */
     public function getRandomPositionAction(Request $request) : View
     {
+        $themes = [];
         $puzzleDifficulty = $request->request->get('puzzleDifficulty');
         $puzzleThemes = $request->request->get('puzzleThemes');
         $loggedUserId = $this->getUser()->getId();
@@ -37,6 +44,12 @@ class PositionController extends AbstractFOSRestController
          * @var Position
          */
     	$randPosition = $this->positionService->getRandomPosition($puzzleDifficulty, $puzzleThemes, $loggedUserId);
+
+    	if ($randPosition)
+        {
+            $idPosition = $randPosition->getIdPosition();
+            $themes = $this->positionThemeService->getThemesForPosition($idPosition);
+        }
 
     	$array = [
             'fen' => $randPosition->getFen(),
@@ -47,6 +60,7 @@ class PositionController extends AbstractFOSRestController
             'puzzleTotalTries' => $randPosition->getTotalTimesTried(),
             'puzzleSuccessRate' => $randPosition->getSuccessRate(),
             'color' => $randPosition->getStartingColor(),
+            'themes' => $themes,
             'status' => 'Ok',
             'message' => 'Success'
         ];

@@ -73,7 +73,8 @@ export function getRandomPosition() {
                 puzzleActive: true,
                 puzzleId: response.data.puzzleId,
                 puzzleInformationTotalTries: response.data.puzzleTotalTries,
-                puzzleSuccessRate: response.data.puzzleSuccessRate
+                puzzleSuccessRate: response.data.puzzleSuccessRate,
+                puzzleThemes: response.data.themes
             })
 
             store.dispatch('resetValuesInTemplateAfterChangingPosition');

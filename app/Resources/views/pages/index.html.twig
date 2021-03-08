@@ -6,7 +6,7 @@
     <input type="hidden" id="userId" value="{{ userId }}">
     <input type="hidden" id="puzzleId" value="">
 
-    <div class="container">
+    <div class="container-fluid">
 
       <div class="starter-template">
         <center>
@@ -14,6 +14,8 @@
                    <puzzle-ranking-component></puzzle-ranking-component>
                    <puzzle-ranking-difference-component></puzzle-ranking-difference-component>
                 </div>
+
+                <progress-information-component></progress-information-component>
             </h4>
         </center>
 
@@ -27,10 +29,8 @@
                               <player-ranking-difference-component></player-ranking-difference-component>
                           </h5>
 
-                          <p>
+                          <p class="no-margin">
                               <status-component>${statusValue}</status-component>
-                              <progress-information-component></progress-information-component>
-                              <puzzle-information-component></puzzle-information-component>
                           </p>
 
                       </div>
@@ -50,6 +50,7 @@
               </div>
               <div class="col-2 history-tab">
                 <game-history-component style="margin-bottom:15px;"></game-history-component>
+                <puzzle-right-info-component></puzzle-right-info-component>
               </div>
           </div>
 
@@ -77,10 +78,6 @@
         </div>
 
       </div>
-
-
-
-
     </div><!-- /.container -->
     </div>
 {% endblock %}

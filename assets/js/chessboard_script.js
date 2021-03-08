@@ -7,6 +7,7 @@ import playerRankingDifference from './components/playerRankingDifferenceCompone
 import puzzleRankingDifferenceComponent from './components/puzzleRankingDifferenceComponent.vue';
 import playerRankingComponent from './components/playerRankingComponent.vue';
 import PuzzleInformationComponent from './components/puzzleInformationComponent.vue';
+import puzzleRightSideInfoComponent from "./components/puzzleRightsideInfoComponent";
 import statusComponent from './components/statusComponent.vue';
 import LineChartContainerMini from './components/ChartContainerMini.vue'
 import NextPosition from './components/nextPosition.vue'
@@ -25,6 +26,7 @@ appMainComponent = new Vue({
     components: {
         'progress-information-component': progressInformationComponent,
         'puzzle-information-component': PuzzleInformationComponent,
+        'puzzle-right-info-component': puzzleRightSideInfoComponent,
         'puzzle-ranking-component': puzzleRankingComponent,
         'player-ranking-difference-component': playerRankingDifference,
         'puzzle-ranking-difference-component': puzzleRankingDifferenceComponent,

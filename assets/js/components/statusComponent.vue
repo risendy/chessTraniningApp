@@ -1,5 +1,5 @@
 <template>
-    <span id="status" v-html="statusValue"></span>
+    <span id="status" v-if="puzzleActive" v-html="statusValue"></span>
 </template>
 
 <script>
@@ -13,9 +13,12 @@ var statusComponent = Vue.component('status-component', {
         }
     },
     computed: {
-        statusValue() {
+      statusValue() {
             return store.getters.statusValue;
-        }
+      },
+      puzzleActive() {
+        return store.getters.puzzleActive;
+      },
     }
 });
 

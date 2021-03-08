@@ -7,8 +7,8 @@
         </p>
         <p>
 <!--            <input type="button" id="startPositionBtn5" value="|<" v-on:click="resetPosition"/>-->
-            <input type="button" id="prevBtn5" value="<" v-on:click="prevMove"/>
-            <input type="button" id="nextBtn5" value=">" v-on:click="nextMove"/>
+<!--            <input type="button" id="prevBtn5" value="<" v-on:click="prevMove"/>
+            <input type="button" id="nextBtn5" value=">" v-on:click="nextMove"/>-->
 <!--            <input type="button" id="endPositionBtn5" value=">|" />-->
         </p>
     </div>

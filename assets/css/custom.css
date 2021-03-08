@@ -67,3 +67,13 @@
     margin-left: 15px;
     width: 100%;
 }
+.puzzleListElement {
+    margin-bottom: 0px;
+}
+.move-turn-icon {
+    font-size: 36px;
+    margin-right: 10px;
+}
+.no-margin {
+    margin-bottom: 0px;
+}

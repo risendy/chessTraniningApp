@@ -60,6 +60,8 @@ export function updateStatus() {
     var status = '';
     var moveIcon = '<i class="fas fa-chess-king" style="color:#ced4da; padding-right:5px;"></i>';
     var moveColor = 'White';
+    let html;
+
     store.state.cfg.orientation='white';
 
     if (store.getters.game.turn() === 'b') {
@@ -91,7 +93,26 @@ export function updateStatus() {
         }
     }
 
-    store.state.statusValue = status;
+    if (store.getters.puzzleActive)
+    {
+        if (store.getters.game.turn() === 'b') {
+            html = `<div class="alert alert-dark no-margin" role="alert">
+                            <i class="fas fa-chess-king move-turn-icon"></i> ${status}
+                        </div>`;
+        }
+        else
+        {
+            html = `<div class="alert no-margin" role="alert" style="color:white; background:#f87979">
+                           <i class="fas fa-chess-king move-turn-icon"></i> ${status}
+                        </div>`;
+        }
+    }
+    else
+    {
+        html = '';
+    }
+
+    store.state.statusValue = html;
 };
 
 export function calculateNewRankings(result) {
@@ -260,7 +281,6 @@ export function checkPlayerSolution(playerMove, solutionMove) {
     if (!store.getters.puzzleActive)
     {
         store.dispatch('stopCountingTime');
-        store.dispatch('displayPuzzleInformation');
 
         ajaxFunc.savePuzzleRatingAxios(store.getters.puzzleId, ratings.newPuzzleRanking)
             .then(ajaxFunc.saveUserRankingAxios(store.getters.userId, ratings.newPlayerRanking))
