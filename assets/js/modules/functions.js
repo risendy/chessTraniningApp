@@ -235,8 +235,8 @@ export function appendGoodMoveIconToSquare(square) {
     span.className = 'icon-good-move';
     span.style.cssText = 'position: absolute;';
     span.innerHTML = `
-        <i class="fas fa-square fa-stack fa-inverse" style="position: relative;top: -12px;right: -54px;font-size: 23px;color: #008000"></i>
-        <i class="fas fa-check fa-stack icon-good-move" style="position: relative;top: -56px;right: -54px;font-size: 21px;color: #f3fff1;"></i>
+        <i class="fas fa-square fa-stack fa-inverse" style="position: relative;top: -13px;right: -54px;font-size: 23px;color: #008000"></i>
+        <i class="fas fa-check fa-stack icon-good-move" style="position: relative;top: -51px;right: -56px;font-size: 15px;color: #f3fff1;"></i>
     `;
     document.querySelector('.square-' + square).append(span);
 }
