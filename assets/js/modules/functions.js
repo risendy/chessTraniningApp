@@ -241,6 +241,25 @@ export function appendGoodMoveIconToSquare(square) {
     document.querySelector('.square-' + square).append(span);
 }
 
+export function appendGoodMoveClassSquare(square) {
+    document.querySelector('.square-' + square).classList.add('good-move-square');
+}
+
+export function appendBadMoveIconToSquare(square) {
+    let span = document.createElement("span");
+    span.className = 'icon-bad-move';
+    span.style.cssText = 'position: absolute;';
+    span.innerHTML = `
+        <i class="fas fa-square fa-stack fa-inverse" style="position: relative;top: -12px;right: -53px;font-size: 23px;color: #ff0000"></i>
+        <i class="fas fa-times fa-stack icon-good-move" style="position: relative;top: -50px;right: -58px;font-size: 15px;color: #f3fff1;"></i>
+    `;
+    document.querySelector('.square-' + square).append(span);
+}
+
+export function appendBadMoveClassSquare(square) {
+    document.querySelector('.square-' + square).classList.add('bad-move-square');
+}
+
 export function removeGreySquares() {
     $('.square-55d63').css('background', '')
 }
@@ -250,8 +269,15 @@ export function removeGoodMoveIcons() {
     removeElements( document.querySelectorAll(".icon-good-move") );
 }
 
+export function removeGoodMoveSquareBackground() {
+    let element = document.querySelector(".good-move-square");
+
+    if (element) element.classList.remove('good-move-square');
+}
+
 export function checkPlayerSolution(playerMove, solutionMove) {
     removeGoodMoveIcons();
+    removeGoodMoveSquareBackground();
 
     var movesSolution = solutionMove.split("-");
 

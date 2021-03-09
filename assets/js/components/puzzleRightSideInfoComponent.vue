@@ -7,13 +7,14 @@
             <i class="fa fa-clock"></i> Time spent: <b> {{puzzleTimeSpent}}[s] </b>
           </p>
           <p class="puzzleListElement">
-            <i class="fa fa-star"></i> Puzzle Rating: <b> {{puzzleRanking}} </b>
+            <i class="fas fa-star-half-alt"></i> Puzzle ranking: <b> {{puzzleRanking}} </b>
           </p>
           <p class="puzzleListElement">
             <i class="fa fa-check-square"></i> Attempts: <b> {{ puzzleTotalTries }} </b>
           </p>
+          <i class="fa fa-adjust"></i> Themes:
           <p class="puzzleListElement" v-for="item in puzzleThemes">
-              <i class="fa fa-adjust"></i> Theme: </br> <b> {{item.name}} </b>
+            <i class="fas fa-caret-right"></i> <b> {{item.name}} </b>
           </p>
       </div>
     </div>

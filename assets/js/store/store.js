@@ -305,12 +305,16 @@ const store = new Vuex.Store({
                         </div>`;
 
                 MyFn.appendGoodMoveIconToSquare(state.getters.lastMoveSquareTo);
+                MyFn.appendGoodMoveClassSquare(state.getters.lastMoveSquareTo);
             }
             else
             {
                 html = `<div class="alert alert-danger" role="alert">
                             <i class="fas fa-times" style="color:red"></i> Bad move
                         </div>`;
+
+                MyFn.appendBadMoveIconToSquare(state.getters.lastMoveSquareTo);
+                MyFn.appendBadMoveClassSquare(state.getters.lastMoveSquareTo);
             }
 
             state.commit('changeProgressInformationValue', html);

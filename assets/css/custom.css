@@ -77,3 +77,9 @@
 .no-margin {
     margin-bottom: 0px;
 }
+.good-move-square {
+    background: #cede95 !important;
+}
+.bad-move-square {
+    background: #ec7e6a !important;
+}

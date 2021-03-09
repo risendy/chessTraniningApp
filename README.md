@@ -63,6 +63,9 @@ php bin/console doctrine:fixtures:load --append
 
 ### Homepage
 ![Main page](web/img/img2.png)
+
+### Puzzle failed
+![Main page](web/img/img15.png)
                               
 ### Puzzle completed
 ![Main page](web/img/img22.png)                          
