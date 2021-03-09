@@ -6,7 +6,7 @@
 * [Screenshots](#screenshots)
 
 ## General info
-Symfony/js app to solve chess puzzles using chess.js and chessboard.js libraries. 
+Symfony/vuex app to solve chess puzzles using chess.js and chessboard.js libraries. 
 The puzzles are loaded into the database from the lichess open database with around 1,5M puzzles. 
 	
 ## Technologies
@@ -15,7 +15,6 @@ Project is created with:
 * FOSUserBundle for user login/registration
 * Vue.js/Vuex
 * Vue-chartjs
-* Vue-multiselect- https://vue-multiselect.js.org/  
 * Chess.js
 * Chessboard.js
 * MySQL database
