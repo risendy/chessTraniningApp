@@ -329,9 +329,9 @@ export async function checkPlayerSolution(playerMove, solutionMove) {
         ajaxFunc.savePuzzleRatingAxios(store.getters.puzzleId, ratings.newPuzzleRanking)
             .then(ajaxFunc.saveUserRankingAxios(store.getters.userId, ratings.newPlayerRanking))
             .then(ajaxFunc.saveStatisticsAxios(store.getters.userId, ratings.newPlayerRanking, store.getters.puzzleId, ratings.newPuzzleRanking, store.getters.puzzleResult, ratings.rankingDifference))
-            .then(await ajaxFunc.getPuzzleHistoryUser())
-            .finally(
+            .then(
                 setTimeout(() => {
+                    ajaxFunc.getPuzzleHistoryUser()
                     store.state.rerenderGraph = true
                 }, 1000)
             );

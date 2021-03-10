@@ -85,7 +85,7 @@ export function getRandomPosition() {
         .finally($.LoadingOverlay("hide") );
 }
 
-export async function getPuzzleHistoryUser() {
+export function getPuzzleHistoryUser() {
     axios.get(Routing.generate('api_get_user_history_ranking', {id: store.getters.userId, limit:5} ))
         .then(response => {
             store.dispatch('setRatingDifferenceArray', response.data.difference);
