@@ -12,15 +12,9 @@
 <script>
     import LineChart from './Chart.vue'
     import store from '../store/store.js';
+    import * as ajaxFunc from '../modules/ajaxCalls.js';
     import "babel-core/register";
     import "babel-polyfill";
-
-    var fetchNewData = async function () {
-        var userRankingHistory = await fetch(Routing.generate('api_get_user_history_ranking', {id: store.getters.userId, limit:10} ));
-        var historyJson = await userRankingHistory.json();
-
-        return historyJson;
-    };
 
     var prepareNewChartData = function(newData) {
         return {
@@ -64,11 +58,27 @@
                 }
             }
         }),
+        computed: {
+          rerenderGraph() {
+              return store.state.rerenderGraph
+          }
+        },
+        watch: {
+          rerenderGraph: {
+            deep: true,
+            async handler(flag) {
+              if (flag) {
+                await this.forceRerender();
+                store.state.rerenderGraph = false;
+              }
+            }
+          }
+        },
         methods: {
             async forceRerender() {
                 this.loaded = false;
                 try {
-                    var newData = await fetchNewData();
+                    var newData = await ajaxFunc.fetchNewDataForGraph();
                     this.chartdata = prepareNewChartData(newData);
                     this.loaded = true
                 } catch (e) {
@@ -79,7 +89,7 @@
         async mounted () {
             this.loaded = false;
             try {
-                var newData = await fetchNewData();
+                var newData = await ajaxFunc.fetchNewDataForGraph();
                 this.chartdata = prepareNewChartData(newData);
                 this.loaded = true
             } catch (e) {

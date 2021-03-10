@@ -42,10 +42,6 @@ appMainComponent = new Vue({
 
           ajaxFunc.getRandomPosition();
       },
-      forceRerenderHistory: function () {
-            ajaxFunc.getPuzzleHistoryUser();
-        },
-
     },
     computed: {
         ratingsDifference() {

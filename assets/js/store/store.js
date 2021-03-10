@@ -2,7 +2,6 @@ import Chess from "../lib/chess";
 import Vue from 'vue';
 import Vuex from 'vuex'
 import * as MyFn from "../modules/functions";
-import {calculateRankingDifference} from "../modules/functions";
 
 Vue.use(Vuex)
 
@@ -38,7 +37,8 @@ const store = new Vuex.Store({
         puzzleResult: '',
         selectedThemes: {},
         puzzleThemes: [],
-        lastMoveSquareTo: ''
+        lastMoveSquareTo: '',
+        rerenderGraph: false
     },
     getters: {
         game: state => state.game,

@@ -1,6 +1,5 @@
 import axios from 'axios';
 import store from "../store/store.js";
-import {appMainComponent} from "../chessboard_script";
 
 export function savePuzzleRatingAxios(puzzleId, newPuzzleRating) {
     $.LoadingOverlay("show");
@@ -86,10 +85,17 @@ export function getRandomPosition() {
         .finally($.LoadingOverlay("hide") );
 }
 
-export function getPuzzleHistoryUser() {
+export async function getPuzzleHistoryUser() {
     axios.get(Routing.generate('api_get_user_history_ranking', {id: store.getters.userId, limit:5} ))
         .then(response => {
             store.dispatch('setRatingDifferenceArray', response.data.difference);
         })
         .catch(error => console.log(error));
 }
+
+export async function fetchNewDataForGraph() {
+    var userRankingHistory = await fetch(Routing.generate('api_get_user_history_ranking', {id: store.getters.userId, limit:10} ));
+    var historyJson = userRankingHistory.json();
+
+    return historyJson;
+};

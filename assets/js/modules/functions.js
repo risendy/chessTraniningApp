@@ -1,6 +1,5 @@
 import store from "../store/store.js";
 import * as ajaxFunc from '../modules/ajaxCalls.js';
-import {appMainComponent} from "../chessboard_script";
 
 // do not pick up pieces if the game is over
 // only pick up pieces for the side to move
@@ -275,7 +274,7 @@ export function removeGoodMoveSquareBackground() {
     if (element) element.classList.remove('good-move-square');
 }
 
-export function checkPlayerSolution(playerMove, solutionMove) {
+export async function checkPlayerSolution(playerMove, solutionMove) {
     removeGoodMoveIcons();
     removeGoodMoveSquareBackground();
 
@@ -330,7 +329,11 @@ export function checkPlayerSolution(playerMove, solutionMove) {
         ajaxFunc.savePuzzleRatingAxios(store.getters.puzzleId, ratings.newPuzzleRanking)
             .then(ajaxFunc.saveUserRankingAxios(store.getters.userId, ratings.newPlayerRanking))
             .then(ajaxFunc.saveStatisticsAxios(store.getters.userId, ratings.newPlayerRanking, store.getters.puzzleId, ratings.newPuzzleRanking, store.getters.puzzleResult, ratings.rankingDifference))
-            .then(appMainComponent.forceRerenderHistory())
-            .then(appMainComponent.$refs.graph.forceRerender());
+            .then(await ajaxFunc.getPuzzleHistoryUser())
+            .finally(
+                setTimeout(() => {
+                    store.state.rerenderGraph = true
+                }, 1000)
+            );
     }
 }
