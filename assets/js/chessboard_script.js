@@ -66,6 +66,7 @@ var cfg = {
 store.commit('changeCfg', cfg)
 store.commit('initBoard', cfg);
 store.commit('initGame');
+store.dispatch('setBoardToSelectedTheme');
 
 Func.updateStatus();
 

@@ -24,6 +24,7 @@ Project is created with:
 * Solving chess puzzles
 * Choosing puzzle difficulty level
 * Choosing puzzle theme  
+* Choosing board theme  
 * Computing rating difference for puzzle and user using ELO ranking system.
 * Displaying graphs using Chart.js/vue-chartjs libraries
 * Displaying time spent on solving a puzzle
@@ -71,6 +72,9 @@ php bin/console doctrine:fixtures:load --append
 
 ### Choosing puzzle theme
 ![Main page](web/img/img_theme.png)
+
+### Board themes
+![Main page](web/img/themes.png)
 
 ### User profile
 ![Main page](web/img/img3.png)

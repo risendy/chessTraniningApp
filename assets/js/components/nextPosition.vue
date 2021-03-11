@@ -6,6 +6,7 @@
 
     <div class="row">
       <puzzle-theme-component></puzzle-theme-component>
+      <board-theme-component></board-theme-component>
     </div>
 
     <div class="row">
@@ -22,12 +23,14 @@ import showSolutionComponent from "./showSolutionComponent";
 import puzzleDifficulty from "./puzzleDifficulty";
 import puzzleTheme from "./puzzleTheme";
 import PuzzleTheme from "./puzzleTheme";
+import changeBoardTheme from "./changeBoardTheme";
 
 export default{
   components: {
     PuzzleTheme,
     'show-solution-component': showSolutionComponent,
     'puzzle-difficulty-component': puzzleDifficulty,
+    'board-theme-component': changeBoardTheme,
     'puzzle-theme-component': puzzleTheme,
   },
   data: () => ({

@@ -1,0 +1,36 @@
+/*default theme*/
+.theme1-white {
+    background-color: #b58863;
+    color: #b58863;
+}
+.theme1-black {
+    background-color: #f0d9b5;
+    color: #f0d9b5;
+}
+/*light blue theme*/
+.theme2-white {
+    background-color: #dee3e6;
+    color: #dee3e6;
+}
+.theme2-black {
+    background-color: #8ca2ad;
+    color: #8ca2ad;
+}
+/*light green theme*/
+.theme3-white {
+    background-color: #ffffdd;
+    color: #ffffdd;
+}
+.theme3-black {
+    background-color: #86a666;
+    color: #86a666;
+}
+/*light violet theme*/
+.theme4-white {
+    background-color: #e0d5ea;
+    color: #e0d5ea;
+}
+.theme4-black {
+    background-color: #957ab0;
+    color: #957ab0;
+}

@@ -38,7 +38,8 @@ const store = new Vuex.Store({
         selectedThemes: {},
         puzzleThemes: [],
         lastMoveSquareTo: '',
-        rerenderGraph: false
+        rerenderGraph: false,
+        selectedBoardTheme: 1
     },
     getters: {
         game: state => state.game,
@@ -70,6 +71,7 @@ const store = new Vuex.Store({
         selectedThemes: state => state.selectedThemes,
         puzzleThemes: state => state.puzzleThemes,
         lastMoveSquareTo: state => state.lastMoveSquareTo,
+        selectedBoardTheme: state => state.selectedBoardTheme,
         getPuzzleElapsedTime: state => {
             var timeDiff = state.puzzleTimeStop - state.puzzleTimeStart; //in ms
             // strip the ms
@@ -172,9 +174,37 @@ const store = new Vuex.Store({
         },
         changePuzzleThemes(state, themes) {
             state.puzzleThemes = themes;
-        }
+        },
+        changeBoardTheme(state, theme) {
+            state.selectedBoardTheme = theme;
+        },
+        setBoardColors (state, theme) {
+            document.querySelectorAll('.white-1e1d7').forEach((el) => {
+                el.classList.add('theme'+theme+'-white');
+            });
+            document.querySelectorAll('.black-3c85d').forEach((el) => {
+                el.classList.add('theme'+theme+'-black');
+            });
+        },
+        removeOldTheme(state) {
+            document.querySelectorAll('.white-1e1d7').forEach((el) => {
+                el.classList.remove('theme'+state.selectedBoardTheme+'-white');
+            });
+            document.querySelectorAll('.black-3c85d').forEach((el) => {
+                el.classList.remove('theme'+state.selectedBoardTheme+'-black');
+            });
+        },
     },
     actions: {
+        changeBoardColor(state, theme) {
+            state.commit('removeOldTheme');
+            state.commit('changeBoardTheme', theme.name);
+
+            state.commit('setBoardColors', theme.name);
+        },
+        setBoardToSelectedTheme(state) {
+            state.commit('setBoardColors', state.getters.selectedBoardTheme);
+        },
         savePuzzleInformation(state, payload) {
             state.commit('changePuzzleResult', payload.puzzleResult);
             state.commit('changePuzzleActive', payload.puzzleActive);
@@ -248,6 +278,8 @@ const store = new Vuex.Store({
 
             state.commit('changeCfgOrientation', color);
             state.commit('initBoard', store.getters.cfg);
+
+            state.dispatch('setBoardToSelectedTheme');
         },
         makeFirstMove(state) {
             var nextMove = MyFn.getNextMoveFromSolution(state.getters.solution);

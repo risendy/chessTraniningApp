@@ -71,6 +71,7 @@ export function updateStatus() {
 
     //update orientation
     store.state.board = ChessBoard('board', store.getters.cfg);
+    store.dispatch('setBoardToSelectedTheme');
 
     // checkmate?
     if (store.getters.game.in_checkmate() === true) {
@@ -186,6 +187,7 @@ function solutionRecursive(length) {
                     store.commit('changeCfgPosition', newFen);
                     store.commit('changeCfgDraggable', false);
                     store.commit('initBoard', store.getters.cfg);
+                    store.dispatch('setBoardToSelectedTheme');
 
                     solutionRecursive(length--);
                 }

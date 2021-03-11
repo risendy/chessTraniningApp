@@ -1,5 +1,5 @@
 .card_info_upper {
-    padding-top:0px;
+    padding-top:0;
 }
 .menu_right>a {
     color:white;
@@ -33,12 +33,12 @@
     text-align: center;
 }
 .rankingHistoryElement {
-    margin-bottom:0px;
+    margin-bottom:0;
     text-align:center;
 }
 .ratingDifferenceColumns{
-    padding-left:0px;
-    padding-right:0px;
+    padding-left:0;
+    padding-right:0;
 }
 .puzzle-info-paragraph {
     margin-top:0;
@@ -49,7 +49,7 @@
     margin-bottom:0;
 }
 .history-tab {
-    padding-left:0px;
+    padding-left:0;
 }
 .difficulty-level-label {
     padding-left: 15px;
@@ -67,15 +67,28 @@
     margin-left: 15px;
     width: 100%;
 }
+.board-theme-row {
+    margin-left: 15px;
+    width: 50%;
+}
 .puzzleListElement {
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 .move-turn-icon {
     font-size: 36px;
     margin-right: 10px;
 }
 .no-margin {
-    margin-bottom: 0px;
+    margin-bottom: 0;
+}
+.no-left-padding {
+    padding-left: 0;
+}
+.down-margin {
+    margin-bottom: 8px;
+}
+.top-margin {
+    margin-top: 8px;
 }
 .good-move-square {
     background: #acd7b5 !important;
