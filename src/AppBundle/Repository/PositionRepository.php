@@ -23,13 +23,13 @@ class PositionRepository extends EntityRepository
         }
 
         if ($puzzleDifficulty == 'easy') {
-            $sql = 'SELECT p.id_position from positions p, fos_user u WHERE (p.puzzle_ranking BETWEEN (u.ranking - 200) AND (u.ranking - 100))'.$themeSql;
+            $sql = 'SELECT p.id_position from positions p LEFT JOIN positions_theme pt ON pt.id_position=p.id_position, fos_user u WHERE (p.puzzle_ranking BETWEEN (u.ranking - 200) AND (u.ranking - 100))'.$themeSql;
         }
         if ($puzzleDifficulty == 'medium') {
-            $sql = 'SELECT p.id_position from positions p, fos_user u WHERE (p.puzzle_ranking BETWEEN (u.ranking - 100) AND (u.ranking + 100))'.$themeSql;
+            $sql = 'SELECT p.id_position from positions p LEFT JOIN positions_theme pt ON pt.id_position=p.id_position, fos_user u WHERE (p.puzzle_ranking BETWEEN (u.ranking - 100) AND (u.ranking + 100))'.$themeSql;
         }
         if ($puzzleDifficulty == 'hard') {
-            $sql = 'SELECT p.id_position from positions p, fos_user u WHERE (p.puzzle_ranking BETWEEN (u.ranking - 50) AND (u.ranking + 200))'.$themeSql;
+            $sql = 'SELECT p.id_position from positions p LEFT JOIN positions_theme pt ON pt.id_position=p.id_position, fos_user u WHERE (p.puzzle_ranking BETWEEN (u.ranking - 50) AND (u.ranking + 200))'.$themeSql;
         }
 
         foreach ($puzzleThemes as $key => $theme) {

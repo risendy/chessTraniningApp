@@ -8,7 +8,6 @@
       <puzzle-theme-component></puzzle-theme-component>
       <board-theme-component></board-theme-component>
     </div>
-
     <div class="row">
       <button type="button" class="btn btn-primary next-position-button" @click="$emit('getposition')">Next position <i class="fas fa-arrow-right"></i></button>
       <show-solution-component @showsolution="showsolution"></show-solution-component>

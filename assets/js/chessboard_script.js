@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import store from './store/store.js';
-import axios from 'axios';
 import progressInformationComponent from './components/progressInformationComponent.vue';
 import puzzleRankingComponent from './components/puzzleRankingComponent.vue';
 import playerRankingDifference from './components/playerRankingDifferenceComponent.vue';
