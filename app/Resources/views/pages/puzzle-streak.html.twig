@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+
+    <div id="app">
+    <input type="hidden" id="userId" value="{{ userId }}">
+    <input type="hidden" id="puzzleId" value="">
+
+    <div class="container-fluid">
+
+      <div class="starter-template">
+        <center>
+            <h4>
+                <progress-information-component></progress-information-component>
+            </h4>
+        </center>
+
+          <div class="row">
+              <div class="col-3">
+                  <div class="card card_info card_info_upper">
+                      <div class="card-body">
+                          <h5> <i class="fas fa-user"></i> Highest score: </br>
+                              0
+                          </h5>
+
+                          <p class="no-margin">
+                              <status-component>${statusValue}</status-component>
+                          </p>
+                      </div>
+                  </div>
+
+              </div>
+              <div class="col-7">
+                  <div id="board" style="width: 600px"></div>
+              </div>
+              <div class="col-2 history-tab">
+                  <div class="card card_info card_info_upper">
+                  <div class="card-body">
+                      <p class="no-margin">
+                            <start-streak-component></start-streak-component>
+                      </p>
+                  </div>
+                  </div>
+
+                  <div class="card card_info card_info_upper">
+                      <div class="card-body">
+                          <p class="no-margin">
+                              <count-streak-component></count-streak-component>
+                          </p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+      </div>
+    </div><!-- /.container -->
+    </div>
+{% endblock %}
+
+{% block footer %}
+									
+									
+{% endblock %}	
+
+		{% block stylesheets %}
+            {{ parent() }}
+            {{ encore_entry_link_tags('app') }}
+		{% endblock %}
+
+
+		{% block javascripts %}
+            {{ parent() }}
+
+            <script src="{{asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+            <script src="{{path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+
+            {{ encore_entry_script_tags('chessLibraries') }}
+            {{ encore_entry_script_tags('puzzleStreakPuzzle') }}
+            {{ encore_entry_script_tags('helpers') }}
+		{% endblock %}

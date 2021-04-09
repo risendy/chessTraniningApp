@@ -69,6 +69,49 @@ class PositionController extends AbstractFOSRestController
     }
 
     /**
+     * Retrieves an random puzzle set
+     * @Rest\Post("/random-puzzle-set/", name="api_get_random_puzzle_set", options={"expose"=true})
+     * @return View
+     */
+    public function getRandomPuzzleSet(Request $request) {
+        $resArr = [];
+        $loggedUserId = $this->getUser()->getId();
+
+        /**
+         * @var Position
+         */
+        $puzzleRankingStart = 800;
+        $puzzleRankingStep = 20;
+
+        for ($i=1; $i < 101; $i++) {
+            $calculatedRanking = $puzzleRankingStart + ($i * $puzzleRankingStep);
+
+            $randPosition = $this->positionService->getRandomPositionAtRange($calculatedRanking, $loggedUserId);
+
+            if ($randPosition) {
+                $array = [
+                    'fen' => $randPosition->getFen(),
+                    'pgn' => $randPosition->getPgn(),
+                    'solution' => $randPosition->getSolution(),
+                    'puzzleRanking' => $randPosition->getPuzzleRanking(),
+                    'puzzleId' => $randPosition->getIdPosition(),
+                    'puzzleTotalTries' => $randPosition->getTotalTimesTried(),
+                    'puzzleSuccessRate' => $randPosition->getSuccessRate(),
+                    'color' => $randPosition->getStartingColor(),
+                    'status' => 'Ok',
+                    'message' => 'Success'
+                ];
+
+                $resArr[] = $array;
+            }
+        }
+
+        $reversed = array_reverse($resArr);
+
+        return View::create($reversed, Response::HTTP_OK);
+    }
+
+    /**
      * Set position
      * @Rest\Post("/position/", name="api_set_position", options={"expose"=true})
      * @param Request $request

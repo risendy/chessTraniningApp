@@ -1,5 +1,6 @@
 import store from "../store/store.js";
 import * as ajaxFunc from '../modules/ajaxCalls.js';
+import {GameModeDictionary} from "../model/GameModesDictionary";
 
 // do not pick up pieces if the game is over
 // only pick up pieces for the side to move
@@ -303,9 +304,13 @@ export async function checkPlayerSolution(playerMove, solutionMove) {
                 puzzleActive: false
             });
 
-            store.dispatch('setPuzzleCompleted')
             store.dispatch('changePlayerRatingInTemplate', ratings.newPlayerRanking)
             store.dispatch('changePuzzleRankingInTemplate', ratings.newPuzzleRanking)
+
+            if (store.getters.gameMode === GameModeDictionary[1].id) {
+                store.commit('changeLastSolvedPuzzleState', 1);
+                store.dispatch('loadNextPuzzleFromSet');
+            }
         }
     }
     //user error
@@ -322,20 +327,28 @@ export async function checkPlayerSolution(playerMove, solutionMove) {
         store.dispatch('setProgressInfo', false);
         store.dispatch('changePlayerRatingInTemplate', ratings.newPlayerRanking)
         store.dispatch('changePuzzleRankingInTemplate', ratings.newPuzzleRanking)
+
+        if (store.getters.gameMode === GameModeDictionary[1].id) {
+            store.commit('changeLastSolvedPuzzleState', -1);
+        }
     }
 
     if (!store.getters.puzzleActive)
     {
         store.dispatch('stopCountingTime');
+        store.commit('isStartButtonStreakVisible', true);
 
-        ajaxFunc.savePuzzleRatingAxios(store.getters.puzzleId, ratings.newPuzzleRanking)
-            .then(ajaxFunc.saveUserRankingAxios(store.getters.userId, ratings.newPlayerRanking))
-            .then(ajaxFunc.saveStatisticsAxios(store.getters.userId, ratings.newPlayerRanking, store.getters.puzzleId, ratings.newPuzzleRanking, store.getters.puzzleResult, ratings.rankingDifference))
-            .then(
-                setTimeout(() => {
-                    ajaxFunc.getPuzzleHistoryUser()
-                    store.state.rerenderGraph = true
-                }, 1000)
-            );
+        //save only if single puzzle mode
+        if (store.getters.gameMode === GameModeDictionary[0].id) {
+            ajaxFunc.savePuzzleRatingAxios(store.getters.puzzleId, ratings.newPuzzleRanking)
+                .then(ajaxFunc.saveUserRankingAxios(store.getters.userId, ratings.newPlayerRanking))
+                .then(ajaxFunc.saveStatisticsAxios(store.getters.userId, ratings.newPlayerRanking, store.getters.puzzleId, ratings.newPuzzleRanking, store.getters.puzzleResult, ratings.rankingDifference))
+                .then(
+                    setTimeout(() => {
+                        ajaxFunc.getPuzzleHistoryUser()
+                        store.state.rerenderGraph = true
+                    }, 1000)
+                );
+        }
     }
 }

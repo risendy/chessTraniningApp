@@ -21,7 +21,7 @@ Project is created with:
 * EasyAdmin-bundle
 
 ## Features
-* Solving chess puzzles
+* Two game modes: Single puzzle and Puzzle streak
 * Choosing puzzle difficulty level
 * Choosing puzzle theme  
 * Choosing board theme  
@@ -61,6 +61,9 @@ php bin/console doctrine:fixtures:load --append
 
 ## Screenshots
 
+### Puzzle streak mode
+![Main page](web/img/puzzle-streak.png)
+
 ### Homepage
 ![Main page](web/img/img2.png)
 
@@ -82,5 +85,3 @@ php bin/console doctrine:fixtures:load --append
 ### Admin panel
 ![Main page](web/img/img4.png)
 
-### Adding new positions
-![Main page](web/img/img5.png)

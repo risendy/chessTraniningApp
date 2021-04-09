@@ -18,6 +18,10 @@ homepage:
     path:     /
     defaults: { _controller: AppBundle:Web\Default:index }
 
+puzzle-streak:
+    path:     /puzzle-streak
+    defaults: { _controller: AppBundle:Web\Default:puzzleStreak }
+
 profile:
     path:     /profile
     defaults: { _controller: AppBundle:Web\Profile:show }

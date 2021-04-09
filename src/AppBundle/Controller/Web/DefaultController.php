@@ -30,4 +30,20 @@ class DefaultController extends Controller
         ));
     }
 
+    public function puzzleStreakAction(UserInterface $user)
+    {
+        /**
+         * @var User
+         */
+        $user = $this->getUser();
+
+        $userRanking= $user->getRanking();
+        $userId= $user->getId();
+
+        return $this->render('pages/puzzle-streak.html.twig', array (
+            "userRanking"=> $userRanking,
+            "userId" => $userId
+        ));
+    }
+
 }

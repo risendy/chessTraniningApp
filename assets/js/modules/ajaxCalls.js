@@ -99,3 +99,14 @@ export async function fetchNewDataForGraph() {
 
     return historyJson;
 };
+
+export function getPuzzlesSet() {
+    $.LoadingOverlay("show");
+
+    return axios.post(Routing.generate('api_get_random_puzzle_set'))
+        .then(response => {
+            return response.data;
+        })
+        .catch(error => console.log(error))
+        .finally($.LoadingOverlay("hide") );
+}

@@ -9,6 +9,7 @@ var userId = $("#userId").val();
 
 const store = new Vuex.Store({
     state: {
+        gameMode: 0,
         game: null,
         board: null,
         cfg: null,
@@ -39,10 +40,14 @@ const store = new Vuex.Store({
         puzzleThemes: [],
         lastMoveSquareTo: '',
         rerenderGraph: false,
-        selectedBoardTheme: 1
+        selectedBoardTheme: 1,
+        puzzleSet: {},
+        puzzleSolvedSet: [],
+        isStartButtonStreakVisible: true
     },
     getters: {
         game: state => state.game,
+        gameMode: state => state.gameMode,
         board: state => state.board,
         cfg: state => state.cfg,
         solution: state => state.solution,
@@ -72,6 +77,9 @@ const store = new Vuex.Store({
         puzzleThemes: state => state.puzzleThemes,
         lastMoveSquareTo: state => state.lastMoveSquareTo,
         selectedBoardTheme: state => state.selectedBoardTheme,
+        puzzleSet: state => state.puzzleSet,
+        puzzleSetSolved: state => state.puzzleSolvedSet,
+        startButtonStreak: state => state.isStartButtonStreakVisible,
         getPuzzleElapsedTime: state => {
             var timeDiff = state.puzzleTimeStop - state.puzzleTimeStart; //in ms
             // strip the ms
@@ -84,6 +92,12 @@ const store = new Vuex.Store({
     mutations: {
         increment (state) {
             state.count++
+        },
+        setPuzzleSet (state, set) {
+            state.puzzleSet = set
+        },
+        setGameMode (state, mode) {
+            state.gameMode = mode
         },
         setProgressInformationAction (state, newValue) {
             state.progressInformation = newValue
@@ -193,6 +207,21 @@ const store = new Vuex.Store({
             document.querySelectorAll('.black-3c85d').forEach((el) => {
                 el.classList.remove('theme'+state.selectedBoardTheme+'-black');
             });
+        },
+        addPositionToSolved(state, position) {
+            state.puzzleSolvedSet.push(position);
+        },
+        changeLastSolvedPuzzleState(state, solvedStatus) {
+            let arr = [...state.puzzleSolvedSet];
+
+            arr[arr.length - 1].solved = solvedStatus;
+            state.puzzleSolvedSet = arr;
+        },
+        isStartButtonStreakVisible(state, visibility) {
+            state.isStartButtonStreakVisible = visibility;
+        },
+        clearSolvedPuzzles(state) {
+            state.puzzleSolvedSet = [];
         },
     },
     actions: {
@@ -382,8 +411,36 @@ const store = new Vuex.Store({
 
             state.commit('changePuzzleRankingValue', newPuzzleRanking);
             state.commit('changePuzzleRankingDifferenceValue', '('+icon+difference+')');
-        }
+        },
+        loadNextPuzzleFromSet(state) {
+            let arr = [...state.getters.puzzleSet];
+            let position = arr.pop();
+            position.solved = 0;
 
+            state.commit('isStartButtonStreakVisible', false);
+            state.commit('setPuzzleSet', arr);
+            state.commit('addPositionToSolved', position);
+
+            state.dispatch('initNewPosition',{
+                fen: position.fen,
+                solution: position.solution,
+                color: position.color
+            });
+
+            state.dispatch('setNewPositionData', {
+                currentPosition: position.fen,
+                solution: state.getters.solution,
+                solutionCopy:  [...state.getters.solution],
+                puzzleRankingValue: parseFloat(position.puzzleRanking).toFixed(2),
+                puzzleActive: true,
+                puzzleId: position.puzzleId,
+                puzzleInformationTotalTries: position.puzzleTotalTries,
+                puzzleSuccessRate: position.puzzleSuccessRate,
+                puzzleThemes: null
+            })
+
+            state.dispatch('makeFirstMove');
+        }
     }
 })
 

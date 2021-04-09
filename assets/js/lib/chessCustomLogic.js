@@ -1,1 +1,0 @@
-require('../chessboard_script.js');

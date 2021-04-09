@@ -23,6 +23,13 @@ class PositionService
         return $randomPosition;
     }
 
+    public function getRandomPositionAtRange($puzzleDifficulty, $loggedUserId)
+    {
+        $randomPosition = $this->em->getRepository(Position::class)->findRandomPositionAtRangeNativeQuery($puzzleDifficulty, $loggedUserId);
+
+        return $randomPosition;
+    }
+
     public function getPositionById($id)
     {
         $position = $this->em->getRepository(Position::class)->find($id);

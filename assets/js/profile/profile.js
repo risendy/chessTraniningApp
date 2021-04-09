@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import LineChartContainer from './components/ChartContainer.vue'
+import LineChartContainer from '../components/ChartContainer.vue'
 import BootstrapVue from 'bootstrap-vue'
 
 Vue.use(BootstrapVue);
