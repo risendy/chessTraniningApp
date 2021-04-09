@@ -1,5 +1,5 @@
 <template>
-      <button type="button" class="btn btn-primary solution-position-button" @click="$emit('showsolution')" v-if="showSolutionFlag">Show solution <i class="fas fa-info-circle"></i></button>
+      <button type="button" class="btn btn-primary solution-position-button" @click="$emit('showsolution')" v-if="showSolutionFlag">Solution <i class="fas fa-info-circle"></i></button>
 </template>
 
 <script>

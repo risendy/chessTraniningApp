@@ -41,6 +41,9 @@ appMainComponent = new Vue({
     computed: {
         modal () {
             return store.state.showEndStreakDialog;
+        },
+        puzzleRanking() {
+            return store.getters.puzzleRankingValue;
         }
     },
     watch: {

@@ -238,6 +238,9 @@ const store = new Vuex.Store({
         incrementPuzzleStreakScore(state) {
             state.finalStreakScore = state.finalStreakScore + 1;
         },
+        clearFinalScore(state) {
+            state.finalStreakScore = 0;
+        },
         setHighestSolvedPuzzle(state, puzzleRanking) {
             state.highestSolvedPuzzleRanking = puzzleRanking;
         },
@@ -342,7 +345,7 @@ const store = new Vuex.Store({
             setTimeout(function(){
                 state.dispatch('changeCfg', {fen: newFen, draggable: true});
                 MyFn.updateStatus();
-            }, 2000);
+            }, 1000);
         },
         makeMove(state, payload) {
             return new Promise((resolve, reject) => {

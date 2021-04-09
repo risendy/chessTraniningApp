@@ -7,7 +7,6 @@
     </div>
     <div class="mt-2 text-center">
       <button v-if="isVisible" v-on:click="fetchPuzzles" class="btn btn-primary">Start</button>
-      <show-solution-component @showsolution="showsolution"></show-solution-component>
     </div>
   </div>
 </template>
@@ -16,14 +15,8 @@
 import * as ajaxFunc from '../modules/ajaxCalls.js';
 import store from '../store/store.js';
 import * as Func from "../modules/functions";
-import PuzzleTheme from "./puzzleTheme";
-import showSolutionComponent from "./showSolutionComponent";
 
 export default{
-  components: {
-    PuzzleTheme,
-    'show-solution-component': showSolutionComponent,
-  },
   data: () => ({
 
   }),
@@ -33,14 +26,12 @@ export default{
             (response) => {
               store.state.showSolutionFlag = false;
               store.dispatch('resetPuzzleAndGameValues');
+              store.commit('clearFinalScore');
               store.commit('clearSolvedPuzzles');
               store.commit('setPuzzleSet', response);
               store.dispatch('loadNextPuzzleFromSet');
             }
         );
-    },
-    showsolution() {
-      Func.showSolutionFunc();
     },
   },
   computed: {

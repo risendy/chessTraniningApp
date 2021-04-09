@@ -13,14 +13,6 @@ export function onDragStart(source, piece, position, orientation) {
     // exit if there are no moves available for this square
     if (moves.length === 0) return
 
-    // highlight the square they moused over
-    greySquare(source)
-
-    // highlight the possible squares for this piece
-    for (var i = 0; i < moves.length; i++) {
-        greySquare(moves[i].to)
-    }
-
     if (store.getters.game.game_over() === true ||
         (store.getters.game.turn() === 'w' && piece.search(/^b/) !== -1) ||
         (store.getters.game.turn() === 'b' && piece.search(/^w/) !== -1)) {
@@ -29,8 +21,6 @@ export function onDragStart(source, piece, position, orientation) {
 };
 
 export function onDrop(source, target) {
-    removeGreySquares()
-
     var playerMove = makeMove(source, target);
 
     if (playerMove)
@@ -48,7 +38,7 @@ export function onDrop(source, target) {
 export function onSnapEnd() {
     setTimeout(function(){
         store.getters.board.position(store.getters.game.fen());
-    }, 1000);
+    }, 500);
 };
 
 export function updateStatus() {
@@ -218,20 +208,6 @@ export function makeMove(from, to) {
     return move;
 }
 
-export function greySquare(square) {
-    var whiteSquareGrey = '#a9a9a9'
-    var blackSquareGrey = '#696969'
-
-    var $square = $('.square-' + square)
-
-    var background = whiteSquareGrey
-    if ($square.hasClass('black-3c85d')) {
-        background = blackSquareGrey
-    }
-
-    $square.css('background', background)
-}
-
 export function appendGoodMoveIconToSquare(square) {
     let span = document.createElement("span");
     span.className = 'icon-good-move';
@@ -260,10 +236,6 @@ export function appendBadMoveIconToSquare(square) {
 
 export function appendBadMoveClassSquare(square) {
     document.querySelector('.square-' + square).classList.add('bad-move-square');
-}
-
-export function removeGreySquares() {
-    $('.square-55d63').css('background', '')
 }
 
 export function removeGoodMoveIcons() {
@@ -328,10 +300,10 @@ export async function checkPlayerSolution(playerMove, solutionMove) {
         });
 
         store.state.showSolutionFlag = true;
+        store.dispatch('setProgressInfo', false);
 
         //single puzzle
         if (store.getters.gameMode === GameModeDictionary[0].id) {
-            store.dispatch('setProgressInfo', false);
             store.dispatch('changePlayerRatingInTemplate', ratings.newPlayerRanking)
             store.dispatch('changePuzzleRankingInTemplate', ratings.newPuzzleRanking)
         }

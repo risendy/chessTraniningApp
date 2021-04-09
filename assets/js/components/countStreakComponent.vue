@@ -8,24 +8,33 @@
 
     <div class="mt-3 text-center">
       <span class="text-center mr-2" v-for="item in puzzleSolvedArray">
-        <i v-if="item.solved == 1" style="color:green; font-size: 14px;"  class="far fa-check-circle">
+        <i v-if="item.solved == 1" style="color:green; font-size: 17px;"  class="far fa-check-square">
           <br> {{ item.puzzleRanking }}
         </i>
-        <i v-if="item.solved == 0" class="far fa-circle" style="font-size: 14px">
+        <i v-if="item.solved == 0" class="far fa-square" style="font-size: 17px">
           <br> {{ item.puzzleRanking }}
         </i>
-        <i v-if="item.solved == -1"  style="color:red; font-size: 14px;" class="far fa-times-circle">
+        <i v-if="item.solved == -1"  style="color:red; font-size: 17px;" class="far fa-minus-square">
           <br> {{ item.puzzleRanking }}
         </i>
       </span>
+
+      <show-solution-component @showsolution="showsolution"></show-solution-component>
     </div>
   </div>
 </template>
 
 <script>
 import store from '../store/store.js';
+import PuzzleTheme from "./puzzleTheme";
+import showSolutionComponent from "./showSolutionComponent";
+import * as Func from "../modules/functions";
 
 export default{
+  components: {
+    PuzzleTheme,
+    'show-solution-component': showSolutionComponent,
+  },
   data: () => ({
 
   }),
@@ -40,7 +49,9 @@ export default{
     }
   },
   methods: {
-
+    showsolution() {
+      Func.showSolutionFunc();
+    },
   },
 }
 
