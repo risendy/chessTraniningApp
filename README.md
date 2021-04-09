@@ -64,7 +64,7 @@ php bin/console doctrine:fixtures:load --append
 ### Puzzle streak mode
 ![Main page](web/img/puzzle-streak.png)
 
-### Homepage
+### Single puzzle mode
 ![Main page](web/img/img2.png)
 
 ### Puzzle failed
