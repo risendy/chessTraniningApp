@@ -64,15 +64,12 @@ php bin/console doctrine:fixtures:load --append
 ### Puzzle streak mode
 ![Main page](web/img/puzzle-streak.png)
 
+### Puzzle streak summary
+![Main page](web/img/puzzle-streak-modal.png)
+
 ### Single puzzle mode
-![Main page](web/img/img2.png)
-
-### Puzzle failed
-![Main page](web/img/img15.png)
+![Main page](web/img/img22.png)
                               
-### Puzzle completed
-![Main page](web/img/img22.png)                          
-
 ### Choosing puzzle theme
 ![Main page](web/img/img_theme.png)
 

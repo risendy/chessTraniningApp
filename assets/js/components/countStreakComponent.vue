@@ -2,7 +2,7 @@
   <div>
     <div class="card">
       <div class="card-body text-center pb-2">
-        <h5 class="card-title">Count: {{puzzleSolvedLength}}</h5>
+        <h6 class="card-title"><i class="fas fa-fire"></i> Score: {{puzzleSolvedLength}}</h6>
       </div>
     </div>
 
@@ -31,6 +31,8 @@ export default{
   }),
   computed: {
     puzzleSolvedLength() {
+      if (store.getters.puzzleSetSolved.length) return store.getters.puzzleSetSolved.length - 1;
+
       return store.getters.puzzleSetSolved.length;
     },
     puzzleSolvedArray() {

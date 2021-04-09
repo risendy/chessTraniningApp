@@ -304,10 +304,14 @@ export async function checkPlayerSolution(playerMove, solutionMove) {
                 puzzleActive: false
             });
 
-            store.dispatch('changePlayerRatingInTemplate', ratings.newPlayerRanking)
-            store.dispatch('changePuzzleRankingInTemplate', ratings.newPuzzleRanking)
+            if (store.getters.gameMode === GameModeDictionary[0].id) {
+                store.dispatch('changePlayerRatingInTemplate', ratings.newPlayerRanking)
+                store.dispatch('changePuzzleRankingInTemplate', ratings.newPuzzleRanking)
+            }
 
             if (store.getters.gameMode === GameModeDictionary[1].id) {
+                store.commit('setHighestSolvedPuzzle', store.getters.puzzleRankingValue);
+                store.commit('incrementPuzzleStreakScore');
                 store.commit('changeLastSolvedPuzzleState', 1);
                 store.dispatch('loadNextPuzzleFromSet');
             }
@@ -324,11 +328,17 @@ export async function checkPlayerSolution(playerMove, solutionMove) {
         });
 
         store.state.showSolutionFlag = true;
-        store.dispatch('setProgressInfo', false);
-        store.dispatch('changePlayerRatingInTemplate', ratings.newPlayerRanking)
-        store.dispatch('changePuzzleRankingInTemplate', ratings.newPuzzleRanking)
 
+        //single puzzle
+        if (store.getters.gameMode === GameModeDictionary[0].id) {
+            store.dispatch('setProgressInfo', false);
+            store.dispatch('changePlayerRatingInTemplate', ratings.newPlayerRanking)
+            store.dispatch('changePuzzleRankingInTemplate', ratings.newPuzzleRanking)
+        }
+
+        //puzzle streak
         if (store.getters.gameMode === GameModeDictionary[1].id) {
+            store.commit('showEndStreakModal');
             store.commit('changeLastSolvedPuzzleState', -1);
         }
     }

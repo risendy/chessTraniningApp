@@ -43,7 +43,10 @@ const store = new Vuex.Store({
         selectedBoardTheme: 1,
         puzzleSet: {},
         puzzleSolvedSet: [],
-        isStartButtonStreakVisible: true
+        isStartButtonStreakVisible: true,
+        showEndStreakDialog: false,
+        finalStreakScore: 0,
+        highestSolvedPuzzleRanking: 0
     },
     getters: {
         game: state => state.game,
@@ -80,6 +83,9 @@ const store = new Vuex.Store({
         puzzleSet: state => state.puzzleSet,
         puzzleSetSolved: state => state.puzzleSolvedSet,
         startButtonStreak: state => state.isStartButtonStreakVisible,
+        showEndStreakDialog: state => state.showEndStreakDialog,
+        finalStreakScore: state => state.finalStreakScore,
+        highestSolvedPuzzleRanking: state => state.highestSolvedPuzzleRanking,
         getPuzzleElapsedTime: state => {
             var timeDiff = state.puzzleTimeStop - state.puzzleTimeStart; //in ms
             // strip the ms
@@ -222,6 +228,18 @@ const store = new Vuex.Store({
         },
         clearSolvedPuzzles(state) {
             state.puzzleSolvedSet = [];
+        },
+        showEndStreakModal(state) {
+            state.showEndStreakDialog = true;
+        },
+        hideEndStreakModal(state) {
+            state.showEndStreakDialog = false;
+        },
+        incrementPuzzleStreakScore(state) {
+            state.finalStreakScore = state.finalStreakScore + 1;
+        },
+        setHighestSolvedPuzzle(state, puzzleRanking) {
+            state.highestSolvedPuzzleRanking = puzzleRanking;
         },
     },
     actions: {

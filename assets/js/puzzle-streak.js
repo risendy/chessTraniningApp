@@ -10,7 +10,11 @@ import statusComponent from './components/statusComponent.vue';
 import * as Func from './modules/functions.js';
 import startStreakComponent from "./components/startStreakComponent";
 import countStreakComponent from "./components/countStreakComponent";
+import DemoSizeModal from './components/endOfStreakModal.vue'
 import 'regenerator-runtime/runtime';
+import VModal from 'vue-js-modal'
+Vue.use(VModal)
+
 export let appMainComponent;
 
 appMainComponent = new Vue({
@@ -20,6 +24,7 @@ appMainComponent = new Vue({
         statusValue: 0,
     },
     components: {
+        'demo-size-modal': DemoSizeModal,
         'start-streak-component': startStreakComponent,
         'count-streak-component': countStreakComponent,
         'progress-information-component': progressInformationComponent,
@@ -34,10 +39,24 @@ appMainComponent = new Vue({
 
     },
     computed: {
-
+        modal () {
+            return store.state.showEndStreakDialog;
+        }
+    },
+    watch: {
+        modal (newFlag, oldCount) {
+            if (newFlag) {
+                this.$modal.show('conditional-modal', {
+                    show: true
+                })
+            }
+        }
     },
     created: function () {
         store.commit('setGameMode', 1);
+    },
+    mounted: function () {
+
     }
 });
 
@@ -56,4 +75,3 @@ store.commit('initGame');
 store.dispatch('setBoardToSelectedTheme');
 
 Func.updateStatus();
-
