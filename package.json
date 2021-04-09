@@ -10,7 +10,7 @@
     "@babel/helper-regex": "^7.10.5",
     "@chrisoakman/chessboardjs": "^1.0.0",
     "@fortawesome/fontawesome-free": "^5.9.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "babel-core": "^6.0.20",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.26.0",
