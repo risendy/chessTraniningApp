@@ -299,19 +299,33 @@ export async function checkPlayerSolution(playerMove, solutionMove) {
             puzzleActive: false
         });
 
-        store.state.showSolutionFlag = true;
         store.dispatch('setProgressInfo', false);
 
         //single puzzle
         if (store.getters.gameMode === GameModeDictionary[0].id) {
+            store.state.showSolutionFlag = true;
             store.dispatch('changePlayerRatingInTemplate', ratings.newPlayerRanking)
             store.dispatch('changePuzzleRankingInTemplate', ratings.newPuzzleRanking)
         }
 
         //puzzle streak
         if (store.getters.gameMode === GameModeDictionary[1].id) {
-            store.commit('showEndStreakModal');
+            store.commit('incrementBadPuzzleCounter');
             store.commit('changeLastSolvedPuzzleState', -1);
+
+            let badPuzzleCounter = store.getters.badPuzzleCounter;
+
+            if (badPuzzleCounter === 3) {
+                store.state.showSolutionFlag = true;
+                store.commit('setEnableTimer', false);
+                store.commit('changeCfgDraggable', false);
+                store.commit('resetBadPuzzleCounter');
+                store.commit('showEndStreakModal');
+            }
+            else
+            {
+                store.dispatch('loadNextPuzzleFromSet');
+            }
         }
     }
 

@@ -22,7 +22,7 @@
 
 <script>
 import Vue from 'vue';
-import store from "../store/store";
+import store from "../../store/store";
 
 var puzzleRightSideInfoComponent = Vue.component('puzzle-right-info-component', {
     data: function () {

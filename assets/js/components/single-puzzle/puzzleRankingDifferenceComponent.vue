@@ -4,7 +4,7 @@
 
 <script>
 import Vue from 'vue';
-import store from '../store/store.js';
+import store from '../../store/store.js';
 
 var puzzleRankingDifferenceComponent = Vue.component('puzzle-ranking-difference-component', {
     data: function () {

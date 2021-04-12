@@ -4,7 +4,7 @@
 
 <script>
 import Vue from 'vue';
-import store from '../store/store.js';
+import store from '../../store/store.js';
 
 var showSolutionComponent = Vue.component('show-solution-component', {
     data: function () {

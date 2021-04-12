@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import store from '../store/store.js';
+import store from '../../store/store.js';
 import Multiselect from 'vue-multiselect'
-import {themeDictionary} from "../model/PuzzleThemeDictionary";
+import {themeDictionary} from "../../model/PuzzleThemeDictionary";
 
 export default{
   components: { Multiselect },

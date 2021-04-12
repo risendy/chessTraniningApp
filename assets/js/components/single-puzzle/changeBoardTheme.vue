@@ -15,8 +15,8 @@
 
 <script>
 import Multiselect from 'vue-multiselect'
-import store from "../store/store";
-import {boardThemeDictionary} from "../model/BoardThemeDictionary";
+import store from "../../store/store";
+import {boardThemeDictionary} from "../../model/BoardThemeDictionary";
 
 export default{
   components: { Multiselect },

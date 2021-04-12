@@ -1,16 +1,16 @@
 import Vue from 'vue';
 import store from './store/store.js';
-import progressInformationComponent from './components/progressInformationComponent.vue';
-import puzzleRankingComponent from './components/puzzleRankingComponent.vue';
-import playerRankingDifference from './components/playerRankingDifferenceComponent.vue';
-import puzzleRankingDifferenceComponent from './components/puzzleRankingDifferenceComponent.vue';
-import playerRankingComponent from './components/playerRankingComponent.vue';
-import PuzzleInformationComponent from './components/puzzleInformationComponent.vue';
-import puzzleRightSideInfoComponent from "./components/puzzleRightsideInfoComponent";
-import statusComponent from './components/statusComponent.vue';
-import LineChartContainerMini from './components/ChartContainerMini.vue'
-import NextPosition from './components/nextPosition.vue'
-import GameHistory from './components/gameHistoryComponent.vue'
+import progressInformationComponent from './components/single-puzzle/progressInformationComponent.vue';
+import puzzleRankingComponent from './components/single-puzzle/puzzleRankingComponent.vue';
+import playerRankingDifference from './components/single-puzzle/playerRankingDifferenceComponent.vue';
+import puzzleRankingDifferenceComponent from './components/single-puzzle/puzzleRankingDifferenceComponent.vue';
+import playerRankingComponent from './components/single-puzzle/playerRankingComponent.vue';
+import PuzzleInformationComponent from './components/single-puzzle/puzzleInformationComponent.vue';
+import puzzleRightSideInfoComponent from "./components/single-puzzle/puzzleRightSideInfoComponent";
+import statusComponent from './components/single-puzzle/statusComponent.vue';
+import LineChartContainerMini from './components/single-puzzle/chart/ChartContainerMini.vue'
+import NextPosition from './components/single-puzzle/nextPosition.vue'
+import GameHistory from './components/single-puzzle/gameHistoryComponent.vue'
 import * as ajaxFunc from './modules/ajaxCalls.js';
 import * as Func from './modules/functions.js';
 

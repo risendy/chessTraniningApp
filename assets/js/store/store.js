@@ -46,7 +46,10 @@ const store = new Vuex.Store({
         isStartButtonStreakVisible: true,
         showEndStreakDialog: false,
         finalStreakScore: 0,
-        highestSolvedPuzzleRanking: 0
+        highestSolvedPuzzleRanking: 0,
+        timerStreak: 0,
+        timerEnabled: false,
+        badPuzzleCounter: 0
     },
     getters: {
         game: state => state.game,
@@ -81,11 +84,21 @@ const store = new Vuex.Store({
         lastMoveSquareTo: state => state.lastMoveSquareTo,
         selectedBoardTheme: state => state.selectedBoardTheme,
         puzzleSet: state => state.puzzleSet,
-        puzzleSetSolved: state => state.puzzleSolvedSet,
+        puzzleSetSolved: state => {
+            return state.puzzleSolvedSet;
+        },
+        puzzleSetSolvedLength: state => {
+            let puzzleSet = state.puzzleSolvedSet;
+
+            return puzzleSet.filter((x) => x.solved == 1).length;
+        },
         startButtonStreak: state => state.isStartButtonStreakVisible,
         showEndStreakDialog: state => state.showEndStreakDialog,
         finalStreakScore: state => state.finalStreakScore,
         highestSolvedPuzzleRanking: state => state.highestSolvedPuzzleRanking,
+        timerStreak: state => state.timerStreak,
+        timerEnabled: state => state.timerEnabled,
+        badPuzzleCounter: state => state.badPuzzleCounter,
         getPuzzleElapsedTime: state => {
             var timeDiff = state.puzzleTimeStop - state.puzzleTimeStart; //in ms
             // strip the ms
@@ -244,6 +257,21 @@ const store = new Vuex.Store({
         setHighestSolvedPuzzle(state, puzzleRanking) {
             state.highestSolvedPuzzleRanking = puzzleRanking;
         },
+        decrementTimerStreak(state) {
+            state.timerStreak--;
+        },
+        setTimerStreak(state, value) {
+            state.timerStreak = value;
+        },
+        setEnableTimer(state, value) {
+            state.timerEnabled = value;
+        },
+        incrementBadPuzzleCounter(state) {
+            state.badPuzzleCounter++;
+        },
+        resetBadPuzzleCounter(state) {
+            state.badPuzzleCounter = 0;
+        }
     },
     actions: {
         changeBoardColor(state, theme) {

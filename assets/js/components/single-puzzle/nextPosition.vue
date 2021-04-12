@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import store from '../store/store.js';
-import * as Func from "../modules/functions";
+import store from '../../store/store.js';
+import * as Func from "../../modules/functions";
 import showSolutionComponent from "./showSolutionComponent";
 import puzzleDifficulty from "./puzzleDifficulty";
 import puzzleTheme from "./puzzleTheme";

@@ -1,16 +1,16 @@
 import Vue from 'vue';
 import store from './store/store.js';
-import progressInformationComponent from './components/progressInformationComponent.vue';
-import puzzleRankingComponent from './components/puzzleRankingComponent.vue';
-import playerRankingDifference from './components/playerRankingDifferenceComponent.vue';
-import puzzleRankingDifferenceComponent from './components/puzzleRankingDifferenceComponent.vue';
-import playerRankingComponent from './components/playerRankingComponent.vue';
-import PuzzleInformationComponent from './components/puzzleInformationComponent.vue';
-import statusComponent from './components/statusComponent.vue';
+import progressInformationComponent from './components/single-puzzle/progressInformationComponent.vue';
+import puzzleRankingComponent from './components/single-puzzle/puzzleRankingComponent.vue';
+import playerRankingDifference from './components/single-puzzle/playerRankingDifferenceComponent.vue';
+import puzzleRankingDifferenceComponent from './components/single-puzzle/puzzleRankingDifferenceComponent.vue';
+import playerRankingComponent from './components/single-puzzle/playerRankingComponent.vue';
+import PuzzleInformationComponent from './components/single-puzzle/puzzleInformationComponent.vue';
+import statusComponent from './components/single-puzzle/statusComponent.vue';
 import * as Func from './modules/functions.js';
-import startStreakComponent from "./components/startStreakComponent";
-import countStreakComponent from "./components/countStreakComponent";
-import DemoSizeModal from './components/endOfStreakModal.vue'
+import startStreakComponent from "./components/puzzle-streak/startStreakComponent";
+import countStreakComponent from "./components/puzzle-streak/countStreakComponent";
+import DemoSizeModal from './components/puzzle-streak/endOfStreakModal.vue'
 import 'regenerator-runtime/runtime';
 import VModal from 'vue-js-modal'
 Vue.use(VModal)

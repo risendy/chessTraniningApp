@@ -6,7 +6,7 @@
 
 <script>
 import Vue from 'vue';
-import store from '../store/store.js';
+import store from '../../store/store.js';
 
 var puzzleInformationComponent = Vue.component('puzzle-information-component', {
     data: function () {

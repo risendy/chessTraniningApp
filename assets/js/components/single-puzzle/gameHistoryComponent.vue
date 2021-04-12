@@ -16,7 +16,7 @@
 
 <script>
 import Vue from 'vue';
-import store from '../store/store.js';
+import store from '../../store/store.js';
 
 var gameHistoryComponent = Vue.component('game-history-component', {
     data: function () {
