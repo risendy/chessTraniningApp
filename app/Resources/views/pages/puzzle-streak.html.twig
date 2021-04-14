@@ -16,24 +16,10 @@
         </center>
 
           <div class="row">
-              <div class="col-3">
-                  <div class="card card_info card_info_upper">
-                      <div class="card-body">
-                          <h6 class="mb-3"> <i class="fas fa-star"></i> Puzzle ranking:
-                              ${puzzleRanking}
-                          </h6>
-
-                          <p class="no-margin">
-                              <status-component>${statusValue}</status-component>
-                          </p>
-                      </div>
-                  </div>
-
-              </div>
               <div class="col-7">
                   <div id="board" style="width: 600px"></div>
               </div>
-              <div class="col-2 history-tab">
+              <div class="col-5 history-tab">
                   <div class="card card_info card_info_upper">
                   <div class="card-body">
                       <p class="no-margin">
@@ -42,7 +28,19 @@
                   </div>
                   </div>
 
-                  <div class="card card_info card_info_upper">
+                  <div class="card card_info card_info_upper mt-2">
+                      <div class="card-body">
+                          <h5 class="mb-3"> <i class="fas fa-info-circle"></i> Game status:
+
+                           </h5>
+
+                           <p class="no-margin">
+                                 <status-component>${statusValue}</status-component>
+                           </p>
+                      </div>
+                  </div>
+
+                  <div class="card card_info card_info_upper mt-2">
                       <div class="card-body">
                           <p class="no-margin">
                               <count-streak-component></count-streak-component>

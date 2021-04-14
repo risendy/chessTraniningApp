@@ -36,9 +36,7 @@ export function onDrop(source, target) {
 // update the board position after the piece snap
 // for castling, en passant, pawn promotion
 export function onSnapEnd() {
-    setTimeout(function(){
-        store.getters.board.position(store.getters.game.fen());
-    }, 500);
+    store.getters.board.position(store.getters.game.fen());
 };
 
 export function updateStatus() {

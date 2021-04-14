@@ -9,17 +9,19 @@
       </div>
     </div>
 
-    <div class="row mt-3">
-      <div class="col-md-6 text-center" v-for="item in puzzleSolvedArray">
-        <i v-if="item.solved == 1" style="color:green; font-size: 17px;" class="far fa-check-square">
-          <br> {{ item.puzzleRanking }}
-        </i>
-        <i v-if="item.solved == 0" class="far fa-square" style="font-size: 17px">
-          <br> {{ item.puzzleRanking }}
-        </i>
-        <i v-if="item.solved == -1" style="color:red; font-size: 17px;" class="far fa-minus-square">
-          <br> {{ item.puzzleRanking }}
-        </i>
+    <div class="row">
+      <div class="col-md-3 text-center" v-for="item in puzzleSolvedArray">
+        <div class="alert mt-3 mb-0" :class="{ 'alert-success': item.solved === 1, 'alert-secondary': item.solved === 0,  'alert-danger': item.solved === -1}" >
+            <i v-if="item.solved == 1" style="color:green; font-size: 12px;" class="far fa-check-square">
+              <br> {{ item.puzzleRanking }}
+            </i>
+            <i v-if="item.solved == 0" class="far fa-square" style="font-size: 12px">
+              <br> {{ item.puzzleRanking }}
+            </i>
+            <i v-if="item.solved == -1" style="color:red; font-size: 12px;" class="far fa-minus-square">
+              <br> {{ item.puzzleRanking }}
+            </i>
+          </div>
       </div>
     </div>
 

@@ -95,3 +95,9 @@
 .bad-move-square {
     background: #ffadad !important;
 }
+.red-box {
+    background: #fce5e5
+}
+.green-box {
+    background: #dcfed8
+}
