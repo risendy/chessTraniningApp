@@ -2,6 +2,7 @@ import Chess from "../lib/chess";
 import Vue from 'vue';
 import Vuex from 'vuex'
 import * as MyFn from "../modules/functions";
+import * as apiCalls from "../modules/ajaxCalls";
 
 Vue.use(Vuex)
 
@@ -47,6 +48,7 @@ const store = new Vuex.Store({
         showEndStreakDialog: false,
         finalStreakScore: 0,
         highestSolvedPuzzleRanking: 0,
+        highScoreUserAllTime: 0,
         timerStreak: 0,
         timerEnabled: false,
         badPuzzleCounter: 0
@@ -99,6 +101,7 @@ const store = new Vuex.Store({
         timerStreak: state => state.timerStreak,
         timerEnabled: state => state.timerEnabled,
         badPuzzleCounter: state => state.badPuzzleCounter,
+        highScoreUserAllTime: state => state.highScoreUserAllTime,
         getPuzzleElapsedTime: state => {
             var timeDiff = state.puzzleTimeStop - state.puzzleTimeStart; //in ms
             // strip the ms
@@ -271,7 +274,10 @@ const store = new Vuex.Store({
         },
         resetBadPuzzleCounter(state) {
             state.badPuzzleCounter = 0;
-        }
+        },
+        setHighScoreUserAllTime(state, highscore) {
+            state.highScoreUserAllTime = highscore;
+        },
     },
     actions: {
         changeBoardColor(state, theme) {
@@ -489,6 +495,19 @@ const store = new Vuex.Store({
             })
 
             state.dispatch('makeFirstMove');
+        },
+        getUserInformation(state) {
+            apiCalls.getUserInformation();
+        },
+        checkIfNewScoreHigherThanOld(state) {
+            let oldScore = state.getters.highScoreUserAllTime;
+            let newScore = state.getters.finalStreakScore;
+
+            if (newScore > oldScore) {
+                store.commit('setHighScoreUserAllTime', newScore);
+
+                apiCalls.saveInformationUser(state.getters.userId, newScore);
+            }
         }
     }
 })

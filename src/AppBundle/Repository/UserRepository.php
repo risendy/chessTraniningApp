@@ -46,5 +46,13 @@ class UserRepository extends EntityRepository
         $em->flush();
     }
 
+    public function updateUserHighScore(User $user, $highscore)
+    {
+        $em = $this->getEntityManager();
 
+        $user->setHighScoreAllTime($highscore);
+
+        $em->persist($user);
+        $em->flush();
+    }
 }

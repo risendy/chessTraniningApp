@@ -34,4 +34,11 @@ class UserService
 
         return $updatedUser;
     }
+
+    public function updateUserHighscore(User $user, $highscore)
+    {
+        $updatedUser = $this->em->getRepository(User::class)->updateUserHighScore($user, $highscore);
+
+        return $updatedUser;
+    }
 }

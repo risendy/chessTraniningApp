@@ -93,6 +93,26 @@ export function getPuzzleHistoryUser() {
         .catch(error => console.log(error));
 }
 
+export async function getUserInformation() {
+    axios.get(Routing.generate('api_get_user_info', {id: store.getters.userId} ))
+        .then(response => {
+            store.commit('setHighScoreUserAllTime', response.data.highScoreAllTime);
+        })
+        .catch(error => console.log(error));
+}
+
+export function saveInformationUser(userId, highscore) {
+    return axios.put(Routing.generate('api_put_user_info'), {
+        userId:userId,
+        highscore:highscore
+    })
+        .then(response => {
+            return response;
+        })
+        .catch(error => console.log(error))
+        .finally();
+}
+
 export async function fetchNewDataForGraph() {
     var userRankingHistory = await fetch(Routing.generate('api_get_user_history_ranking', {id: store.getters.userId, limit:10} ));
     var historyJson = userRankingHistory.json();

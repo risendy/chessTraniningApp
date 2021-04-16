@@ -44,6 +44,9 @@ appMainComponent = new Vue({
         },
         puzzleRanking() {
             return store.getters.puzzleRankingValue;
+        },
+        highScoreAllTime() {
+            return store.getters.highScoreUserAllTime;
         }
     },
     watch: {
@@ -57,6 +60,8 @@ appMainComponent = new Vue({
     },
     created: function () {
         store.commit('setGameMode', 1);
+
+        store.dispatch('getUserInformation');
     },
     mounted: function () {
 

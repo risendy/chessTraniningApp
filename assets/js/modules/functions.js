@@ -319,6 +319,8 @@ export async function checkPlayerSolution(playerMove, solutionMove) {
                 store.commit('changeCfgDraggable', false);
                 store.commit('resetBadPuzzleCounter');
                 store.commit('showEndStreakModal');
+
+                store.dispatch('checkIfNewScoreHigherThanOld');
             }
             else
             {

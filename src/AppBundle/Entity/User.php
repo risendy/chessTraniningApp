@@ -34,6 +34,11 @@ class User extends BaseUser
      */
     protected $puzzlesFailed = 0;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $highScoreAllTime = 0;
+
     public function __construct()
     {
         parent::__construct();
@@ -90,5 +95,21 @@ class User extends BaseUser
     public function setPuzzlesFailed($puzzlesFailed)
     {
         $this->puzzlesFailed = $puzzlesFailed;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHighScoreAllTime(): int
+    {
+        return $this->highScoreAllTime;
+    }
+
+    /**
+     * @param int $highScoreAllTime
+     */
+    public function setHighScoreAllTime(int $highScoreAllTime): void
+    {
+        $this->highScoreAllTime = $highScoreAllTime;
     }
 }
