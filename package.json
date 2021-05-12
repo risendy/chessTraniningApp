@@ -18,7 +18,7 @@
     "babel-preset-stage-3": "^6.24.1",
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.24",
-    "chart.js": "^2.8.0",
+    "chart.js": "^2.9.4",
     "popper.js": "^1.15.0",
     "vue-chartjs": "^3.4.2",
     "vue-js-modal": "^2.0.0-rc.6",
